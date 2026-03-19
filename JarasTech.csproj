@@ -95,6 +95,12 @@
     <Compile Include="Layers\UI\Mantenimientos\FrmModelos.Designer.cs">
       <DependentUpon>FrmModelos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Layers\UI\Mantenimientos\FrmTiposDispositivo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Layers\UI\Mantenimientos\FrmTiposDispositivo.Designer.cs">
+      <DependentUpon>FrmTiposDispositivo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Layers\UI\Mantenimientos\mantenimientoClientes.cs">
       <SubType>Form</SubType>
     </Compile>
