@@ -125,6 +125,12 @@
     <Compile Include="Layers\UI\Mantenimientos\mantenimientoClientes.Designer.cs">
       <DependentUpon>mantenimientoClientes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Layers\UI\Procesos\FrmFacturacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Layers\UI\Procesos\FrmFacturacion.Designer.cs">
+      <DependentUpon>FrmFacturacion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="util\Cryptography.cs" />
@@ -143,6 +149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Layers\UI\Mantenimientos\mantenimientoClientes.resx">
       <DependentUpon>mantenimientoClientes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layers\UI\Procesos\FrmFacturacion.resx">
+      <DependentUpon>FrmFacturacion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
