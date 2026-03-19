@@ -83,6 +83,12 @@
     <Compile Include="Layers\persistencia\FactoryConexion.cs" />
     <Compile Include="Layers\persistencia\FactoryDataBase.cs" />
     <Compile Include="Layers\persistencia\IDataBase.cs" />
+    <Compile Include="Layers\UI\Mantenimientos\FrmIVA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Layers\UI\Mantenimientos\FrmIVA.Designer.cs">
+      <DependentUpon>FrmIVA.cs</DependentUpon>
+    </Compile>
     <Compile Include="Layers\UI\Mantenimientos\FrmMarcas.cs">
       <SubType>Form</SubType>
     </Compile>
