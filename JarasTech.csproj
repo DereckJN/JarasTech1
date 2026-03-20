@@ -74,9 +74,25 @@
     </Compile>
     <Compile Include="Layers\BLL\BLLClientes.cs" />
     <Compile Include="Layers\DAL\DALClientes.cs" />
+    <Compile Include="Layers\Entities\Bancos.cs" />
     <Compile Include="Layers\Entities\Clientes.cs" />
+    <Compile Include="Layers\Entities\DetalleFactura.cs" />
     <Compile Include="Layers\Entities\Dolar.cs" />
     <Compile Include="Layers\Entities\DTO\ClienteAPI.cs" />
+    <Compile Include="Layers\Entities\Facturas.cs" />
+    <Compile Include="Layers\Entities\IVA.cs" />
+    <Compile Include="Layers\Entities\Marcas.cs" />
+    <Compile Include="Layers\Entities\Modelos.cs" />
+    <Compile Include="Layers\Entities\MovimientosStock.cs" />
+    <Compile Include="Layers\Entities\PagosFactura.cs" />
+    <Compile Include="Layers\Entities\Perfiles.cs" />
+    <Compile Include="Layers\Entities\Productos.cs" />
+    <Compile Include="Layers\Entities\TiposDispositivo.cs" />
+    <Compile Include="Layers\Entities\TiposIdentificacion.cs" />
+    <Compile Include="Layers\Entities\TiposMovimientoStock.cs" />
+    <Compile Include="Layers\Entities\TiposPago.cs" />
+    <Compile Include="Layers\Entities\TiposTarjeta.cs" />
+    <Compile Include="Layers\Entities\Usuarios.cs" />
     <Compile Include="Layers\Interfaces\Ibll\IBLLClientes.cs" />
     <Compile Include="Layers\Interfaces\Idal\IDALClientes.cs" />
     <Compile Include="Layers\persistencia\DataBase.cs" />
