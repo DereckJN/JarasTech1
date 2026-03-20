@@ -30,25 +30,6 @@
             this.btnEliminar = new System.Windows.Forms.Button();
             this.tabDatos = new System.Windows.Forms.TabPage();
             this.grpGenerales = new System.Windows.Forms.GroupBox();
-            this.lblCodInterno = new System.Windows.Forms.Label();
-            this.txtCodigoInterno = new System.Windows.Forms.TextBox();
-            this.lblCodBarras = new System.Windows.Forms.Label();
-            this.txtCodigoBarras = new System.Windows.Forms.TextBox();
-            this.lblTipo = new System.Windows.Forms.Label();
-            this.cboTipo = new System.Windows.Forms.ComboBox();
-            this.lblMarca = new System.Windows.Forms.Label();
-            this.cboMarca = new System.Windows.Forms.ComboBox();
-            this.lblModelo = new System.Windows.Forms.Label();
-            this.cboModelo = new System.Windows.Forms.ComboBox();
-            this.lblColor = new System.Windows.Forms.Label();
-            this.txtColor = new System.Windows.Forms.TextBox();
-            this.lblStock = new System.Windows.Forms.Label();
-            this.numStock = new System.Windows.Forms.NumericUpDown();
-            this.lblPrecioColones = new System.Windows.Forms.Label();
-            this.numPrecioColones = new System.Windows.Forms.NumericUpDown();
-            this.lblPrecioDolares = new System.Windows.Forms.Label();
-            this.numPrecioDolares = new System.Windows.Forms.NumericUpDown();
-            this.chkEstado = new System.Windows.Forms.CheckBox();
             this.grpDetalle = new System.Windows.Forms.GroupBox();
             this.lblCaract = new System.Windows.Forms.Label();
             this.txtCaracteristicas = new System.Windows.Forms.RichTextBox();
@@ -63,6 +44,7 @@
             this.btnQuitarDoc = new System.Windows.Forms.Button();
             this.pnlBotonesDatos = new System.Windows.Forms.Panel();
             this.btnGuardar = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.pnlTop.SuspendLayout();
             this.tabProducto.SuspendLayout();
             this.tabLista.SuspendLayout();
@@ -71,9 +53,6 @@
             this.pnlBotonesList.SuspendLayout();
             this.tabDatos.SuspendLayout();
             this.grpGenerales.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numStock)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPrecioColones)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPrecioDolares)).BeginInit();
             this.grpDetalle.SuspendLayout();
             this.grpMedia.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picFoto)).BeginInit();
@@ -257,7 +236,7 @@
             this.dgvProductos.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(60)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F);
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -329,25 +308,7 @@
             // 
             // grpGenerales
             // 
-            this.grpGenerales.Controls.Add(this.lblCodInterno);
-            this.grpGenerales.Controls.Add(this.txtCodigoInterno);
-            this.grpGenerales.Controls.Add(this.lblCodBarras);
-            this.grpGenerales.Controls.Add(this.txtCodigoBarras);
-            this.grpGenerales.Controls.Add(this.lblTipo);
-            this.grpGenerales.Controls.Add(this.cboTipo);
-            this.grpGenerales.Controls.Add(this.lblMarca);
-            this.grpGenerales.Controls.Add(this.cboMarca);
-            this.grpGenerales.Controls.Add(this.lblModelo);
-            this.grpGenerales.Controls.Add(this.cboModelo);
-            this.grpGenerales.Controls.Add(this.lblColor);
-            this.grpGenerales.Controls.Add(this.txtColor);
-            this.grpGenerales.Controls.Add(this.lblStock);
-            this.grpGenerales.Controls.Add(this.numStock);
-            this.grpGenerales.Controls.Add(this.lblPrecioColones);
-            this.grpGenerales.Controls.Add(this.numPrecioColones);
-            this.grpGenerales.Controls.Add(this.lblPrecioDolares);
-            this.grpGenerales.Controls.Add(this.numPrecioDolares);
-            this.grpGenerales.Controls.Add(this.chkEstado);
+            this.grpGenerales.Controls.Add(this.textBox1);
             this.grpGenerales.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.grpGenerales.Location = new System.Drawing.Point(9, 9);
             this.grpGenerales.Name = "grpGenerales";
@@ -355,139 +316,6 @@
             this.grpGenerales.TabIndex = 0;
             this.grpGenerales.TabStop = false;
             this.grpGenerales.Text = "Información General";
-            // 
-            // lblCodInterno
-            // 
-            this.lblCodInterno.Location = new System.Drawing.Point(0, 0);
-            this.lblCodInterno.Name = "lblCodInterno";
-            this.lblCodInterno.Size = new System.Drawing.Size(114, 25);
-            this.lblCodInterno.TabIndex = 0;
-            // 
-            // txtCodigoInterno
-            // 
-            this.txtCodigoInterno.Location = new System.Drawing.Point(0, 0);
-            this.txtCodigoInterno.Name = "txtCodigoInterno";
-            this.txtCodigoInterno.Size = new System.Drawing.Size(114, 27);
-            this.txtCodigoInterno.TabIndex = 1;
-            // 
-            // lblCodBarras
-            // 
-            this.lblCodBarras.Location = new System.Drawing.Point(0, 0);
-            this.lblCodBarras.Name = "lblCodBarras";
-            this.lblCodBarras.Size = new System.Drawing.Size(114, 25);
-            this.lblCodBarras.TabIndex = 2;
-            // 
-            // txtCodigoBarras
-            // 
-            this.txtCodigoBarras.Location = new System.Drawing.Point(0, 0);
-            this.txtCodigoBarras.Name = "txtCodigoBarras";
-            this.txtCodigoBarras.Size = new System.Drawing.Size(114, 27);
-            this.txtCodigoBarras.TabIndex = 3;
-            // 
-            // lblTipo
-            // 
-            this.lblTipo.Location = new System.Drawing.Point(0, 0);
-            this.lblTipo.Name = "lblTipo";
-            this.lblTipo.Size = new System.Drawing.Size(114, 25);
-            this.lblTipo.TabIndex = 4;
-            // 
-            // cboTipo
-            // 
-            this.cboTipo.Location = new System.Drawing.Point(0, 0);
-            this.cboTipo.Name = "cboTipo";
-            this.cboTipo.Size = new System.Drawing.Size(138, 28);
-            this.cboTipo.TabIndex = 5;
-            // 
-            // lblMarca
-            // 
-            this.lblMarca.Location = new System.Drawing.Point(0, 0);
-            this.lblMarca.Name = "lblMarca";
-            this.lblMarca.Size = new System.Drawing.Size(114, 25);
-            this.lblMarca.TabIndex = 6;
-            // 
-            // cboMarca
-            // 
-            this.cboMarca.Location = new System.Drawing.Point(0, 0);
-            this.cboMarca.Name = "cboMarca";
-            this.cboMarca.Size = new System.Drawing.Size(138, 28);
-            this.cboMarca.TabIndex = 7;
-            // 
-            // lblModelo
-            // 
-            this.lblModelo.Location = new System.Drawing.Point(0, 0);
-            this.lblModelo.Name = "lblModelo";
-            this.lblModelo.Size = new System.Drawing.Size(114, 25);
-            this.lblModelo.TabIndex = 8;
-            // 
-            // cboModelo
-            // 
-            this.cboModelo.Location = new System.Drawing.Point(0, 0);
-            this.cboModelo.Name = "cboModelo";
-            this.cboModelo.Size = new System.Drawing.Size(138, 28);
-            this.cboModelo.TabIndex = 9;
-            // 
-            // lblColor
-            // 
-            this.lblColor.Location = new System.Drawing.Point(0, 0);
-            this.lblColor.Name = "lblColor";
-            this.lblColor.Size = new System.Drawing.Size(114, 25);
-            this.lblColor.TabIndex = 10;
-            // 
-            // txtColor
-            // 
-            this.txtColor.Location = new System.Drawing.Point(0, 0);
-            this.txtColor.Name = "txtColor";
-            this.txtColor.Size = new System.Drawing.Size(114, 27);
-            this.txtColor.TabIndex = 11;
-            // 
-            // lblStock
-            // 
-            this.lblStock.Location = new System.Drawing.Point(0, 0);
-            this.lblStock.Name = "lblStock";
-            this.lblStock.Size = new System.Drawing.Size(114, 25);
-            this.lblStock.TabIndex = 12;
-            // 
-            // numStock
-            // 
-            this.numStock.Location = new System.Drawing.Point(0, 0);
-            this.numStock.Name = "numStock";
-            this.numStock.Size = new System.Drawing.Size(137, 27);
-            this.numStock.TabIndex = 13;
-            // 
-            // lblPrecioColones
-            // 
-            this.lblPrecioColones.Location = new System.Drawing.Point(0, 0);
-            this.lblPrecioColones.Name = "lblPrecioColones";
-            this.lblPrecioColones.Size = new System.Drawing.Size(114, 25);
-            this.lblPrecioColones.TabIndex = 14;
-            // 
-            // numPrecioColones
-            // 
-            this.numPrecioColones.Location = new System.Drawing.Point(0, 0);
-            this.numPrecioColones.Name = "numPrecioColones";
-            this.numPrecioColones.Size = new System.Drawing.Size(137, 27);
-            this.numPrecioColones.TabIndex = 15;
-            // 
-            // lblPrecioDolares
-            // 
-            this.lblPrecioDolares.Location = new System.Drawing.Point(0, 0);
-            this.lblPrecioDolares.Name = "lblPrecioDolares";
-            this.lblPrecioDolares.Size = new System.Drawing.Size(114, 25);
-            this.lblPrecioDolares.TabIndex = 16;
-            // 
-            // numPrecioDolares
-            // 
-            this.numPrecioDolares.Location = new System.Drawing.Point(0, 0);
-            this.numPrecioDolares.Name = "numPrecioDolares";
-            this.numPrecioDolares.Size = new System.Drawing.Size(137, 27);
-            this.numPrecioDolares.TabIndex = 17;
-            // 
-            // chkEstado
-            // 
-            this.chkEstado.Location = new System.Drawing.Point(0, 0);
-            this.chkEstado.Name = "chkEstado";
-            this.chkEstado.Size = new System.Drawing.Size(119, 26);
-            this.chkEstado.TabIndex = 18;
             // 
             // grpDetalle
             // 
@@ -658,6 +486,13 @@
             this.btnGuardar.UseVisualStyleBackColor = false;
             this.btnGuardar.Click += new System.EventHandler(this.btnGuardar_Click);
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(3, 26);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(1188, 27);
+            this.textBox1.TabIndex = 0;
+            // 
             // FrmProductos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -683,9 +518,6 @@
             this.tabDatos.ResumeLayout(false);
             this.grpGenerales.ResumeLayout(false);
             this.grpGenerales.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numStock)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPrecioColones)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numPrecioDolares)).EndInit();
             this.grpDetalle.ResumeLayout(false);
             this.grpDetalle.PerformLayout();
             this.grpMedia.ResumeLayout(false);
@@ -717,11 +549,6 @@
         private System.Windows.Forms.Button btnNuevo, btnEliminar;
         private System.Windows.Forms.TabPage tabDatos;
         private System.Windows.Forms.GroupBox grpGenerales;
-        private System.Windows.Forms.Label lblCodInterno, lblCodBarras, lblTipo, lblMarca, lblModelo, lblColor, lblStock, lblPrecioColones, lblPrecioDolares;
-        private System.Windows.Forms.TextBox txtCodigoInterno, txtCodigoBarras, txtColor;
-        private System.Windows.Forms.ComboBox cboTipo, cboMarca, cboModelo;
-        private System.Windows.Forms.NumericUpDown numStock, numPrecioColones, numPrecioDolares;
-        private System.Windows.Forms.CheckBox chkEstado;
         private System.Windows.Forms.GroupBox grpDetalle;
         private System.Windows.Forms.Label lblCaract, lblExtras;
         private System.Windows.Forms.RichTextBox txtCaracteristicas, txtExtras;
@@ -731,5 +558,6 @@
         private System.Windows.Forms.Label lblNombreDoc;
         private System.Windows.Forms.Panel pnlBotonesDatos;
         private System.Windows.Forms.Button btnGuardar;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
