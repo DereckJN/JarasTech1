@@ -284,34 +284,10 @@ namespace JarasTech.Layers.UI.Mantenimientos
 
         private void LimpiarFormulario()
         {
-            _productoIDSeleccionado = 0;
-            _fotografia = null;
-            _documento = null;
-            _nombreDocumento = string.Empty;
-            txtCodigoInterno.Clear(); txtCodigoBarras.Clear(); txtColor.Clear();
-            txtCaracteristicas.Clear(); txtExtras.Clear();
-            cboTipo.SelectedIndex = -1;
-            cboMarca.SelectedIndex = -1;
-            cboModelo.SelectedIndex = -1;
-            numStock.Value = 0;
-            numPrecioColones.Value = 0;
-            numPrecioDolares.Value = 0;
-            chkEstado.Checked = true;
-            picFoto.Image = null;
-            lblNombreDoc.Text = "(sin documento)";
-            btnGuardar.Text = "Guardar";
+            
         }
 
-        private bool ValidarCampos()
-        {
-            if (string.IsNullOrWhiteSpace(txtCodigoInterno.Text))
-            { MessageBox.Show("El código interno es requerido.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
-            if (cboTipo.SelectedValue == null) { MessageBox.Show("Seleccione el tipo de dispositivo.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
-            if (cboMarca.SelectedValue == null) { MessageBox.Show("Seleccione la marca.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
-            if (cboModelo.SelectedValue == null) { MessageBox.Show("Seleccione el modelo.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
-            if (numPrecioColones.Value <= 0) { MessageBox.Show("El precio en colones debe ser mayor a 0.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning); return false; }
-            return true;
-        }
+        
 
         private void txtFiltro_KeyDown(object sender, KeyEventArgs e)
         { if (e.KeyCode == Keys.Enter) btnBuscar_Click(sender, e); }
