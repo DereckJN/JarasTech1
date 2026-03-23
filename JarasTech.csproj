@@ -72,8 +72,34 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Layers\BLL\BLLBancos.cs" />
     <Compile Include="Layers\BLL\BLLClientes.cs" />
+    <Compile Include="Layers\BLL\BLLDetalleFactura.cs" />
+    <Compile Include="Layers\BLL\BLLFacturas.cs" />
+    <Compile Include="Layers\BLL\BLLMarcas.cs" />
+    <Compile Include="Layers\BLL\BLLModelos.cs" />
+    <Compile Include="Layers\BLL\BLLMovimientosStock.cs" />
+    <Compile Include="Layers\BLL\BLLPagosFactura.cs" />
+    <Compile Include="Layers\BLL\BLLPerfiles.cs" />
+    <Compile Include="Layers\BLL\BLLProductos.cs" />
+    <Compile Include="Layers\BLL\BLLTiposDispositivo.cs" />
+    <Compile Include="Layers\BLL\BLLTiposPago.cs" />
+    <Compile Include="Layers\BLL\BLLTiposTarjeta.cs" />
+    <Compile Include="Layers\BLL\BLLUsuarios.cs" />
+    <Compile Include="Layers\DAL\DALBancos.cs" />
     <Compile Include="Layers\DAL\DALClientes.cs" />
+    <Compile Include="Layers\DAL\DALDetalleFactura.cs" />
+    <Compile Include="Layers\DAL\DALFacturas.cs" />
+    <Compile Include="Layers\DAL\DALMarcas.cs" />
+    <Compile Include="Layers\DAL\DALModelos.cs" />
+    <Compile Include="Layers\DAL\DALMovimientosStock.cs" />
+    <Compile Include="Layers\DAL\DALPagosFactura.cs" />
+    <Compile Include="Layers\DAL\DALPerfiles.cs" />
+    <Compile Include="Layers\DAL\DALProductos.cs" />
+    <Compile Include="Layers\DAL\DALTiposDispositivo.cs" />
+    <Compile Include="Layers\DAL\DALTiposPago.cs" />
+    <Compile Include="Layers\DAL\DALTiposTarjeta.cs" />
+    <Compile Include="Layers\DAL\DALUsuarios.cs" />
     <Compile Include="Layers\Entities\Bancos.cs" />
     <Compile Include="Layers\Entities\Clientes.cs" />
     <Compile Include="Layers\Entities\DetalleFactura.cs" />
