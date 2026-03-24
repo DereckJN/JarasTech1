@@ -495,7 +495,7 @@ namespace JarasTech.Layers.UI
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
-            EstablecerModoNuevo();
+            this.Close();
         }
 
         /// <summary>

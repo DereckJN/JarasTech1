@@ -4,6 +4,7 @@
 using JarasTech.Layers.BLL;
 using JarasTech.Layers.Entities;
 using JarasTech.Layers.Interfaces;
+using JarasTech.Layers.Interfaces.Ibll;
 using log4net;
 using System;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace JarasTech.Layers.UI.Mantenimientos
     public partial class FrmIVA : Form
     {
         private static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        //private readonly IBLLIVA _bll = new BLLIVA();
+        private readonly IBLLIVA _bll = new IBLLIVA();
         private int _ivaID = 0;
 
         public FrmIVA() { InitializeComponent(); }

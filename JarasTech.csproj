@@ -90,6 +90,7 @@
     <Compile Include="Layers\DAL\DALClientes.cs" />
     <Compile Include="Layers\DAL\DALDetalleFactura.cs" />
     <Compile Include="Layers\DAL\DALFacturas.cs" />
+    <Compile Include="Layers\DAL\DALIVA.cs" />
     <Compile Include="Layers\DAL\DALMarcas.cs" />
     <Compile Include="Layers\DAL\DALModelos.cs" />
     <Compile Include="Layers\DAL\DALMovimientosStock.cs" />
@@ -97,6 +98,8 @@
     <Compile Include="Layers\DAL\DALPerfiles.cs" />
     <Compile Include="Layers\DAL\DALProductos.cs" />
     <Compile Include="Layers\DAL\DALTiposDispositivo.cs" />
+    <Compile Include="Layers\DAL\DALTiposIdentificacion.cs" />
+    <Compile Include="Layers\DAL\DALTiposMovimientoStock.cs" />
     <Compile Include="Layers\DAL\DALTiposPago.cs" />
     <Compile Include="Layers\DAL\DALTiposTarjeta.cs" />
     <Compile Include="Layers\DAL\DALUsuarios.cs" />
@@ -226,6 +229,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Layers\UI\Mantenimientos\FrmProductos.resx">
       <DependentUpon>FrmProductos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Layers\UI\Mantenimientos\FrmTiposDispositivo.resx">
+      <DependentUpon>FrmTiposDispositivo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Layers\UI\Mantenimientos\mantenimientoClientes.resx">
       <DependentUpon>mantenimientoClientes.cs</DependentUpon>
