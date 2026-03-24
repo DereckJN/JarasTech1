@@ -18,7 +18,7 @@ namespace JarasTech
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FrmMarcas());
+            Application.Run(new FrmModelos());
         }
     }
 }
