@@ -76,6 +76,7 @@
     <Compile Include="Layers\BLL\BLLClientes.cs" />
     <Compile Include="Layers\BLL\BLLDetalleFactura.cs" />
     <Compile Include="Layers\BLL\BLLFacturas.cs" />
+    <Compile Include="Layers\BLL\BLLIVA.cs" />
     <Compile Include="Layers\BLL\BLLMarcas.cs" />
     <Compile Include="Layers\BLL\BLLModelos.cs" />
     <Compile Include="Layers\BLL\BLLMovimientosStock.cs" />
@@ -83,6 +84,8 @@
     <Compile Include="Layers\BLL\BLLPerfiles.cs" />
     <Compile Include="Layers\BLL\BLLProductos.cs" />
     <Compile Include="Layers\BLL\BLLTiposDispositivo.cs" />
+    <Compile Include="Layers\BLL\BLLTiposIdentificacion.cs" />
+    <Compile Include="Layers\BLL\BLLTiposMovimientoStock.cs" />
     <Compile Include="Layers\BLL\BLLTiposPago.cs" />
     <Compile Include="Layers\BLL\BLLTiposTarjeta.cs" />
     <Compile Include="Layers\BLL\BLLUsuarios.cs" />
