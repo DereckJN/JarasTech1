@@ -54,6 +54,8 @@
     <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -66,6 +68,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connected Services\BCCR\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -111,6 +118,7 @@
     <Compile Include="Layers\Entities\DetalleFactura.cs" />
     <Compile Include="Layers\Entities\Dolar.cs" />
     <Compile Include="Layers\Entities\DTO\ClienteAPI.cs" />
+    <Compile Include="Layers\Entities\DTO\Direcciones.cs" />
     <Compile Include="Layers\Entities\Facturas.cs" />
     <Compile Include="Layers\Entities\IVA.cs" />
     <Compile Include="Layers\Entities\Marcas.cs" />
@@ -163,6 +171,7 @@
     <Compile Include="Layers\persistencia\FactoryConexion.cs" />
     <Compile Include="Layers\persistencia\FactoryDataBase.cs" />
     <Compile Include="Layers\persistencia\IDataBase.cs" />
+    <Compile Include="Layers\persistencia\ServiceBCCR.cs" />
     <Compile Include="Layers\UI\Mantenimientos\FrmIngresoStock.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -224,6 +233,9 @@
     <EmbeddedResource Include="Layers\UI\Mantenimientos\FrmIngresoStock.resx">
       <DependentUpon>FrmIngresoStock.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Layers\UI\Mantenimientos\FrmIVA.resx">
+      <DependentUpon>FrmIVA.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Layers\UI\Mantenimientos\FrmMarcas.resx">
       <DependentUpon>FrmMarcas.cs</DependentUpon>
     </EmbeddedResource>
@@ -252,7 +264,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="Connected Services\BCCR\wsindicadoreseconomicos.wsdl" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -271,6 +285,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Layers\Resourses\Logo JarasTech.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\BCCR\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BCCR\wsindicadoreseconomicos.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BCCR\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BCCR\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\BCCR\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\QuestPDF.2026.2.3\build\net4\QuestPDF.targets" Condition="Exists('packages\QuestPDF.2026.2.3\build\net4\QuestPDF.targets')" />

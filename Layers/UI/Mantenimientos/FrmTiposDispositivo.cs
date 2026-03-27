@@ -94,5 +94,10 @@ namespace JarasTech.Layers.UI.Mantenimientos
         {
             if (e.KeyCode == Keys.Enter) CargarGrilla(txtFiltro.Text.Trim());
         }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

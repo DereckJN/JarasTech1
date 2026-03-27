@@ -39,6 +39,7 @@
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.grpHistorial = new System.Windows.Forms.GroupBox();
             this.dgvHistorial = new System.Windows.Forms.DataGridView();
+            this.btnCancelar = new System.Windows.Forms.Button();
             this.pnlTop.SuspendLayout();
             this.grpBusqueda.SuspendLayout();
             this.grpResultados.SuspendLayout();
@@ -349,6 +350,7 @@
             // 
             // pnlBotones
             // 
+            this.pnlBotones.Controls.Add(this.btnCancelar);
             this.pnlBotones.Controls.Add(this.btnRegistrar);
             this.pnlBotones.Controls.Add(this.btnLimpiar);
             this.pnlBotones.Location = new System.Drawing.Point(14, 686);
@@ -404,7 +406,7 @@
             this.dgvHistorial.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(60)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 8.5F);
             dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -422,6 +424,20 @@
             this.dgvHistorial.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvHistorial.Size = new System.Drawing.Size(594, 624);
             this.dgvHistorial.TabIndex = 0;
+            // 
+            // btnCancelar
+            // 
+            this.btnCancelar.BackColor = System.Drawing.Color.Black;
+            this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCancelar.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            this.btnCancelar.ForeColor = System.Drawing.Color.White;
+            this.btnCancelar.Location = new System.Drawing.Point(410, 11);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(130, 36);
+            this.btnCancelar.TabIndex = 4;
+            this.btnCancelar.Text = " ❌ Cancelar";
+            this.btnCancelar.UseVisualStyleBackColor = false;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
             // FrmIngresoStock
             // 
@@ -481,5 +497,6 @@
         private System.Windows.Forms.Button btnRegistrar, btnLimpiar;
         private System.Windows.Forms.GroupBox grpHistorial;
         private System.Windows.Forms.DataGridView dgvHistorial;
+        private System.Windows.Forms.Button btnCancelar;
     }
 }

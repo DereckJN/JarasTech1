@@ -1,4 +1,5 @@
-﻿using JarasTech.Layers.BLL;
+﻿using jara_s_Veterinary.Layers.JSON;
+using JarasTech.Layers.BLL;
 using JarasTech.Layers.Entities;
 using JarasTech.Layers.Entities.DTO;
 using JarasTech.Layers.Interfaces.Ibll;
@@ -17,12 +18,14 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static jara_s_Veterinary.Layers.JSON.Direcciones;
 
 namespace JarasTech.Layers.UI
 {
     public partial class mantenimientoClientes : Form
     {
         #region Campos privados
+        private List<Provincia> provincias;
 
         private static readonly ILog _log =
             LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -45,7 +48,7 @@ namespace JarasTech.Layers.UI
             try
             {
                 ConfigurarGrid();
-                await CargarProvinciasAsync();
+                await LoadProvinciasAsync();
                 await CargarDatosAsync();
                 EstablecerModoNuevo();
             }
@@ -110,6 +113,31 @@ namespace JarasTech.Layers.UI
 
             dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
+        /// <summary>
+        /// Carga las provincias en el ComboBox de forma asincrónica.
+        /// </summary>
+        private async Task LoadProvinciasAsync()
+        {
+            try
+            {
+                provincias = await Direcciones.GetProvinciasAsync();
+                if (provincias != null)
+                {
+                    cboProvincia.DataSource = null; // Limpiar el DataSource
+                    cboProvincia.DisplayMember = "Descripcion";
+                    cboProvincia.ValueMember = "IdProvincia";
+                    cboProvincia.DataSource = provincias;
+                }
+            }
+            catch (Exception er)
+            {
+                string msg = "";
+                //_MyLogControlEventos.ErrorFormat("Error {0}", msg.ToExceptionDetail(er, MethodBase.GetCurrentMethod()));
+                //MessageBox.Show("Se ha producido el siguiente error: " + er.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
 
         /// <summary>
         /// Obtiene las provincias desde el archivo JSON en GitHub y las carga en el ComboBox.

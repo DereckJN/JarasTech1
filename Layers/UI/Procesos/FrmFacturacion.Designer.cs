@@ -15,7 +15,7 @@
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabCliente = new System.Windows.Forms.TabPage();
             this.grpBusqCli = new System.Windows.Forms.GroupBox();
@@ -122,7 +122,7 @@
             this.tabCliente.Controls.Add(this.grpDatosCli);
             this.tabCliente.Location = new System.Drawing.Point(4, 30);
             this.tabCliente.Name = "tabCliente";
-            this.tabCliente.Size = new System.Drawing.Size(1092, 646);
+            this.tabCliente.Size = new System.Drawing.Size(1092, 597);
             this.tabCliente.TabIndex = 0;
             this.tabCliente.Text = "  1. Cliente  ";
             // 
@@ -252,7 +252,7 @@
             this.tabProductos.Controls.Add(this.lblTotalDVal);
             this.tabProductos.Location = new System.Drawing.Point(4, 30);
             this.tabProductos.Name = "tabProductos";
-            this.tabProductos.Size = new System.Drawing.Size(1092, 646);
+            this.tabProductos.Size = new System.Drawing.Size(1092, 597);
             this.tabProductos.TabIndex = 1;
             this.tabProductos.Text = "  2. Productos  ";
             // 
@@ -307,14 +307,14 @@
             this.dgvDetalle.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDetalle.BackgroundColor = System.Drawing.Color.White;
             this.dgvDetalle.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(60)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDetalle.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(60)))));
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 9F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDetalle.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvDetalle.ColumnHeadersHeight = 30;
             this.dgvDetalle.EnableHeadersVisualStyles = false;
             this.dgvDetalle.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -632,7 +632,7 @@
             this.tabFirma.Controls.Add(this.lblFirmaEstado);
             this.tabFirma.Location = new System.Drawing.Point(4, 30);
             this.tabFirma.Name = "tabFirma";
-            this.tabFirma.Size = new System.Drawing.Size(1092, 646);
+            this.tabFirma.Size = new System.Drawing.Size(1092, 597);
             this.tabFirma.TabIndex = 3;
             this.tabFirma.Text = "  4. Firma  ";
             // 
@@ -693,7 +693,7 @@
             this.tabResumen.Controls.Add(this.lblResumenD);
             this.tabResumen.Location = new System.Drawing.Point(4, 30);
             this.tabResumen.Name = "tabResumen";
-            this.tabResumen.Size = new System.Drawing.Size(1092, 646);
+            this.tabResumen.Size = new System.Drawing.Size(1092, 597);
             this.tabResumen.TabIndex = 4;
             this.tabResumen.Text = "  5. Resumen / QR  ";
             // 
@@ -733,7 +733,7 @@
             this.lblTipoCambioVal.AutoSize = true;
             this.lblTipoCambioVal.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
             this.lblTipoCambioVal.ForeColor = System.Drawing.Color.DarkGreen;
-            this.lblTipoCambioVal.Location = new System.Drawing.Point(500, 20);
+            this.lblTipoCambioVal.Location = new System.Drawing.Point(531, 20);
             this.lblTipoCambioVal.Name = "lblTipoCambioVal";
             this.lblTipoCambioVal.Size = new System.Drawing.Size(110, 21);
             this.lblTipoCambioVal.TabIndex = 3;
@@ -881,6 +881,7 @@
             this.Name = "FrmFacturacion";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "JarasTech - Facturación";
+            this.Load += new System.EventHandler(this.FrmFacturacion_Load);
             this.tabMain.ResumeLayout(false);
             this.tabCliente.ResumeLayout(false);
             this.grpBusqCli.ResumeLayout(false);

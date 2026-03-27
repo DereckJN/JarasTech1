@@ -1,5 +1,6 @@
 ﻿using JarasTech.Layers.UI;
 using JarasTech.Layers.UI.Mantenimientos;
+using JarasTech.Layers.UI.Procesos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace JarasTech
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FrmIVA());
+            Application.Run(new FrmFacturacion());
         }
     }
 }

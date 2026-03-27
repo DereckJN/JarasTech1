@@ -64,5 +64,10 @@ namespace JarasTech.Layers.UI.Mantenimientos
         { 
             _ivaID = 0; numPorcentaje.Value = 13; 
         }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
