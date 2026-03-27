@@ -138,50 +138,6 @@ namespace JarasTech.Layers.UI
         }
 
 
-
-        /// <summary>
-        /// Obtiene las provincias desde el archivo JSON en GitHub y las carga en el ComboBox.
-        /// URL: https://raw.githubusercontent.com/lateraluz/Datos/master/provincias.json
-        /// </summary>
-        private async Task CargarProvinciasAsync()
-        {
-            try
-            {
-                string url = "https://raw.githubusercontent.com/lateraluz/Datos/master/provincias.json";
-                string json = await _httpClient.GetStringAsync(url);
-
-                // El JSON es un objeto con propiedad "provincias" que contiene un array
-                var root = JObject.Parse(json);
-                var arrayToken = root["provincias"] ?? JArray.Parse(json);
-
-                cboProvincia.Items.Clear();
-
-                foreach (var item in arrayToken)
-                {
-                    // Cada elemento tiene "nombre" u otro campo; tomamos lo que haya
-                    string nombre = item["nombre"]?.ToString()
-                                 ?? item["Nombre"]?.ToString()
-                                 ?? item.ToString();
-                    cboProvincia.Items.Add(nombre);
-                }
-
-                if (cboProvincia.Items.Count > 0)
-                    cboProvincia.SelectedIndex = 0;
-            }
-            catch (Exception ex)
-            {
-                _log.ErrorFormat("Error CargarProvinciasAsync: {0}", ex);
-                // Si falla la API, cargamos las 7 provincias de CR manualmente
-                cboProvincia.Items.Clear();
-                foreach (var p in new[] { "San José", "Alajuela", "Cartago",
-                                          "Heredia", "Guanacaste", "Puntarenas", "Limón" })
-                    cboProvincia.Items.Add(p);
-
-                if (cboProvincia.Items.Count > 0)
-                    cboProvincia.SelectedIndex = 0;
-            }
-        }
-
         // ─────────────────────────────────────────────────────────────────
         // Carga del grid
         // ─────────────────────────────────────────────────────────────────
