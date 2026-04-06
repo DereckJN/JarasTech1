@@ -73,10 +73,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="Layers\UI\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Include="Layers\UI\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Layers\BLL\BLLBancos.cs" />
@@ -227,7 +227,7 @@
     <Compile Include="util\QuickResponse.cs" />
     <Compile Include="util\UtilError.cs" />
     <Compile Include="util\Utils.cs" />
-    <EmbeddedResource Include="Form1.resx">
+    <EmbeddedResource Include="Layers\UI\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Layers\UI\Mantenimientos\FrmIngresoStock.resx">
