@@ -30,7 +30,7 @@ namespace JarasTech.Layers.UI.Procesos
             decimal tipoCambio = ObtenerTipoCambioVenta();
             if (tipoCambio > 0)
             {
-                lblTipoCambioVal.Text = $"₡ {tipoCambio:N2} (BCCR)";
+                lblTipoCambioVal.Text = $"₡ {tipoCambio:N2} ";
                 ultimaFechaActualizacion = DateTime.Today;
             }
             else
@@ -71,12 +71,15 @@ namespace JarasTech.Layers.UI.Procesos
             }
             catch (Exception ex)
             {
-                // Maneja los errores
+               
                 MessageBox.Show($"Error al obtener el tipo de cambio de venta: {ex.Message}");
-                return 0m; // Retorna 0 como valor por defecto en caso de error.
+                return 0m; 
             }
         }
 
-    
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

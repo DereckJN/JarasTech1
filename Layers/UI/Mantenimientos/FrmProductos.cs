@@ -6,6 +6,7 @@ using JarasTech.Layers.Persistencia;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -16,8 +17,11 @@ namespace JarasTech.Layers.UI.Mantenimientos
 {
     /// <summary>
     /// Formulario de mantenimiento para Productos electrónicos.
-    /// El precio en dólares se calcula automáticamente usando el tipo de
-    /// cambio de venta del BCCR en cuanto se escribe el precio en colones.
+    /// - El precio en dólares se calcula automáticamente con el tipo de cambio
+    ///   de venta del BCCR.
+    /// - El documento de especificaciones (PDF/DOCX) guarda solo la RUTA del
+    ///   archivo en la base de datos, de modo que el botón "Abrir" lo abre
+    ///   directamente desde el disco.
     /// </summary>
     public partial class FrmProductos : Form
     {
@@ -32,8 +36,12 @@ namespace JarasTech.Layers.UI.Mantenimientos
 
         private int _productoID = 0;
         private byte[] _fotografia = null;
-        private byte[] _documento = null;
-        private string _nombreDocumento = string.Empty;
+
+        /// <summary>
+        /// Ruta completa del documento en el disco.
+        /// Es lo que se guarda en la BD (campo NombreDocumento).
+        /// </summary>
+        private string _rutaDocumento = string.Empty;
 
         // Tipo de cambio de VENTA del BCCR (colones por dólar)
         private double _tipoCambioVenta = 0;
@@ -45,7 +53,6 @@ namespace JarasTech.Layers.UI.Mantenimientos
         {
             InitializeComponent();
         }
-
 
         private void FrmProductos_Load(object sender, EventArgs e)
         {
@@ -64,14 +71,6 @@ namespace JarasTech.Layers.UI.Mantenimientos
             }
         }
 
-
-
-        /// <summary>
-        /// Consulta el tipo de cambio de venta del día al BCCR.
-        /// Si tiene éxito, numPrecioD queda bloqueado (solo lectura) y
-        /// se actualiza automáticamente al escribir el precio en colones.
-        /// Si falla, numPrecioD queda editable manualmente.
-        /// </summary>
         private void ConsultarTipoCambio()
         {
             try
@@ -87,7 +86,7 @@ namespace JarasTech.Layers.UI.Mantenimientos
                                           + _tipoCambioVenta.ToString("N2")
                                           + "  (" + ultimo.Fecha.ToString("dd/MM/yyyy") + ")";
                     lblTCInfo.ForeColor = Color.DarkGreen;
-                    numPrecioD.ReadOnly = true;   // calculado automáticamente
+                    numPrecioD.ReadOnly = true;
                 }
                 else
                 {
@@ -109,20 +108,14 @@ namespace JarasTech.Layers.UI.Mantenimientos
             numPrecioD.ReadOnly = false;
         }
 
-        /// <summary>
-        /// Cada vez que cambia numPrecioC, recalcula numPrecioD con el TC del BCCR.
-        /// Solo actúa si tenemos un tipo de cambio válido y no estamos cargando datos.
-        /// </summary>
         private void numPrecioC_ValueChanged(object sender, EventArgs e)
         {
             if (_cargandoProducto) return;
             if (_tipoCambioVenta <= 0) return;
             if (numPrecioC.Value <= 0) { numPrecioD.Value = 0; return; }
-
             decimal dolares = Math.Round(numPrecioC.Value / (decimal)_tipoCambioVenta, 2);
             numPrecioD.Value = dolares > numPrecioD.Maximum ? numPrecioD.Maximum : dolares;
         }
-
 
         private void CargarCombos()
         {
@@ -160,7 +153,6 @@ namespace JarasTech.Layers.UI.Mantenimientos
             cboFiltroTipo.SelectedIndex = -1;
         }
 
-
         private void CargarGrilla()
         {
             try
@@ -184,7 +176,7 @@ namespace JarasTech.Layers.UI.Mantenimientos
 
                 string[] ocultar = {
                     "Fotografia", "DocumentoEspecificaciones",
-                    "Caracteristicas", "Extras", "NombreDocumento", "HayStock"
+                    "Caracteristicas", "Extras", "HayStock"
                 };
                 foreach (string col in ocultar)
                     if (dgvProductos.Columns[col] != null)
@@ -200,6 +192,7 @@ namespace JarasTech.Layers.UI.Mantenimientos
                 SetHeader("CantidadStock", "Stock");
                 SetHeader("PrecioColones", "Precio ₡");
                 SetHeader("PrecioDolares", "Precio $");
+                SetHeader("NombreDocumento", "Ruta Documento");
                 SetHeader("Estado", "Activo");
 
                 foreach (string col in new[] { "ProductoID", "TipoDispositivoID", "ModeloID", "MarcaID" })
@@ -218,6 +211,7 @@ namespace JarasTech.Layers.UI.Mantenimientos
                 dgvProductos.Columns[col].HeaderText = header;
         }
 
+
         private void dgvProductos_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvProductos.CurrentRow == null) return;
@@ -227,8 +221,8 @@ namespace JarasTech.Layers.UI.Mantenimientos
 
             _productoID = p.ProductoID;
             _fotografia = p.Fotografia;
-            _documento = p.DocumentoEspecificaciones;
-            _nombreDocumento = p.NombreDocumento ?? string.Empty;
+            // NombreDocumento guarda la RUTA completa del archivo
+            _rutaDocumento = p.NombreDocumento ?? string.Empty;
 
             txtCodigoInterno.Text = p.CodigoInterno;
             txtCodigoBarras.Text = p.CodigoIndustria;
@@ -239,20 +233,44 @@ namespace JarasTech.Layers.UI.Mantenimientos
             numPrecioC.Value = p.PrecioColones;
             numPrecioD.Value = p.PrecioDolares;
             chkEstado.Checked = p.Estado;
-            lblNombreDoc.Text = string.IsNullOrEmpty(_nombreDocumento)
-                                      ? "(sin documento)" : _nombreDocumento;
 
             SeleccionarCombo(cboTipo, "TipoDispositivoID", p.TipoDispositivoID);
             SeleccionarCombo(cboMarca, "MarcaID", p.MarcaID);
             SeleccionarCombo(cboModelo, "ModeloID", p.ModeloID);
 
             picFoto.Image = _fotografia != null
-                ? Image.FromStream(new MemoryStream(_fotografia))
+                ? Image.FromStream(new System.IO.MemoryStream(_fotografia))
                 : null;
+
+            // Mostrar nombre del archivo (no la ruta completa)
+            ActualizarInfoDocumento();
 
             btnGuardar.Text = "Actualizar";
             _cargandoProducto = false;
             tabProducto.SelectedIndex = 1;
+        }
+
+        /// <summary>
+        /// Actualiza el label y el botón Abrir según el estado de _rutaDocumento.
+        /// </summary>
+        private void ActualizarInfoDocumento()
+        {
+            if (string.IsNullOrEmpty(_rutaDocumento))
+            {
+                lblNombreDoc.Text = "(sin documento)";
+                lblNombreDoc.ForeColor = Color.DimGray;
+                btnAbrirDoc.Enabled = false;
+            }
+            else
+            {
+                // Mostrar solo el nombre del archivo, no la ruta completa
+                lblNombreDoc.Text = Path.GetFileName(_rutaDocumento);
+                // Verde si el archivo existe en disco, naranja si no
+                bool existe = File.Exists(_rutaDocumento);
+                lblNombreDoc.ForeColor = existe ? Color.DarkGreen : Color.OrangeRed;
+                if (!existe) lblNombreDoc.Text += "  (archivo no encontrado)";
+                btnAbrirDoc.Enabled = existe;
+            }
         }
 
         private void SeleccionarCombo(ComboBox cbo, string campoID, int valor)
@@ -261,9 +279,7 @@ namespace JarasTech.Layers.UI.Mantenimientos
             {
                 System.Reflection.PropertyInfo prop = item.GetType().GetProperty(campoID);
                 if (prop != null && (int)prop.GetValue(item) == valor)
-                {
-                    cbo.SelectedItem = item; return;
-                }
+                { cbo.SelectedItem = item; return; }
             }
         }
 
@@ -308,8 +324,8 @@ namespace JarasTech.Layers.UI.Mantenimientos
                     PrecioDolares = numPrecioD.Value,
                     Estado = chkEstado.Checked,
                     Fotografia = _fotografia,
-                    DocumentoEspecificaciones = _documento,
-                    NombreDocumento = _nombreDocumento
+                    DocumentoEspecificaciones = null,           // ya no guardamos bytes
+                    NombreDocumento = _rutaDocumento  // guardamos la RUTA
                 };
                 _bllProductos.SaveProducto(p);
                 MessageBox.Show("Producto guardado exitosamente.", "Éxito",
@@ -328,30 +344,26 @@ namespace JarasTech.Layers.UI.Mantenimientos
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (_productoID == 0)
-            {
-                MessageBox.Show("Seleccione un producto de la lista.", "Aviso",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning); return;
-            }
+            { MessageBox.Show("Seleccione un producto de la lista.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
+
             if (MessageBox.Show("¿Desea eliminar el producto seleccionado?",
-                "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-                == DialogResult.Yes)
+                "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 try
                 {
                     _bllProductos.DeleteProducto(_productoID);
-                    MessageBox.Show("Producto eliminado.", "Éxito",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Producto eliminado.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LimpiarFormulario();
                     CargarGrilla();
                 }
                 catch (Exception ex)
                 {
                     _log.ErrorFormat("Error btnEliminar: {0}", ex.Message);
-                    MessageBox.Show("No se puede eliminar: " + ex.Message,
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("No se puede eliminar: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
+
 
         private void btnCargarFoto_Click(object sender, EventArgs e)
         {
@@ -369,11 +381,16 @@ namespace JarasTech.Layers.UI.Mantenimientos
 
         private void btnQuitarFoto_Click(object sender, EventArgs e)
         {
-            _fotografia = null; picFoto.Image = null;
+            _fotografia = null;
+            picFoto.Image = null;
         }
 
 
-        private void btnCargarDoc_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Abre el diálogo de selección de archivo. Solo guarda la RUTA
+        /// del archivo seleccionado, no lo copia ni lo lee en memoria.
+        /// </summary>
+        private void btnSeleccionarDoc_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
@@ -381,18 +398,49 @@ namespace JarasTech.Layers.UI.Mantenimientos
                 dlg.Title = "Seleccionar documento de especificaciones";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
-                    _documento = File.ReadAllBytes(dlg.FileName);
-                    _nombreDocumento = Path.GetFileName(dlg.FileName);
-                    lblNombreDoc.Text = _nombreDocumento;
+                    _rutaDocumento = dlg.FileName;   // ruta completa
+                    ActualizarInfoDocumento();
                 }
             }
         }
 
+        /// <summary>
+        /// Abre el archivo directamente en el programa predeterminado del sistema
+        /// (Adobe Acrobat, Word, etc.) usando la ruta guardada.
+        /// </summary>
+        private void btnAbrirDoc_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(_rutaDocumento))
+            { MessageBox.Show("No hay documento asignado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information); return; }
+
+            if (!File.Exists(_rutaDocumento))
+            {
+                MessageBox.Show(
+                    "El archivo no se encuentra en:\n" + _rutaDocumento +
+                    "\n\nEs posible que haya sido movido o eliminado.",
+                    "Archivo no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                Process.Start(_rutaDocumento);
+            }
+            catch (Exception ex)
+            {
+                _log.ErrorFormat("Error al abrir documento: {0}", ex.Message);
+                MessageBox.Show("No se pudo abrir el archivo:\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>Quita la ruta del documento (no borra el archivo del disco).</summary>
         private void btnQuitarDoc_Click(object sender, EventArgs e)
         {
-            _documento = null; _nombreDocumento = string.Empty;
-            lblNombreDoc.Text = "(sin documento)";
+            _rutaDocumento = string.Empty;
+            ActualizarInfoDocumento();
         }
+
 
         private bool ValidarCampos()
         {
@@ -412,13 +460,14 @@ namespace JarasTech.Layers.UI.Mantenimientos
         private void LimpiarFormulario()
         {
             _cargandoProducto = true;
-            _productoID = 0; _fotografia = null; _documento = null; _nombreDocumento = string.Empty;
+            _productoID = 0; _fotografia = null; _rutaDocumento = string.Empty;
             txtCodigoInterno.Clear(); txtCodigoBarras.Clear(); txtColor.Clear();
             txtCaracteristicas.Clear(); txtExtras.Clear();
             cboTipo.SelectedIndex = -1; cboMarca.SelectedIndex = -1; cboModelo.SelectedIndex = -1;
             numStock.Value = 0; numPrecioC.Value = 0; numPrecioD.Value = 0;
             chkEstado.Checked = true; picFoto.Image = null;
-            lblNombreDoc.Text = "(sin documento)"; btnGuardar.Text = "Guardar";
+            ActualizarInfoDocumento();
+            btnGuardar.Text = "Guardar";
             _cargandoProducto = false;
         }
 
