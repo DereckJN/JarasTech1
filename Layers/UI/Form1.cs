@@ -1,14 +1,9 @@
-﻿using JarasTech.Layers.UI;
+﻿using JarasTech.Layers.Entities;
+using JarasTech.Layers.UI;
 using JarasTech.Layers.UI.Mantenimientos;
 using JarasTech.Layers.UI.Procesos;
+using JarasTech.Layers.UI.Seguridad;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace JarasTech
@@ -18,11 +13,59 @@ namespace JarasTech
         public Form1()
         {
             InitializeComponent();
+
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            if (SesionActual.Usuario != null)
+            {
+                lblUsuarioLogueado.Text = $"Usuario: {SesionActual.Usuario.NombreUsuario}";
+                lblPerfil.Text = $"Perfil: {SesionActual.Usuario.NombrePerfil}";
+                AplicarPermisosPorPerfil();
+            }
+            else
+            {
+                // Si no hay sesión (por seguridad), cerramos
+                this.Close();
+                Application.Exit();
+            }
+        }
+
+        private void AplicarPermisosPorPerfil()
+        {
+            string perfil = SesionActual.NombrePerfil?.ToUpper();
+
+            switch (perfil)
+            {
+                case "ADMINISTRADOR":
+                    usuariosToolStripMenuItem.Enabled = true;
+                    usuariosToolStripMenuItem.Visible = true;
+                    break;
+
+                case "VENDEDOR":
+                    // El vendedor no puede ver/editar usuarios
+                    // Si tienes un menú de usuarios, deshabilítalo
+                    // Por ahora no hay menú de usuarios en tu Form1
+                    break;
+
+                case "REPORTES":
+                    // Solo reportes (deshabilitar mantenimientos y procesos)
+                    mantenimientosToolStripMenuItem.Enabled = false;
+                    procesosToolStripMenuItem.Enabled = false;
+                    break;
+
+                default:
+                    mantenimientosToolStripMenuItem.Enabled = false;
+                    procesosToolStripMenuItem.Enabled = false;
+                    break;
+            }
+        }
+
 
         private void cerrarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Close();
+            Application.Exit();
         }
 
         private void mantenimientoClientesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -71,6 +114,17 @@ namespace JarasTech
         {
             FrmFacturacion frmMenu = new FrmFacturacion();
             frmMenu.Show();
+        }
+
+        private void Form1_Load_1(object sender, EventArgs e)
+        {
+            this.Load += new System.EventHandler(this.Form1_Load);
+        }
+
+        private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmUsuarios frm = new FrmUsuarios();
+            frm.ShowDialog();
         }
     }
 }

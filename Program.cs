@@ -1,6 +1,8 @@
-﻿using JarasTech.Layers.UI;
+﻿using JarasTech;
+using JarasTech.Layers.UI;
 using JarasTech.Layers.UI.Mantenimientos;
 using JarasTech.Layers.UI.Procesos;
+using JarasTech.Layers.UI.Seguridad;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +21,7 @@ namespace JarasTech
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new FrmLogin());
         }
     }
 }
