@@ -26,7 +26,7 @@ namespace JarasTech.Layers.UI
     {
         #region Campos privados
         private List<Provincia> provincias;
-
+        private bool _imagenModificada = false;
         private static readonly ILog _log =
             LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -121,26 +121,25 @@ namespace JarasTech.Layers.UI
             try
             {
                 provincias = await Direcciones.GetProvinciasAsync();
-                if (provincias != null)
+                if (provincias != null && provincias.Any())
                 {
-                    cboProvincia.DataSource = null; // Limpiar el DataSource
+                    cboProvincia.DataSource = null;
                     cboProvincia.DisplayMember = "Descripcion";
                     cboProvincia.ValueMember = "IdProvincia";
                     cboProvincia.DataSource = provincias;
                 }
+                else
+                {
+                    _log.Warn("No se pudieron cargar provincias.");
+                }
             }
-            catch (Exception er)
+            catch (Exception ex)
             {
-                string msg = "";
-                //_MyLogControlEventos.ErrorFormat("Error {0}", msg.ToExceptionDetail(er, MethodBase.GetCurrentMethod()));
-                //MessageBox.Show("Se ha producido el siguiente error: " + er.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _log.ErrorFormat("Error LoadProvinciasAsync: {0}", ex);
+                MostrarError("No se pudo cargar la lista de provincias. Verifique su conexión.");
             }
         }
 
-
-        // ─────────────────────────────────────────────────────────────────
-        // Carga del grid
-        // ─────────────────────────────────────────────────────────────────
 
         /// <summary>
         /// Carga todos los clientes en el DataGridView.
@@ -149,7 +148,7 @@ namespace JarasTech.Layers.UI
         {
             try
             {
-                await Task.Delay(100); // pequeño delay para que la UI responda
+                await Task.Delay(100); 
                 dgvClientes.DataSource = null;
                 dgvClientes.DataSource = _bllCliente.GetAllClientes();
             }
@@ -359,15 +358,33 @@ namespace JarasTech.Layers.UI
         {
             _clienteIDActual = cliente.ClienteID;
 
-            // Tipo identificación
-            rdoNacional.Checked = cliente.TipoIdentificacionID == 1;
-            rdoExtranjero.Checked = cliente.TipoIdentificacionID == 2;
+            // Tipo identificación con fallback
+            if (cliente.TipoIdentificacionID == 1)
+                rdoNacional.Checked = true;
+            else if (cliente.TipoIdentificacionID == 2)
+                rdoExtranjero.Checked = true;
+            else
+            {
+                // Valor inválido (0, NULL, etc.) -> selecciona Nacional y registra
+                rdoNacional.Checked = true;
+                _log.Warn($"TipoIdentificacionID inválido ({cliente.TipoIdentificacionID}) para cliente ID {cliente.ClienteID}. Se asume Nacional.");
+            }
 
+            // Sexo con fallback
+            if (cliente.Sexo == 'M')
+                rdoMasculino.Checked = true;
+            else if (cliente.Sexo == 'F')
+                rdoFemenino.Checked = true;
+            else
+            {
+                rdoMasculino.Checked = true;
+                _log.Warn($"Sexo inválido ('{cliente.Sexo}') para cliente ID {cliente.ClienteID}. Se asume Masculino.");
+            }
+
+            // Resto de campos igual...
             txtNumeroIdentificacion.Text = cliente.NumeroIdentificacion;
             txtNombre.Text = cliente.Nombre;
             txtApellidos.Text = cliente.Apellidos;
-            rdoMasculino.Checked = cliente.Sexo == 'M';
-            rdoFemenino.Checked = cliente.Sexo == 'F';
             txtTelefono.Text = cliente.Telefono;
             txtCorreoElectronico.Text = cliente.CorreoElectronico;
             txtDireccionExacta.Text = cliente.DireccionExacta;
@@ -376,16 +393,18 @@ namespace JarasTech.Layers.UI
             int idx = cboProvincia.Items.IndexOf(cliente.Provincia);
             cboProvincia.SelectedIndex = idx >= 0 ? idx : 0;
 
-            // Fotografía
+            // Fotografía (igual que antes)
+            if (picFotografia.Image != null) picFotografia.Image.Dispose();
             if (cliente.Fotografia != null && cliente.Fotografia.Length > 0)
             {
                 using (var ms = new MemoryStream(cliente.Fotografia))
-                    picFotografia.Image = Image.FromStream(ms);
+                {
+                    var img = Image.FromStream(ms);
+                    picFotografia.Image = new Bitmap(img);
+                    img.Dispose();
+                }
             }
-            else
-            {
-                picFotografia.Image = null;
-            }
+            else picFotografia.Image = null;
         }
 
         private void btnNuevo_Click(object sender, EventArgs e)
@@ -494,13 +513,17 @@ namespace JarasTech.Layers.UI
                 {
                     ofd.Title = "Seleccionar fotografía del cliente";
                     ofd.Filter = "Imágenes|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
-
                     if (ofd.ShowDialog() == DialogResult.OK)
                     {
+                        // Liberar imagen anterior
+                        if (picFotografia.Image != null)
+                            picFotografia.Image.Dispose();
                         picFotografia.Image = Image.FromFile(ofd.FileName);
                         picFotografia.SizeMode = PictureBoxSizeMode.Zoom;
+                        _imagenModificada = true;
                     }
                 }
+
             }
             catch (Exception ex)
             {
@@ -543,6 +566,9 @@ namespace JarasTech.Layers.UI
             txtCorreoElectronico.Clear();
             txtDireccionExacta.Clear();
             txtFiltro.Clear();
+
+            if (picFotografia.Image != null)
+                picFotografia.Image.Dispose();
             picFotografia.Image = null;
 
             if (cboProvincia.Items.Count > 0)
@@ -613,6 +639,20 @@ namespace JarasTech.Layers.UI
                 valido = false;
             }
 
+            // Validar que al menos un tipo de identificación esté marcado
+            if (!rdoNacional.Checked && !rdoExtranjero.Checked)
+            {
+                _erp.SetError(rdoNacional, "Seleccione el tipo de identificación (Nacional o Extranjero).");
+                valido = false;
+            }
+
+            // Validar que al menos un sexo esté marcado
+            if (!rdoMasculino.Checked && !rdoFemenino.Checked)
+            {
+                _erp.SetError(rdoMasculino, "Seleccione el sexo (Masculino o Femenino).");
+                valido = false;
+            }
+
             return valido;
         }
 
@@ -624,10 +664,23 @@ namespace JarasTech.Layers.UI
         {
             if (picFotografia.Image == null) return null;
 
-            using (var ms = new MemoryStream())
+            try
             {
-                picFotografia.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                return ms.ToArray();
+                // Crear una copia nueva de la imagen para no afectar la original
+                using (var bitmap = new Bitmap(picFotografia.Image))
+                {
+                    using (var ms = new MemoryStream())
+                    {
+                        // Guardar en PNG (más confiable que JPEG)
+                        bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                        return ms.ToArray();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.ErrorFormat("Error al convertir imagen a bytes: {0}", ex);
+                return null;
             }
         }
 

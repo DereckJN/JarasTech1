@@ -13,7 +13,6 @@ namespace JarasTech
         public Form1()
         {
             InitializeComponent();
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -39,29 +38,31 @@ namespace JarasTech
             switch (perfil)
             {
                 case "ADMINISTRADOR":
+                    mantenimientosToolStripMenuItem.Enabled = true;
+                    procesosToolStripMenuItem.Enabled = true;
+                    seguridadToolStripMenuItem.Visible = true;
                     usuariosToolStripMenuItem.Enabled = true;
-                    usuariosToolStripMenuItem.Visible = true;
                     break;
 
                 case "VENDEDOR":
-                    // El vendedor no puede ver/editar usuarios
-                    // Si tienes un menú de usuarios, deshabilítalo
-                    // Por ahora no hay menú de usuarios en tu Form1
+                    mantenimientosToolStripMenuItem.Enabled = true;
+                    procesosToolStripMenuItem.Enabled = true;
+                    seguridadToolStripMenuItem.Visible = false; // No puede crear usuarios
                     break;
 
                 case "REPORTES":
-                    // Solo reportes (deshabilitar mantenimientos y procesos)
                     mantenimientosToolStripMenuItem.Enabled = false;
                     procesosToolStripMenuItem.Enabled = false;
+                    seguridadToolStripMenuItem.Visible = false;
                     break;
 
                 default:
                     mantenimientosToolStripMenuItem.Enabled = false;
                     procesosToolStripMenuItem.Enabled = false;
+                    seguridadToolStripMenuItem.Visible = false;
                     break;
             }
         }
-
 
         private void cerrarToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -116,14 +117,16 @@ namespace JarasTech
             frmMenu.Show();
         }
 
-        private void Form1_Load_1(object sender, EventArgs e)
-        {
-            this.Load += new System.EventHandler(this.Form1_Load);
-        }
-
         private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmUsuarios frm = new FrmUsuarios();
+            frm.ShowDialog();
+        }
+
+        private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            FrmLogin frm = new FrmLogin();
             frm.ShowDialog();
         }
     }

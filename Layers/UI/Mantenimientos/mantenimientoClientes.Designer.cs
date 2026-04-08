@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.grpDatosCliente = new System.Windows.Forms.GroupBox();
             this.lblTipoIdentificacion = new System.Windows.Forms.Label();
             this.rdoNacional = new System.Windows.Forms.RadioButton();
@@ -42,7 +42,6 @@
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.lblApellidos = new System.Windows.Forms.Label();
             this.txtApellidos = new System.Windows.Forms.TextBox();
-            this.lblSexo = new System.Windows.Forms.Label();
             this.rdoMasculino = new System.Windows.Forms.RadioButton();
             this.rdoFemenino = new System.Windows.Forms.RadioButton();
             this.lblTelefono = new System.Windows.Forms.Label();
@@ -66,16 +65,19 @@
             this.btnGuardar = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.btnLimpiar = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.grpDatosCliente.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picFotografia)).BeginInit();
             this.grpListaClientes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClientes)).BeginInit();
             this.pnlBotones.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // grpDatosCliente
             // 
             this.grpDatosCliente.BackColor = System.Drawing.Color.White;
+            this.grpDatosCliente.Controls.Add(this.groupBox1);
             this.grpDatosCliente.Controls.Add(this.lblTipoIdentificacion);
             this.grpDatosCliente.Controls.Add(this.rdoNacional);
             this.grpDatosCliente.Controls.Add(this.rdoExtranjero);
@@ -86,9 +88,6 @@
             this.grpDatosCliente.Controls.Add(this.txtNombre);
             this.grpDatosCliente.Controls.Add(this.lblApellidos);
             this.grpDatosCliente.Controls.Add(this.txtApellidos);
-            this.grpDatosCliente.Controls.Add(this.lblSexo);
-            this.grpDatosCliente.Controls.Add(this.rdoMasculino);
-            this.grpDatosCliente.Controls.Add(this.rdoFemenino);
             this.grpDatosCliente.Controls.Add(this.lblTelefono);
             this.grpDatosCliente.Controls.Add(this.txtTelefono);
             this.grpDatosCliente.Controls.Add(this.lblCorreoElectronico);
@@ -223,22 +222,12 @@
             this.txtApellidos.Size = new System.Drawing.Size(249, 30);
             this.txtApellidos.TabIndex = 5;
             // 
-            // lblSexo
-            // 
-            this.lblSexo.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblSexo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.lblSexo.Location = new System.Drawing.Point(13, 185);
-            this.lblSexo.Name = "lblSexo";
-            this.lblSexo.Size = new System.Drawing.Size(51, 18);
-            this.lblSexo.TabIndex = 6;
-            this.lblSexo.Text = "Sexo:";
-            // 
             // rdoMasculino
             // 
             this.rdoMasculino.Checked = true;
             this.rdoMasculino.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.rdoMasculino.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.rdoMasculino.Location = new System.Drawing.Point(72, 183);
+            this.rdoMasculino.Location = new System.Drawing.Point(68, 23);
             this.rdoMasculino.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rdoMasculino.Name = "rdoMasculino";
             this.rdoMasculino.Size = new System.Drawing.Size(123, 22);
@@ -250,7 +239,7 @@
             // 
             this.rdoFemenino.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.rdoFemenino.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
-            this.rdoFemenino.Location = new System.Drawing.Point(205, 185);
+            this.rdoFemenino.Location = new System.Drawing.Point(201, 25);
             this.rdoFemenino.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rdoFemenino.Name = "rdoFemenino";
             this.rdoFemenino.Size = new System.Drawing.Size(108, 22);
@@ -439,30 +428,30 @@
             // 
             this.dgvClientes.AllowUserToAddRows = false;
             this.dgvClientes.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(246)))), ((int)(((byte)(251)))));
-            this.dgvClientes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(246)))), ((int)(((byte)(251)))));
+            this.dgvClientes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvClientes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvClientes.BackgroundColor = System.Drawing.Color.White;
             this.dgvClientes.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(56)))), ((int)(((byte)(110)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvClientes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(56)))), ((int)(((byte)(110)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.Padding = new System.Windows.Forms.Padding(6, 0, 0, 0);
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvClientes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvClientes.ColumnHeadersHeight = 36;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(56)))), ((int)(((byte)(110)))));
-            dataGridViewCellStyle3.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(56)))), ((int)(((byte)(110)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvClientes.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(56)))), ((int)(((byte)(110)))));
+            dataGridViewCellStyle6.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(56)))), ((int)(((byte)(110)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvClientes.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvClientes.EnableHeadersVisualStyles = false;
             this.dgvClientes.Location = new System.Drawing.Point(12, 89);
             this.dgvClientes.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -558,6 +547,17 @@
             this.btnLimpiar.UseVisualStyleBackColor = false;
             this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.rdoFemenino);
+            this.groupBox1.Controls.Add(this.rdoMasculino);
+            this.groupBox1.Location = new System.Drawing.Point(180, 436);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(329, 71);
+            this.groupBox1.TabIndex = 14;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Sexo:";
+            // 
             // mantenimientoClientes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -580,6 +580,7 @@
             this.grpListaClientes.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvClientes)).EndInit();
             this.pnlBotones.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -598,7 +599,6 @@
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.Label lblApellidos;
         private System.Windows.Forms.TextBox txtApellidos;
-        private System.Windows.Forms.Label lblSexo;
         private System.Windows.Forms.RadioButton rdoMasculino;
         private System.Windows.Forms.RadioButton rdoFemenino;
         private System.Windows.Forms.Label lblTelefono;
@@ -624,5 +624,6 @@
         private System.Windows.Forms.TextBox txtFiltro;
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.DataGridView dgvClientes;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
