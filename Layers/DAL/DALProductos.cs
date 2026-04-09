@@ -20,26 +20,25 @@ namespace JarasTech.Layers.DAL
         {
             return new Productos
             {
-                ProductoID = r.GetInt32(r.GetOrdinal("ProductoID")),
-                CodigoInterno = r.GetString(r.GetOrdinal("CodigoInterno")),
-                CodigoIndustria = r.IsDBNull(r.GetOrdinal("CodigoIndustria")) ? null : r.GetString(r.GetOrdinal("CodigoIndustria")),
-                TipoDispositivoID = r.GetInt32(r.GetOrdinal("TipoDispositivoID")),
-                ModeloID = r.GetInt32(r.GetOrdinal("ModeloID")),
-                MarcaID = r.GetInt32(r.GetOrdinal("MarcaID")),
-                Color = r.IsDBNull(r.GetOrdinal("Color")) ? null : r.GetString(r.GetOrdinal("Color")),
-                Caracteristicas = r.IsDBNull(r.GetOrdinal("Caracteristicas")) ? null : r.GetString(r.GetOrdinal("Caracteristicas")),
-                Fotografia = r.IsDBNull(r.GetOrdinal("Fotografia")) ? null : (byte[])r["Fotografia"],
-                DocumentoEspecificaciones = r.IsDBNull(r.GetOrdinal("DocumentoEspecificaciones")) ? null : (byte[])r["DocumentoEspecificaciones"],
-                NombreDocumento = r.IsDBNull(r.GetOrdinal("NombreDocumento")) ? null : r.GetString(r.GetOrdinal("NombreDocumento")),
-                Extras = r.IsDBNull(r.GetOrdinal("Extras")) ? null : r.GetString(r.GetOrdinal("Extras")),
-                CantidadStock = r.GetInt32(r.GetOrdinal("CantidadStock")),
-                PrecioColones = r.GetDecimal(r.GetOrdinal("PrecioColones")),
-                PrecioDolares = r.GetDecimal(r.GetOrdinal("PrecioDolares")),
-                Estado = r.GetBoolean(r.GetOrdinal("Estado")),
-                // Propiedades de navegación (presentes solo en SPs con JOIN)
-                NombreMarca = HasColumn(r, "Marca") ? r.IsDBNull(r.GetOrdinal("Marca")) ? null : r.GetString(r.GetOrdinal("Marca")) : null,
-                NombreModelo = HasColumn(r, "Modelo") ? r.IsDBNull(r.GetOrdinal("Modelo")) ? null : r.GetString(r.GetOrdinal("Modelo")) : null,
-                NombreTipoDispositivo = HasColumn(r, "TipoDispositivo") ? r.IsDBNull(r.GetOrdinal("TipoDispositivo")) ? null : r.GetString(r.GetOrdinal("TipoDispositivo")) : null
+                ProductoID = r.GetInt32(0),
+                CodigoInterno = r.GetString(1),
+                CodigoIndustria = r.IsDBNull(2) ? string.Empty : r.GetString(2),
+                TipoDispositivoID = r.GetInt32(3),
+                ModeloID = r.GetInt32(4),
+                MarcaID = r.GetInt32(5),
+                Color = r.IsDBNull(6) ? string.Empty : r.GetString(6),
+                Caracteristicas = r.IsDBNull(7) ? string.Empty : r.GetString(7),
+                Fotografia = r.IsDBNull(8) ? null : (byte[])r.GetValue(8),
+                DocumentoEspecificaciones = r.IsDBNull(9) ? null : (byte[])r.GetValue(9),
+                NombreDocumento = r.IsDBNull(10) ? string.Empty : r.GetString(10),
+                Extras = r.IsDBNull(11) ? string.Empty : r.GetString(11),
+                CantidadStock = r.GetInt32(12),
+                PrecioColones = r.GetDecimal(13),
+                PrecioDolares = r.GetDecimal(14),
+                Estado = r.GetBoolean(15),
+                NombreTipoDispositivo = r.IsDBNull(16) ? string.Empty : r.GetString(16),
+                NombreModelo = r.IsDBNull(17) ? string.Empty : r.GetString(17),
+                NombreMarca = r.IsDBNull(18) ? string.Empty : r.GetString(18)
             };
         }
 
@@ -223,20 +222,9 @@ namespace JarasTech.Layers.DAL
         /// <summary>Devuelve solo productos con stock mayor a 0.</summary>
         public IEnumerable<Productos> GetProductosConStock()
         {
-            var lista = new List<Productos>();
-            SqlCommand cmd = new SqlCommand();
-            try
-            {
-                using (IDataBase db = FactoryDatabase.CreateDataBase(FactoryConexion.CreateConnection()))
-                {
-                    cmd.CommandText = "usp_SELECT_Productos_ConStock";
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    using (IDataReader r = db.ExecuteReader(cmd))
-                        while (r.Read()) lista.Add(MapProducto(r));
-                }
-                return lista;
-            }
-            catch (Exception er) { _log.ErrorFormat("Error GetProductosConStock: {0}", er.Message); throw; }
+            // Reutiliza el SP que ya tiene todas las columnas correctas
+            return GetProductosByFiltros(null, null, null)
+                   .Where(p => p.CantidadStock > 0 && p.Estado);
         }
 
         // ── GET ALL ───────────────────────────────────────────────────

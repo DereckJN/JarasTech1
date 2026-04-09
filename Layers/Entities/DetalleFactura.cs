@@ -32,6 +32,7 @@ namespace JarasTech.Layers.Entities
         /// <summary>Subtotal de la línea en colones (Cantidad × PrecioUnitarioColones).</summary>
         public decimal SubtotalLinea { get; set; }
 
+
         // ── Propiedades de navegación ──
 
         /// <summary>Código interno del producto (cargado desde JOIN).</summary>
@@ -48,5 +49,9 @@ namespace JarasTech.Layers.Entities
 
         /// <summary>Color del producto (cargado desde JOIN).</summary>
         public string Color { get; set; }
+
+
+        public string Descripcion { get; set; }
+        public int StockDisponible { get; set; }
     }
 }
