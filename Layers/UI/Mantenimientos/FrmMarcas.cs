@@ -113,23 +113,39 @@ namespace JarasTech.Layers.UI.Mantenimientos
         {
             if (_marcaIDSeleccionada == 0)
             {
-                MessageBox.Show("Seleccione una marca.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Seleccione una marca.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if (MessageBox.Show("¿Desea eliminar la marca seleccionada?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+
+            if (MessageBox.Show("¿Desea eliminar la marca seleccionada?",
+                "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                != DialogResult.Yes) return;
+
+            try
             {
-                try
-                {
-                    _bll.DeleteMarca(_marcaIDSeleccionada);
-                    MessageBox.Show("Marca eliminada.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    LimpiarFormulario();
-                    CargarGrilla(string.Empty);
-                }
-                catch (Exception ex)
-                {
-                    _log.ErrorFormat("Error btnEliminar Marcas: {0}", ex.Message);
-                    MessageBox.Show($"No se puede eliminar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                _bll.DeleteMarca(_marcaIDSeleccionada);
+                MessageBox.Show("Marca eliminada.", "Éxito",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LimpiarFormulario();
+                CargarGrilla(string.Empty);
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+                when (ex.Number == 547) // 547 = violación de FK en SQL Server
+            {
+                MessageBox.Show(
+                    "No se puede eliminar esta marca porque tiene productos asociados.\n\n" +
+                    "Primero elimine o reasigne los productos que usan esta marca.",
+                    "Operación no permitida",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                _log.ErrorFormat("FK violation al eliminar marca {0}: {1}",
+                    _marcaIDSeleccionada, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _log.ErrorFormat("Error btnEliminar Marcas: {0}", ex.Message);
+                MessageBox.Show("Error al eliminar: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void LimpiarFormulario()
