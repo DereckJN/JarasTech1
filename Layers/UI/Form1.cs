@@ -4,6 +4,7 @@ using JarasTech.Layers.UI.Mantenimientos;
 using JarasTech.Layers.UI.Procesos;
 using JarasTech.Layers.UI.Seguridad;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace JarasTech
@@ -19,13 +20,18 @@ namespace JarasTech
         {
             if (SesionActual.Usuario != null)
             {
-                lblUsuarioLogueado.Text = $"Usuario: {SesionActual.Usuario.NombreUsuario}";
-                lblPerfil.Text = $"Perfil: {SesionActual.Usuario.NombrePerfil}";
+                // Mostrar nombre completo en la barra de estado
+                string nombreCompleto = (SesionActual.Usuario.NombreUsuario).Trim();
+                if (string.IsNullOrEmpty(nombreCompleto))
+                    nombreCompleto = SesionActual.Usuario.NombreUsuario;
+
+                lblUsuarioLogueado.Text = "  👤  " + nombreCompleto;
+                lblPerfil.Text = "  🔑  " + SesionActual.NombrePerfil;
+
                 AplicarPermisosPorPerfil();
             }
             else
             {
-                // Si no hay sesión (por seguridad), cerramos
                 this.Close();
                 Application.Exit();
             }
@@ -33,7 +39,7 @@ namespace JarasTech
 
         private void AplicarPermisosPorPerfil()
         {
-            string perfil = SesionActual.NombrePerfil?.ToUpper();
+            string perfil = SesionActual.NombrePerfil?.ToUpper().Trim();
 
             switch (perfil)
             {
@@ -47,12 +53,12 @@ namespace JarasTech
                 case "VENDEDOR":
                     mantenimientosToolStripMenuItem.Enabled = true;
                     procesosToolStripMenuItem.Enabled = true;
-                    seguridadToolStripMenuItem.Visible = false; // No puede crear usuarios
+                    seguridadToolStripMenuItem.Visible = false;
                     break;
 
                 case "REPORTES":
                     mantenimientosToolStripMenuItem.Enabled = false;
-                    procesosToolStripMenuItem.Enabled = false;
+                    procesosToolStripMenuItem.Enabled = true;  // puede ver reportes
                     seguridadToolStripMenuItem.Visible = false;
                     break;
 
@@ -64,70 +70,88 @@ namespace JarasTech
             }
         }
 
+        // ════════════════════════════════════════════════════════════════
+        // ARCHIVO
+        // ════════════════════════════════════════════════════════════════
         private void cerrarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
+        private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("¿Desea cerrar sesión?", "Cerrar Sesión",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                SesionActual.Usuario = null;
+                this.Close();
+                new FrmLogin().ShowDialog();
+            }
+        }
+
+        // ════════════════════════════════════════════════════════════════
+        // MANTENIMIENTOS
+        // ════════════════════════════════════════════════════════════════
         private void mantenimientoClientesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mantenimientoClientes frmMenu = new mantenimientoClientes();
-            frmMenu.Show();
+            AbrirForm(new mantenimientoClientes());
         }
 
         private void iVAToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmIVA frmMenu = new FrmIVA();
-            frmMenu.Show();
+            AbrirForm(new FrmIVA());
         }
 
         private void marcasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmMarcas frmMenu = new FrmMarcas();
-            frmMenu.Show();
+            AbrirForm(new FrmMarcas());
         }
 
         private void modelosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmModelos frmMenu = new FrmModelos();
-            frmMenu.Show();
+            AbrirForm(new FrmModelos());
         }
 
         private void productosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmProductos frmMenu = new FrmProductos();
-            frmMenu.Show();
+            AbrirForm(new FrmProductos());
         }
 
         private void tipoDeDToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmTiposDispositivo frmMenu = new FrmTiposDispositivo();
-            frmMenu.Show();
+            AbrirForm(new FrmTiposDispositivo());
         }
 
         private void stockToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmIngresoStock frmMenu = new FrmIngresoStock();
-            frmMenu.Show();
+            AbrirForm(new FrmIngresoStock());
         }
 
+        // ════════════════════════════════════════════════════════════════
+        // PROCESOS — pasa el usuario activo a FrmFacturacion
+        // ════════════════════════════════════════════════════════════════
         private void facturacionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmFacturacion frmMenu = new FrmFacturacion();
-            frmMenu.Show();
+            var frm = new FrmFacturacion();
+            frm.UsuarioActivo = SesionActual.Usuario; // ← pasa el usuario de la sesión
+            AbrirForm(frm);
         }
 
+        // ════════════════════════════════════════════════════════════════
+        // SEGURIDAD
+        // ════════════════════════════════════════════════════════════════
         private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmUsuarios frm = new FrmUsuarios();
-            frm.ShowDialog();
+            new FrmUsuarios().ShowDialog();
         }
 
-        private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
+        // ════════════════════════════════════════════════════════════════
+        // HELPER — abre cada form centrado en el Form1
+        // ════════════════════════════════════════════════════════════════
+        private void AbrirForm(Form frm)
         {
-            this.Close();
-            FrmLogin frm = new FrmLogin();
-            frm.ShowDialog();
+            frm.StartPosition = FormStartPosition.CenterParent;
+            frm.ShowDialog(this);
         }
     }
 }

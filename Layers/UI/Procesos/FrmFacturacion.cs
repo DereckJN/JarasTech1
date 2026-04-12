@@ -3,21 +3,31 @@ using JarasTech.Layers.Entities;
 using JarasTech.Layers.Interfaces.Ibll;
 using JarasTech.Layers.Persistencia;
 using log4net;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Reflection;
+using System.Text;
 using System.Windows.Forms;
+using Color = System.Drawing.Color;
+using IContainer = QuestPDF.Infrastructure.IContainer;
+using Image = System.Drawing.Image;
+using Size = System.Drawing.Size;
 
 namespace JarasTech.Layers.UI.Procesos
 {
-
-
     public partial class FrmFacturacion : Form
     {
-
+        // ════════════════════════════════════════════════════════════════════
+        // DTO en memoria — NO es la entidad DetalleFactura de la BD
+        // ════════════════════════════════════════════════════════════════════
         public class DetalleFacturaItem
         {
             public int ProductoID { get; set; }
@@ -34,7 +44,7 @@ namespace JarasTech.Layers.UI.Procesos
         private static readonly ILog _log =
             LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        // ── BLLs ─────────────────────────────────────────────────────────
+        // BLLs
         private readonly IBLLClientes _bllClientes = new BLLClientes();
         private readonly IBLLProductos _bllProductos = new BLLProductos();
         private readonly IBLLFacturas _bllFacturas = new BLLFacturas();
@@ -43,24 +53,22 @@ namespace JarasTech.Layers.UI.Procesos
         private readonly IBLLIVA _bllIVA = new BLLIVA();
         private readonly IBLLBancos _bllBancos = new BLLBancos();
 
-        // ── Sesión ────────────────────────────────────────────────────────
+        // Sesión
         internal Usuarios UsuarioActivo { get; set; }
 
-        // ── Estado ────────────────────────────────────────────────────────
+        // Estado
         private Clientes _cliente = null;
         private decimal _tipoCambio = 0m;
         private decimal _porcIVA = 13m;
         private int _ivaID = 1;
         private byte[] _firma = null;
-
-        // Lista en memoria usa el DTO, NO la entidad
         private readonly List<DetalleFacturaItem> _detalle = new List<DetalleFacturaItem>();
 
-        // ── Tipo de cambio ────────────────────────────────────────────────
+        // Tipo de cambio
         private Timer timerTipoCambio;
         private DateTime ultimaFechaActualizacion;
 
-        // ── ErrorProvider ─────────────────────────────────────────────────
+        // ErrorProvider
         private readonly ErrorProvider _ep = new ErrorProvider();
 
         // ════════════════════════════════════════════════════════════════════
@@ -78,6 +86,10 @@ namespace JarasTech.Layers.UI.Procesos
         {
             try
             {
+                if (UsuarioActivo != null)
+                    lblVendedorVal.Text = UsuarioActivo.NombreUsuario;
+
+
                 _ep.BlinkStyle = ErrorBlinkStyle.NeverBlink;
                 dtpFecha.Value = DateTime.Now;
 
@@ -90,7 +102,7 @@ namespace JarasTech.Layers.UI.Procesos
                 LimpiarFormulario();
 
                 timerTipoCambio = new Timer();
-                timerTipoCambio.Interval = 3600000; // 1 hora
+                timerTipoCambio.Interval = 3600000;
                 timerTipoCambio.Tick += new EventHandler(TimerTipoCambio_Tick);
                 timerTipoCambio.Start();
             }
@@ -136,7 +148,7 @@ namespace JarasTech.Layers.UI.Procesos
             {
                 ServiceBCCR service = new ServiceBCCR();
                 var resultado = service.GetDolar(DateTime.Now, DateTime.Now, "v")
-                                             .FirstOrDefault();
+                                       .FirstOrDefault();
                 if (resultado != null) return (decimal)resultado.Monto;
                 return 0m;
             }
@@ -195,30 +207,24 @@ namespace JarasTech.Layers.UI.Procesos
             string filtro = txtBusqCli.Text.Trim();
             if (string.IsNullOrEmpty(filtro))
             {
-                Error(tabCliente, txtBusqCli,
-                    "Ingrese cédula o nombre.",
-                    "Tab 1 — Cliente: ingrese cédula o nombre.");
-                return;
+                Error(tabCliente, txtBusqCli, "Ingrese cédula o nombre.",
+                    "Tab 1 — Cliente: ingrese cédula o nombre."); return;
             }
             LimpiarError(txtBusqCli);
 
             var lista = _bllClientes.GetClientesByNombre(filtro).ToList();
             if (!lista.Any())
             {
-                Error(tabCliente, txtBusqCli,
-                    "Sin resultados.",
-                    "Tab 1 — Cliente: no se encontraron clientes.");
-                return;
+                Error(tabCliente, txtBusqCli, "Sin resultados.",
+                    "Tab 1 — Cliente: no se encontraron clientes."); return;
             }
             if (lista.Count == 1) { SeleccionarCliente(lista.First()); return; }
 
             using (Form dlg = new Form())
             {
-                dlg.Text = "Seleccione el cliente";
-                dlg.Size = new Size(720, 360);
+                dlg.Text = "Seleccione el cliente"; dlg.Size = new Size(720, 360);
                 dlg.StartPosition = FormStartPosition.CenterParent;
-                dlg.FormBorderStyle = FormBorderStyle.FixedDialog;
-                dlg.MaximizeBox = false;
+                dlg.FormBorderStyle = FormBorderStyle.FixedDialog; dlg.MaximizeBox = false;
                 DataGridView dgv = new DataGridView
                 {
                     Dock = DockStyle.Fill,
@@ -271,14 +277,11 @@ namespace JarasTech.Layers.UI.Procesos
             string filtro = txtBusqProd.Text.Trim().ToLower();
             if (string.IsNullOrEmpty(filtro))
             {
-                Error(tabProductos, txtBusqProd,
-                    "Ingrese un criterio.",
-                    "Tab 2 — Productos: ingrese un criterio de búsqueda.");
-                return;
+                Error(tabProductos, txtBusqProd, "Ingrese un criterio.",
+                    "Tab 2 — Productos: ingrese un criterio de búsqueda."); return;
             }
             LimpiarError(txtBusqProd);
 
-            // Usamos IndexOf en lugar de Contains para compatibilidad con .NET 4.8
             var lista = _bllProductos.GetProductosConStock()
                 .Where(p =>
                     p.CodigoInterno.ToLower().IndexOf(filtro) >= 0 ||
@@ -288,20 +291,16 @@ namespace JarasTech.Layers.UI.Procesos
 
             if (!lista.Any())
             {
-                Error(tabProductos, txtBusqProd,
-                    "Sin productos con stock.",
-                    "Tab 2 — Productos: sin resultados con stock.");
-                return;
+                Error(tabProductos, txtBusqProd, "Sin productos con stock.",
+                    "Tab 2 — Productos: sin resultados con stock."); return;
             }
             if (lista.Count == 1) { AgregarProducto(lista.First()); txtBusqProd.Clear(); return; }
 
             using (Form dlg = new Form())
             {
-                dlg.Text = "Seleccione el producto";
-                dlg.Size = new Size(820, 400);
+                dlg.Text = "Seleccione el producto"; dlg.Size = new Size(820, 400);
                 dlg.StartPosition = FormStartPosition.CenterParent;
-                dlg.FormBorderStyle = FormBorderStyle.FixedDialog;
-                dlg.MaximizeBox = false;
+                dlg.FormBorderStyle = FormBorderStyle.FixedDialog; dlg.MaximizeBox = false;
                 DataGridView dgv = new DataGridView
                 {
                     Dock = DockStyle.Fill,
@@ -324,7 +323,6 @@ namespace JarasTech.Layers.UI.Procesos
 
         private void AgregarProducto(Productos p)
         {
-            // Verificar si el producto ya está en el detalle
             DetalleFacturaItem existente = null;
             foreach (var d in _detalle)
                 if (d.ProductoID == p.ProductoID) { existente = d; break; }
@@ -335,8 +333,7 @@ namespace JarasTech.Layers.UI.Procesos
                 {
                     existente.Cantidad++;
                     existente.SubtotalLinea = existente.Cantidad * existente.PrecioUnitarioColones;
-                    RefrescarDetalle();
-                    RecalcularTotales();
+                    RefrescarDetalle(); RecalcularTotales();
                 }
                 else
                     MessageBox.Show("No hay suficiente stock.", "Stock",
@@ -345,18 +342,15 @@ namespace JarasTech.Layers.UI.Procesos
             }
 
             decimal precioDolares = _tipoCambio > 0
-                ? Math.Round(p.PrecioColones / _tipoCambio, 2)
-                : p.PrecioDolares;
-
-            string descripcion = ((p.NombreMarca ?? "") + " " +
-                                  (p.NombreModelo ?? "") + " " +
-                                  (p.Color ?? "")).Trim();
+                ? Math.Round(p.PrecioColones / _tipoCambio, 2) : p.PrecioDolares;
 
             _detalle.Add(new DetalleFacturaItem
             {
                 ProductoID = p.ProductoID,
                 CodigoInterno = p.CodigoInterno,
-                Descripcion = descripcion,
+                Descripcion = ((p.NombreMarca ?? "") + " " +
+                                         (p.NombreModelo ?? "") + " " +
+                                         (p.Color ?? "")).Trim(),
                 TipoDispositivo = p.NombreTipoDispositivo ?? "",
                 Cantidad = 1,
                 PrecioUnitarioColones = p.PrecioColones,
@@ -364,33 +358,23 @@ namespace JarasTech.Layers.UI.Procesos
                 SubtotalLinea = p.PrecioColones,
                 StockDisponible = p.CantidadStock
             });
-
-            RefrescarDetalle();
-            RecalcularTotales();
-            OcultarError();
+            RefrescarDetalle(); RecalcularTotales(); OcultarError();
         }
 
         private void btnQuitarLinea_Click(object sender, EventArgs e)
         {
             if (dgvDetalle.CurrentRow != null &&
                 dgvDetalle.CurrentRow.DataBoundItem is DetalleFacturaItem item)
-            {
-                _detalle.Remove(item);
-                RefrescarDetalle();
-                RecalcularTotales();
-            }
+            { _detalle.Remove(item); RefrescarDetalle(); RecalcularTotales(); }
         }
 
         private void RefrescarDetalle()
         {
             dgvDetalle.DataSource = null;
             dgvDetalle.DataSource = _detalle.ToList();
-
-            // Ocultar columnas internas
             string[] ocultar = { "ProductoID", "StockDisponible", "PrecioUnitarioDolares" };
             foreach (string col in ocultar)
                 if (dgvDetalle.Columns[col] != null) dgvDetalle.Columns[col].Visible = false;
-
             SetHeader("CodigoInterno", "Código");
             SetHeader("Descripcion", "Descripción");
             SetHeader("TipoDispositivo", "Tipo");
@@ -409,11 +393,9 @@ namespace JarasTech.Layers.UI.Procesos
         {
             decimal sub = 0;
             foreach (var d in _detalle) sub += d.SubtotalLinea;
-
             decimal iva = Math.Round(sub * _porcIVA / 100, 2);
             decimal totC = sub + iva;
             decimal totD = _tipoCambio > 0 ? Math.Round(totC / _tipoCambio, 2) : 0;
-
             lblSubtotalVal.Text = "₡ " + sub.ToString("N2");
             lblIVAVal.Text = "₡ " + iva.ToString("N2");
             lblTotalCVal.Text = "₡ " + totC.ToString("N2");
@@ -438,6 +420,50 @@ namespace JarasTech.Layers.UI.Procesos
             OcultarError();
         }
 
+        /// <summary>
+        /// Devuelve una descripción del método de pago sin datos sensibles completos.
+        /// Tarjeta: muestra solo los últimos 4 dígitos. Transferencia/SINPE: referencia parcial.
+        /// </summary>
+        private string ObtenerDescripcionPago()
+        {
+            switch (cboTipoPago.SelectedIndex)
+            {
+                case 0: // Tarjeta de Crédito
+                    string numTarjeta = txtNumTarjeta.Text.Trim();
+                    string ultimos = numTarjeta.Length >= 4
+                        ? "**** **** **** " + numTarjeta.Substring(numTarjeta.Length - 4)
+                        : "****";
+                    string tipoTarj = cboTipoTarjeta.SelectedIndex >= 0
+                        ? cboTipoTarjeta.SelectedItem.ToString() : "";
+                    string bancoTarj = cboBanco.SelectedIndex >= 0
+                        ? ((dynamic)cboBanco.SelectedItem).NombreBanco : "";
+                    return "Tarjeta de Crédito " + tipoTarj
+                        + "\nN°: " + ultimos
+                        + (string.IsNullOrEmpty(bancoTarj) ? "" : "\nBanco: " + bancoTarj);
+
+                case 1: // Transferencia
+                    string numTransf = txtNumTransf.Text.Trim();
+                    string refTransf = numTransf.Length >= 4
+                        ? numTransf.Substring(0, 4) + "****"
+                        : "****";
+                    string bancoTransf = cboBancoTransf.SelectedIndex >= 0
+                        ? ((dynamic)cboBancoTransf.SelectedItem).NombreBanco : "";
+                    return "Transferencia Bancaria"
+                        + (string.IsNullOrEmpty(bancoTransf) ? "" : "\nBanco: " + bancoTransf)
+                        + "\nRef.: " + refTransf;
+
+                case 2: // SINPE
+                    string numSinpe = txtNumSINPE.Text.Trim();
+                    string sinpeMask = numSinpe.Length >= 4
+                        ? "****" + numSinpe.Substring(numSinpe.Length - 4)
+                        : "****";
+                    return "SINPE Móvil\nN°: " + sinpeMask;
+
+                default:
+                    return "—";
+            }
+        }
+
         #endregion
 
         // ════════════════════════════════════════════════════════════════════
@@ -452,7 +478,7 @@ namespace JarasTech.Layers.UI.Procesos
                 if (fFirma.ShowDialog(this) == DialogResult.OK)
                 {
                     _firma = fFirma.FirmaBytes;
-                    picFirma.Image = Image.FromStream(new MemoryStream(_firma));
+                    picFirma.Image = System.Drawing.Image.FromStream(new MemoryStream(_firma));
                     lblFirmaEstado.Text = "Firma capturada correctamente.";
                     lblFirmaEstado.ForeColor = Color.DarkGreen;
                     btnCapturarFirma.Text = "Volver a Firmar";
@@ -474,8 +500,7 @@ namespace JarasTech.Layers.UI.Procesos
             if (!Validar()) return;
             try
             {
-                Cursor = Cursors.WaitCursor;
-                btnGuardar.Enabled = false;
+                Cursor = Cursors.WaitCursor; btnGuardar.Enabled = false;
 
                 decimal sub = 0;
                 foreach (var d in _detalle) sub += d.SubtotalLinea;
@@ -483,7 +508,7 @@ namespace JarasTech.Layers.UI.Procesos
                 decimal totC = sub + iva;
                 decimal totD = _tipoCambio > 0 ? Math.Round(totC / _tipoCambio, 2) : 0;
 
-                // 1 — Encabezado factura
+                // 1 — Encabezado
                 var factura = new Facturas
                 {
                     ClienteID = _cliente.ClienteID,
@@ -500,8 +525,7 @@ namespace JarasTech.Layers.UI.Procesos
                 };
                 Facturas facturaGuardada = _bllFacturas.SaveFactura(factura);
 
-                // 2 — Detalle + rebajar stock
-                // Aquí convertimos el DTO al objeto entidad DetalleFactura
+                // 2 — Detalle + stock
                 foreach (DetalleFacturaItem item in _detalle)
                 {
                     _bllDetalle.SaveDetalle(new DetalleFactura
@@ -519,11 +543,21 @@ namespace JarasTech.Layers.UI.Procesos
                 // 3 — Pago
                 GuardarPago(facturaGuardada.FacturaID);
 
-                // 4 — QR
+                // 4 — QR placeholder
                 MostrarQR(facturaGuardada.FacturaID);
 
+                // 5 — PDF + XML + Correo
+                string xml = GenerarXMLFactura(facturaGuardada);
+                string rutaPDF = GenerarPDF(facturaGuardada);
+
+                if (!string.IsNullOrEmpty(_cliente.CorreoElectronico))
+                    EnviarCorreo(_cliente.CorreoElectronico, rutaPDF, xml,
+                                 facturaGuardada.FacturaID);
+
                 MessageBox.Show(
-                    "Factura #" + facturaGuardada.FacturaID.ToString("D8") + " generada exitosamente.",
+                    "Factura #" + facturaGuardada.FacturaID.ToString("D8") +
+                    " generada exitosamente.\n" +
+                    "PDF guardado en carpeta Facturas.",
                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 LimpiarFormulario();
@@ -536,8 +570,7 @@ namespace JarasTech.Layers.UI.Procesos
             }
             finally
             {
-                Cursor = Cursors.Default;
-                btnGuardar.Enabled = true;
+                Cursor = Cursors.Default; btnGuardar.Enabled = true;
             }
         }
 
@@ -545,142 +578,498 @@ namespace JarasTech.Layers.UI.Procesos
         {
             int idx = cboTipoPago.SelectedIndex;
             var pago = new PagosFactura { FacturaID = facturaID, TipoPagoID = idx + 1 };
-
             switch (idx)
             {
-                case 0: // Tarjeta de Crédito — TipoPagoID = 1
+                case 0:
                     pago.NumeroTarjeta = txtNumTarjeta.Text.Trim();
-                    pago.BancoID = cboBanco.SelectedValue as int?;
-                    break;
-                case 1: // Transferencia — TipoPagoID = 2
+                    pago.BancoID = cboBanco.SelectedValue as int?; break;
+                case 1:
                     pago.BancoID = cboBancoTransf.SelectedValue as int?;
-                    pago.NumeroTransferencia = txtNumTransf.Text.Trim();
-                    break;
-                case 2: // SINPE Móvil — TipoPagoID = 3
-                    pago.NumeroSINPE = txtNumSINPE.Text.Trim();
-                    break;
+                    pago.NumeroTransferencia = txtNumTransf.Text.Trim(); break;
+                case 2:
+                    pago.NumeroSINPE = txtNumSINPE.Text.Trim(); break;
             }
             _bllPagos.SavePago(pago);
         }
 
         private void MostrarQR(int facturaID)
         {
-            var bmp = new Bitmap(200, 200);
-            using (Graphics g = Graphics.FromImage(bmp))
+            try
             {
-                g.Clear(Color.White);
-                g.DrawRectangle(Pens.Black, 4, 4, 192, 192);
-                g.DrawString(
-                    "FAC\n#" + facturaID.ToString("D8") + "\nJARAS\nTECH",
-                    new Font("Consolas", 13, FontStyle.Bold),
-                    Brushes.Black,
-                    new RectangleF(18, 35, 165, 160));
+                // Contenido del QR — datos clave de la factura
+                string contenido =
+                    "JarasTech" +
+                    "|FAC#" + facturaID.ToString("D8");
+
+                // Generar QR con QRCoder
+                using (var qrGenerator = new QRCoder.QRCodeGenerator())
+                {
+                    var qrData = qrGenerator.CreateQrCode(
+                        contenido,
+                        QRCoder.QRCodeGenerator.ECCLevel.Q);
+
+                    using (var qrCode = new QRCoder.QRCode(qrData))
+                    {
+                        // 10 = pixelsPorModulo (tamaño de cada cuadrito del QR)
+                        Bitmap qrBitmap = qrCode.GetGraphic(10);
+                        picQR.Image = qrBitmap;
+                    }
+                }
+
+                lblNumQR.Text = "Factura # " + facturaID.ToString("D8");
+                tabMain.SelectedIndex = 4;
             }
-            picQR.Image = bmp;
-            lblNumQR.Text = "Factura # " + facturaID.ToString("D8");
-            tabMain.SelectedIndex = 4; // ir al tab Resumen
+            catch (Exception ex)
+            {
+                _log.ErrorFormat("Error generando QR: {0}", ex.Message);
+                // Fallback al placeholder si QRCoder falla
+                var bmp = new Bitmap(200, 200);
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.Clear(Color.White);
+                    g.DrawRectangle(Pens.Black, 4, 4, 192, 192);
+                    g.DrawString("FAC\n#" + facturaID.ToString("D8") + "\nJARAS\nTECH",
+                        new Font("Consolas", 13, FontStyle.Bold), Brushes.Black,
+                        new RectangleF(18, 35, 165, 160));
+                }
+                picQR.Image = bmp;
+                lblNumQR.Text = "Factura # " + facturaID.ToString("D8");
+                tabMain.SelectedIndex = 4;
+            }
         }
 
         #endregion
 
         // ════════════════════════════════════════════════════════════════════
-        // VALIDACIÓN — ErrorProvider + lblIndicarError
+        // PDF — QuestPDF
+        // ════════════════════════════════════════════════════════════════════
+        #region PDF y Correo
+
+        /// <summary>
+        /// Genera el PDF de la factura con QuestPDF y lo guarda en la carpeta Facturas.
+        /// Devuelve la ruta completa del archivo generado.
+        /// </summary>
+        private string GenerarPDF(Facturas factura)
+        {
+            QuestPDF.Settings.License = LicenseType.Community;
+
+            string dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Facturas");
+            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            string ruta = Path.Combine(dir,
+                "Factura_" + factura.FacturaID.ToString("D8") + ".pdf");
+
+            decimal sub = 0; foreach (var d in _detalle) sub += d.SubtotalLinea;
+            decimal iva = Math.Round(sub * _porcIVA / 100, 2);
+            decimal totC = sub + iva;
+            decimal totD = _tipoCambio > 0 ? Math.Round(totC / _tipoCambio, 2) : 0;
+
+            // Convertir QR a bytes PNG
+            byte[] qrBytes = null;
+            if (picQR.Image != null)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    picQR.Image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    qrBytes = ms.ToArray();
+                }
+            }
+
+            // Firma ya está como byte[] en _firma
+            byte[] firmaBytes = (_firma != null && _firma.Length > 0) ? _firma : null;
+
+            Document.Create(doc =>
+            {
+                doc.Page(page =>
+                {
+                    page.Size(PageSizes.Letter);
+                    page.Margin(30);
+                    page.PageColor(Colors.White);
+                    page.DefaultTextStyle(x => x.FontFamily("Segoe UI").FontSize(10));
+
+                    // ── ENCABEZADO ────────────────────────────────────────
+                    page.Header().Column(h =>
+                    {
+                        h.Item().Row(row =>
+                        {
+                            row.RelativeItem().Column(col =>
+                            {
+                                col.Item().Text("JarasTech")
+                                    .FontSize(22).Bold().FontColor(Colors.Blue.Darken3);
+                                col.Item().Text("Venta de Dispositivos Electrónicos")
+                                    .FontSize(10).FontColor(Colors.Grey.Darken1);
+                                col.Item().Text("ventas@jarastech.com  |  San José, Costa Rica")
+                                    .FontSize(9);
+                            });
+                            row.RelativeItem().AlignRight().Column(col =>
+                            {
+                                col.Item().Text("FACTURA ELECTRÓNICA")
+                                    .FontSize(16).Bold().FontColor(Colors.Blue.Darken2);
+                                col.Item().Text("# " + factura.FacturaID.ToString("D8"))
+                                    .FontSize(12).Bold();
+                                col.Item().Text("Fecha: " +
+                                    factura.FechaFactura.ToString("dd/MM/yyyy HH:mm"))
+                                    .FontSize(9);
+                                // ── Vendedor en encabezado ──────────────────────
+                                if (UsuarioActivo != null)
+                                    col.Item().PaddingTop(4)
+                                        .Text("Atendido por: " +
+                                              UsuarioActivo.NombreUsuario)
+                                        .FontSize(9).FontColor(Colors.Grey.Darken1);
+                            });
+                        });
+                        h.Item().PaddingTop(6).LineHorizontal(2)
+                            .LineColor(Colors.Blue.Darken2);
+                    });
+
+                    // ── CONTENIDO ─────────────────────────────────────────
+                    page.Content().PaddingVertical(12).Column(content =>
+                    {
+                        // Datos cliente + pago
+                        content.Item().Background(Colors.Grey.Lighten4).Padding(10).Row(r =>
+                        {
+                            r.RelativeItem().Column(col =>
+                            {
+                                col.Item().Text("CLIENTE").Bold().FontSize(8)
+                                    .FontColor(Colors.Grey.Darken2);
+                                col.Item().Text(_cliente.Nombre + " " + _cliente.Apellidos)
+                                    .FontSize(11).Bold();
+                                col.Item().Text("Cédula: " + _cliente.NumeroIdentificacion).FontSize(9);
+                                col.Item().Text("Correo: " + _cliente.CorreoElectronico).FontSize(9);
+                                col.Item().Text("Tel: " + _cliente.Telefono).FontSize(9);
+                            });
+                            r.ConstantItem(20);
+                            r.RelativeItem().Column(col =>
+                            {
+                                col.Item().Text("DATOS DE PAGO").Bold().FontSize(8)
+                                    .FontColor(Colors.Grey.Darken2);
+                                col.Item().Text("Tipo cambio: ₡ " + _tipoCambio.ToString("N2")).FontSize(9);
+                                col.Item().Text("IVA aplicado: " + _porcIVA + "%").FontSize(9);
+                                if (UsuarioActivo != null)
+                                    col.Item().Text("Vendedor: " + UsuarioActivo.NombreUsuario).FontSize(9);
+
+                                // Método de pago con datos no sensibles
+                                col.Item().PaddingTop(4).Text("MÉTODO DE PAGO").Bold().FontSize(8)
+                                    .FontColor(Colors.Grey.Darken2);
+                                string[] lineasPago = ObtenerDescripcionPago().Split('\n');
+                                foreach (string linea in lineasPago)
+                                    col.Item().Text(linea).FontSize(9);
+                            });
+                        });
+
+                        content.Item().PaddingVertical(10);
+
+                        // Tabla detalle
+                        content.Item().Table(table =>
+                        {
+                            table.ColumnsDefinition(c =>
+                            {
+                                c.ConstantColumn(70);
+                                c.RelativeColumn(4);
+                                c.ConstantColumn(70);
+                                c.ConstantColumn(40);
+                                c.ConstantColumn(95);
+                                c.ConstantColumn(95);
+                            });
+
+                            Func<IContainer, IContainer> encHdr = c =>
+                                c.Background(Colors.Blue.Darken2).Padding(6)
+                                 .DefaultTextStyle(t => t.Bold().FontSize(9)
+                                     .FontColor(Colors.White));
+
+                            table.Header(h =>
+                            {
+                                h.Cell().Element(encHdr).Text("Código");
+                                h.Cell().Element(encHdr).Text("Descripción");
+                                h.Cell().Element(encHdr).AlignCenter().Text("Tipo");
+                                h.Cell().Element(encHdr).AlignCenter().Text("Cant.");
+                                h.Cell().Element(encHdr).AlignRight().Text("Precio ₡");
+                                h.Cell().Element(encHdr).AlignRight().Text("Subtotal ₡");
+                            });
+
+                            bool alterno = false;
+                            foreach (DetalleFacturaItem item in _detalle)
+                            {
+                                bool alt = alterno;
+                                Func<IContainer, IContainer> cel = c =>
+                                {
+                                    if (alt) c = c.Background(Colors.Grey.Lighten5);
+                                    return c.BorderBottom(1)
+                                            .BorderColor(Colors.Grey.Lighten2)
+                                            .Padding(5)
+                                            .DefaultTextStyle(t => t.FontSize(9));
+                                };
+                                table.Cell().Element(cel).Text(item.CodigoInterno);
+                                table.Cell().Element(cel).Text(item.Descripcion);
+                                table.Cell().Element(cel).AlignCenter().Text(item.TipoDispositivo);
+                                table.Cell().Element(cel).AlignCenter().Text(item.Cantidad.ToString());
+                                table.Cell().Element(cel).AlignRight()
+                                    .Text("₡ " + item.PrecioUnitarioColones.ToString("N2"));
+                                table.Cell().Element(cel).AlignRight()
+                                    .Text("₡ " + item.SubtotalLinea.ToString("N2"));
+                                alterno = !alterno;
+                            }
+                        });
+
+                        content.Item().PaddingTop(12);
+
+                        // Totales
+                        content.Item().AlignRight().Width(300).Column(tot =>
+                        {
+                            tot.Item().Row(r =>
+                            {
+                                r.RelativeItem().Text("Subtotal:").FontSize(10);
+                                r.ConstantItem(130).AlignRight()
+                                    .Text("₡ " + sub.ToString("N2")).FontSize(10);
+                            });
+                            tot.Item().Row(r =>
+                            {
+                                r.RelativeItem().Text("IVA (" + _porcIVA + "%):").FontSize(10);
+                                r.ConstantItem(130).AlignRight()
+                                    .Text("₡ " + iva.ToString("N2")).FontSize(10);
+                            });
+                            tot.Item().PaddingVertical(3).LineHorizontal(1)
+                                .LineColor(Colors.Blue.Darken2);
+                            tot.Item().Row(r =>
+                            {
+                                r.RelativeItem().Text("TOTAL ₡:").FontSize(13).Bold()
+                                    .FontColor(Colors.Green.Darken2);
+                                r.ConstantItem(130).AlignRight()
+                                    .Text("₡ " + totC.ToString("N2")).FontSize(13).Bold()
+                                    .FontColor(Colors.Green.Darken2);
+                            });
+                            tot.Item().Row(r =>
+                            {
+                                r.RelativeItem().Text("TOTAL $:").FontSize(13).Bold()
+                                    .FontColor(Colors.Blue.Darken2);
+                                r.ConstantItem(130).AlignRight()
+                                    .Text("$ " + totD.ToString("N2")).FontSize(13).Bold()
+                                    .FontColor(Colors.Blue.Darken2);
+                            });
+                        });
+
+                        content.Item().PaddingTop(20).LineHorizontal(1)
+                            .LineColor(Colors.Grey.Lighten2);
+
+                        // ── QR + FIRMA lado a lado ─────────────────────────
+                        content.Item().PaddingTop(15).Row(row =>
+                        {
+                            // QR
+                            row.RelativeItem().Column(col =>
+                            {
+                                col.Item().Text("Código QR de verificación")
+                                    .Bold().FontSize(9).FontColor(Colors.Grey.Darken2);
+                                col.Item().PaddingTop(4);
+                                if (qrBytes != null)
+                                    col.Item().Width(120).Height(120).Image(qrBytes);
+                                else
+                                    col.Item().Width(120).Height(120)
+                                        .Background(Colors.Grey.Lighten3)
+                                        .AlignCenter().AlignMiddle()
+                                        .Text("Sin QR").FontSize(8);
+                                col.Item().PaddingTop(3)
+                                    .Text("FAC #" + factura.FacturaID.ToString("D8"))
+                                    .FontSize(8).FontColor(Colors.Grey.Darken1);
+                            });
+
+                            // Firma
+                            row.RelativeItem().Column(col =>
+                            {
+                                col.Item().Text("Firma digital del cliente")
+                                    .Bold().FontSize(9).FontColor(Colors.Grey.Darken2);
+                                col.Item().PaddingTop(4);
+                                if (firmaBytes != null)
+                                    col.Item().Width(200).Height(80).Image(firmaBytes);
+                                else
+                                    col.Item().Width(200).Height(80)
+                                        .Background(Colors.Grey.Lighten3)
+                                        .Border(1).BorderColor(Colors.Grey.Lighten2)
+                                        .AlignCenter().AlignMiddle()
+                                        .Text("Sin firma capturada").FontSize(8)
+                                        .FontColor(Colors.Grey.Darken1);
+
+                                col.Item().PaddingTop(3).LineHorizontal(1)
+                                    .LineColor(Colors.Grey.Darken1);
+                                col.Item().Text(_cliente.Nombre + " " + _cliente.Apellidos)
+                                    .FontSize(8).FontColor(Colors.Grey.Darken1);
+                                col.Item().Text("C.I. " + _cliente.NumeroIdentificacion)
+                                    .FontSize(8).FontColor(Colors.Grey.Darken1);
+                            });
+                        });
+                    });
+
+                    // ── PIE ───────────────────────────────────────────────
+                    page.Footer().AlignCenter()
+                        .Text("Gracias por su compra en JarasTech. ¡Vuelva pronto!")
+                        .FontSize(9).FontColor(Colors.Grey.Darken1);
+                });
+            }).GeneratePdf(ruta);
+
+            return ruta;
+        }
+
+        private string GenerarXMLFactura(Facturas factura)
+        {
+            decimal sub = 0; foreach (var d in _detalle) sub += d.SubtotalLinea;
+            decimal iva = Math.Round(sub * _porcIVA / 100, 2);
+            decimal totC = sub + iva;
+            decimal totD = _tipoCambio > 0 ? Math.Round(totC / _tipoCambio, 2) : 0;
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            sb.AppendLine("<Factura>");
+            sb.AppendLine("  <Encabezado>");
+            sb.AppendLine("    <FacturaID>" + factura.FacturaID + "</FacturaID>");
+            sb.AppendLine("    <Fecha>" + factura.FechaFactura.ToString("yyyy-MM-ddTHH:mm:ss") + "</Fecha>");
+            sb.AppendLine("    <TipoCambio>" + _tipoCambio + "</TipoCambio>");
+            sb.AppendLine("    <PorcIVA>" + _porcIVA + "</PorcIVA>");
+            sb.AppendLine("    <Subtotal>" + sub + "</Subtotal>");
+            sb.AppendLine("    <MontoIVA>" + iva + "</MontoIVA>");
+            sb.AppendLine("    <TotalColones>" + totC + "</TotalColones>");
+            sb.AppendLine("    <TotalDolares>" + totD + "</TotalDolares>");
+            sb.AppendLine("    <Cliente>");
+            sb.AppendLine("      <Identificacion>" + _cliente.NumeroIdentificacion + "</Identificacion>");
+            sb.AppendLine("      <Nombre>" + _cliente.Nombre + " " + _cliente.Apellidos + "</Nombre>");
+            sb.AppendLine("      <Correo>" + _cliente.CorreoElectronico + "</Correo>");
+            sb.AppendLine("    </Cliente>");
+            if (UsuarioActivo != null)
+                sb.AppendLine("    <Vendedor>" + UsuarioActivo.NombreUsuario + "</Vendedor>");
+            sb.AppendLine("  </Encabezado>");
+            sb.AppendLine("  <Detalle>");
+            foreach (DetalleFacturaItem item in _detalle)
+            {
+                sb.AppendLine("    <Linea>");
+                sb.AppendLine("      <Codigo>" + item.CodigoInterno + "</Codigo>");
+                sb.AppendLine("      <Descripcion>" + item.Descripcion + "</Descripcion>");
+                sb.AppendLine("      <Tipo>" + item.TipoDispositivo + "</Tipo>");
+                sb.AppendLine("      <Cantidad>" + item.Cantidad + "</Cantidad>");
+                sb.AppendLine("      <PrecioUnit>" + item.PrecioUnitarioColones + "</PrecioUnit>");
+                sb.AppendLine("      <Subtotal>" + item.SubtotalLinea + "</Subtotal>");
+                sb.AppendLine("    </Linea>");
+            }
+            sb.AppendLine("  </Detalle>");
+            sb.AppendLine("</Factura>");
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Envía la factura por correo al cliente con PDF y XML adjuntos.
+        /// Si falla no interrumpe el flujo — solo muestra un aviso.
+        /// </summary>
+        private void EnviarCorreo(string destinatario, string rutaPDF,
+                                  string xmlContenido, int facturaID)
+        {
+            try
+            {
+                var mail = new MailMessage();
+                mail.From = new MailAddress("jarastech.ventas@gmail.com", "JarasTech");
+                mail.To.Add(destinatario);
+                mail.Subject = "Factura JarasTech #" + facturaID.ToString("D8");
+                mail.Body =
+                    "Estimado/a cliente,\n\n" +
+                    "Adjunto encontrará su factura electrónica en formato PDF y XML.\n\n" +
+                    "Gracias por su compra en JarasTech.\n" +
+                    "Atención al cliente: ventas@jarastech.com";
+
+                // Adjunto PDF
+                mail.Attachments.Add(new Attachment(rutaPDF));
+
+                // Adjunto XML
+                byte[] xmlBytes = Encoding.UTF8.GetBytes(xmlContenido);
+                mail.Attachments.Add(new Attachment(
+                    new MemoryStream(xmlBytes),
+                    "Factura_" + facturaID.ToString("D8") + ".xml",
+                    "text/xml"));
+
+                var smtp = new SmtpClient("smtp.gmail.com", 587);
+                smtp.EnableSsl = true;
+                smtp.Credentials = new System.Net.NetworkCredential(
+                    "jaracycle@gmail.com",
+                    "ilhs ccar mhtr iuso"); // ← contraseña de app Gmail
+
+                smtp.Send(mail);
+                _log.InfoFormat("Correo enviado a {0} — Factura #{1}",
+                    destinatario, facturaID);
+            }
+            catch (Exception ex)
+            {
+                _log.ErrorFormat("Error al enviar correo: {0}", ex.Message);
+                MessageBox.Show(
+                    "La factura se guardó correctamente pero no se pudo enviar el correo:\n" +
+                    ex.Message,
+                    "Aviso correo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        #endregion
+
+        // ════════════════════════════════════════════════════════════════════
+        // VALIDACIÓN
         // ════════════════════════════════════════════════════════════════════
         #region Validación
 
         private bool Validar()
         {
-            _ep.Clear();
-            OcultarError();
+            _ep.Clear(); OcultarError();
 
-            // Tab 1 — Cliente
             if (_cliente == null)
             {
-                Error(tabCliente, txtBusqCli,
-                    "Seleccione un cliente.",
+                Error(tabCliente, txtBusqCli, "Seleccione un cliente.",
                     "Tab 1 — Cliente: debe seleccionar un cliente.");
-                tabMain.SelectedIndex = 0;
-                return false;
+                tabMain.SelectedIndex = 0; return false;
             }
-
-            // Tab 2 — Productos
             if (_detalle.Count == 0)
             {
-                Error(tabProductos, txtBusqProd,
-                    "Agregue al menos un producto.",
+                Error(tabProductos, txtBusqProd, "Agregue al menos un producto.",
                     "Tab 2 — Productos: agregue al menos un producto.");
-                tabMain.SelectedIndex = 1;
-                return false;
+                tabMain.SelectedIndex = 1; return false;
             }
             if (_tipoCambio <= 0)
             {
-                Error(tabProductos, txtBusqProd,
-                    "Tipo de cambio no disponible.",
+                Error(tabProductos, txtBusqProd, "Tipo de cambio no disponible.",
                     "Tab 2 — Productos: el tipo de cambio no está disponible.");
-                tabMain.SelectedIndex = 1;
-                return false;
+                tabMain.SelectedIndex = 1; return false;
             }
-
-            // Tab 3 — Pago
             if (cboTipoPago.SelectedIndex < 0)
             {
-                Error(tabPago, cboTipoPago,
-                    "Seleccione el tipo de pago.",
+                Error(tabPago, cboTipoPago, "Seleccione el tipo de pago.",
                     "Tab 3 — Pago: seleccione el tipo de pago.");
-                tabMain.SelectedIndex = 2;
-                return false;
+                tabMain.SelectedIndex = 2; return false;
             }
             if (cboTipoPago.SelectedIndex == 0 &&
                 string.IsNullOrWhiteSpace(txtNumTarjeta.Text))
             {
-                Error(tabPago, txtNumTarjeta,
-                    "Ingrese el número de tarjeta.",
+                Error(tabPago, txtNumTarjeta, "Ingrese el número de tarjeta.",
                     "Tab 3 — Pago: ingrese el número de tarjeta.");
-                tabMain.SelectedIndex = 2;
-                return false;
+                tabMain.SelectedIndex = 2; return false;
             }
             if (cboTipoPago.SelectedIndex == 1 &&
                 string.IsNullOrWhiteSpace(txtNumTransf.Text))
             {
-                Error(tabPago, txtNumTransf,
-                    "Ingrese el número de transferencia.",
+                Error(tabPago, txtNumTransf, "Ingrese el número de transferencia.",
                     "Tab 3 — Pago: ingrese el número de transferencia.");
-                tabMain.SelectedIndex = 2;
-                return false;
+                tabMain.SelectedIndex = 2; return false;
             }
             if (cboTipoPago.SelectedIndex == 2 &&
                 string.IsNullOrWhiteSpace(txtNumSINPE.Text))
             {
-                Error(tabPago, txtNumSINPE,
-                    "Ingrese el número SINPE.",
+                Error(tabPago, txtNumSINPE, "Ingrese el número SINPE.",
                     "Tab 3 — Pago: ingrese el número de SINPE Móvil.");
-                tabMain.SelectedIndex = 2;
-                return false;
+                tabMain.SelectedIndex = 2; return false;
             }
-
-            // Tab 4 — Firma (opcional)
             if (_firma == null)
             {
-                if (MessageBox.Show(
-                    "No se capturó la firma. ¿Continuar sin firma?",
+                if (MessageBox.Show("No se capturó la firma. ¿Continuar sin firma?",
                     "Firma pendiente", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
                     == DialogResult.No)
                 {
-                    Error(tabFirma, btnCapturarFirma,
-                        "Capture la firma.",
+                    Error(tabFirma, btnCapturarFirma, "Capture la firma.",
                         "Tab 4 — Firma: capture la firma del cliente.");
-                    tabMain.SelectedIndex = 3;
-                    return false;
+                    tabMain.SelectedIndex = 3; return false;
                 }
             }
-
             return true;
         }
 
-        /// <summary>
-        /// Pone el icono de error en el control Y escribe en lblIndicarError
-        /// indicando en qué tab está el problema.
-        /// </summary>
         private void Error(TabPage tab, Control control,
                            string msgControl, string msgLabel)
         {
@@ -688,7 +1077,7 @@ namespace JarasTech.Layers.UI.Procesos
             lblIndicarError.Text = "⚠  " + msgLabel;
             lblIndicarError.ForeColor = Color.Red;
         }
-
+        
         private void LimpiarError(Control control)
         {
             _ep.SetError(control, string.Empty);
@@ -706,10 +1095,7 @@ namespace JarasTech.Layers.UI.Procesos
         // ════════════════════════════════════════════════════════════════════
         #region Limpiar / Nueva Factura
 
-        private void btnNueva_Click(object sender, EventArgs e)
-        {
-            LimpiarFormulario();
-        }
+        private void btnNueva_Click(object sender, EventArgs e) { LimpiarFormulario(); }
 
         private void LimpiarFormulario()
         {
@@ -722,7 +1108,7 @@ namespace JarasTech.Layers.UI.Procesos
             picCliente.Image = null; picFirma.Image = null;
 
             lblFirmaEstado.Text = "Sin firma capturada.";
-            lblFirmaEstado.ForeColor = Color.OrangeRed;
+            lblFirmaEstado.ForeColor = System.Drawing.Color.OrangeRed;
             btnCapturarFirma.Text = "Capturar Firma del Cliente";
 
             cboTipoPago.SelectedIndex = -1;
@@ -741,11 +1127,9 @@ namespace JarasTech.Layers.UI.Procesos
         {
             if (_detalle.Count > 0)
             {
-                if (MessageBox.Show(
-                    "¿Desea cancelar la factura en progreso?",
+                if (MessageBox.Show("¿Desea cancelar la factura en progreso?",
                     "Cancelar", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-                    == DialogResult.No)
-                    return;
+                    == DialogResult.No) return;
             }
             Close();
         }
