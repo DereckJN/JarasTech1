@@ -25,6 +25,7 @@ namespace JarasTech.Layers.UI.Mantenimientos
         private readonly IBLLProductos _bllProductos = new BLLProductos();
         private readonly IBLLMovimientosStock _bllMovimientos = new BLLMovimientosStock();
         private readonly IBLLTiposMovimientoStock _bllTipos = new BLLTiposMovimientoStock();
+        private readonly IBLLUsuarios _bllUsuarios = new BLLUsuarios();
 
         /// <summary>ID del usuario activo (asignar desde el MDI al abrir el form).</summary>
         public int UsuarioIDActivo { get; set; } = 1;
@@ -34,6 +35,22 @@ namespace JarasTech.Layers.UI.Mantenimientos
         // TipoMovimientoID: 1 = Entrada, 2 = Salida
         private const int ENTRADA = 1;
         private const int SALIDA = 2;
+
+        private class MovimientoDisplay
+        {
+            public int ID { get; set; }
+            public string Producto { get; set; }
+            public string Tipo { get; set; }
+            public int Cantidad { get; set; }
+            public string Fecha { get; set; }
+            public string FacturaCompra { get; set; }
+            public string Observaciones { get; set; }
+            public string Usuario { get; set; }
+            // Para colorear la fila
+            public int TipoMovID { get; set; }
+        }
+
+
 
         public FrmIngresoStock()
         {
@@ -220,34 +237,59 @@ namespace JarasTech.Layers.UI.Mantenimientos
         {
             try
             {
-                List<MovimientosStock> lista = _bllMovimientos.GetAllMovimientos()
+                var movimientos = _bllMovimientos.GetAllMovimientos()
                     .OrderByDescending(m => m.FechaMovimiento)
                     .ToList();
 
+                // Cargar catálogos una sola vez para no hacer N queries
+                var productos = _bllProductos.GetAllProductos()
+                    .ToDictionary(p => p.ProductoID, p =>
+                        p.CodigoInterno + " — " +
+                        (p.NombreMarca ?? "") + " " +
+                        (p.NombreModelo ?? "").Trim());
+
+                var tipos = _bllTipos.GetAllTiposMovimiento()
+                    .ToDictionary(t => t.TipoMovimientoID, t => t.NombreTipo ?? "");
+
+                // Construir lista display
+                var lista = movimientos.Select(m => new MovimientoDisplay
+                {
+                    ID = m.MovimientoID,
+                    Producto = productos.ContainsKey(m.ProductoID)
+                                    ? productos[m.ProductoID] : "ID " + m.ProductoID,
+                    Tipo = tipos.ContainsKey(m.TipoMovimientoID)
+                                    ? tipos[m.TipoMovimientoID] : "ID " + m.TipoMovimientoID,
+                    Cantidad = m.Cantidad,
+                    Fecha = m.FechaMovimiento.ToString("dd/MM/yyyy"),
+                    FacturaCompra = m.FacturaCompra ?? "",
+                    Observaciones = m.Observaciones ?? "",
+                    Usuario = _bllUsuarios.GetUsuarioByID(m.UsuarioID)?.NombreUsuario ?? "ID " + m.UsuarioID,   // si no tenés BLLUsuarios aún
+                    TipoMovID = m.TipoMovimientoID
+                }).ToList();
+
                 dgvHistorial.DataSource = lista;
 
-                // Ocultar columnas internas
-                string[] ocultar = { "ProductoID", "TipoMovimientoID", "UsuarioID" };
-                foreach (string col in ocultar)
-                    if (dgvHistorial.Columns[col] != null)
-                        dgvHistorial.Columns[col].Visible = false;
+                // Ocultar columna auxiliar de color
+                if (dgvHistorial.Columns["TipoMovID"] != null)
+                    dgvHistorial.Columns["TipoMovID"].Visible = false;
 
-                SetHdr("MovimientoID", "ID");
-                SetHdr("CodigoProducto", "Producto");
-                SetHdr("NombreTipoMovimiento", "Tipo");
+                // Headers
+                SetHdr("ID", "ID");
+                SetHdr("Producto", "Producto");
+                SetHdr("Tipo", "Tipo");
                 SetHdr("Cantidad", "Cantidad");
-                SetHdr("FechaMovimiento", "Fecha");
+                SetHdr("Fecha", "Fecha");
                 SetHdr("FacturaCompra", "Factura Compra");
                 SetHdr("Observaciones", "Observaciones");
-                SetHdr("NombreUsuario", "Usuario");
+                SetHdr("Usuario", "Usuario");
 
-                // Color por tipo de movimiento
+                // Color por tipo
                 foreach (DataGridViewRow row in dgvHistorial.Rows)
                 {
-                    if (row.DataBoundItem is MovimientosStock m)
+                    if (row.DataBoundItem is MovimientoDisplay m)
                     {
                         row.DefaultCellStyle.ForeColor =
-                            m.TipoMovimientoID == ENTRADA
+                            m.TipoMovID == ENTRADA
                             ? Color.DarkGreen
                             : Color.FromArgb(220, 53, 69);
                     }
