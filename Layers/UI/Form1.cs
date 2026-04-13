@@ -2,6 +2,7 @@
 using JarasTech.Layers.UI;
 using JarasTech.Layers.UI.Mantenimientos;
 using JarasTech.Layers.UI.Procesos;
+using JarasTech.Layers.UI.Reportes;
 using JarasTech.Layers.UI.Seguridad;
 using System;
 using System.Drawing;
@@ -152,6 +153,13 @@ namespace JarasTech
         {
             frm.StartPosition = FormStartPosition.CenterParent;
             frm.ShowDialog(this);
+        }
+
+     
+
+        private void formularioReportesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirForm(new FrmReportes());
         }
     }
 }

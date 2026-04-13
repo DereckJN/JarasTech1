@@ -36,6 +36,35 @@ namespace JarasTech.Layers.DAL
             CorreoCliente = HasCol(r, "CorreoElectronico") ? r.IsDBNull(r.GetOrdinal("CorreoElectronico")) ? null : r.GetString(r.GetOrdinal("CorreoElectronico")) : null
         };
 
+        private static Facturas MapFacturaReporte(IDataReader r) => new Facturas
+        {
+            FacturaID = r.GetInt32(r.GetOrdinal("FacturaID")),
+            ClienteID = HasCol(r, "ClienteID") ? r.GetInt32(r.GetOrdinal("ClienteID")) : 0,
+            UsuarioID = HasCol(r, "UsuarioID") ? r.GetInt32(r.GetOrdinal("UsuarioID")) : 0,
+            FechaFactura = r.GetDateTime(r.GetOrdinal("FechaFactura")),
+            SubtotalColones = HasCol(r, "SubtotalColones") ? r.GetDecimal(r.GetOrdinal("SubtotalColones")) : 0m,
+            MontoIVA = HasCol(r, "MontoIVA") ? r.GetDecimal(r.GetOrdinal("MontoIVA")) : 0m,
+            TotalColones = HasCol(r, "TotalColones") ? r.GetDecimal(r.GetOrdinal("TotalColones")) : 0m,
+            TipoCambio = HasCol(r, "TipoCambio") ? r.GetDecimal(r.GetOrdinal("TipoCambio")) : 0m,
+            TotalDolares = HasCol(r, "TotalDolares") ? r.GetDecimal(r.GetOrdinal("TotalDolares")) : 0m,
+            IVAID = HasCol(r, "IVAID") ? r.GetInt32(r.GetOrdinal("IVAID")) : 0,
+            FirmaDigital = HasCol(r, "FirmaDigital") && !r.IsDBNull(r.GetOrdinal("FirmaDigital"))
+        ? (byte[])r["FirmaDigital"]
+        : null,
+            Estado = HasCol(r, "Estado") && !r.IsDBNull(r.GetOrdinal("Estado"))
+        && r.GetBoolean(r.GetOrdinal("Estado")),
+            NombreCliente = HasCol(r, "NombreCliente") && !r.IsDBNull(r.GetOrdinal("NombreCliente"))
+        ? r.GetString(r.GetOrdinal("NombreCliente"))
+        : null,
+            NombreVendedor = HasCol(r, "Vendedor") && !r.IsDBNull(r.GetOrdinal("Vendedor"))
+        ? r.GetString(r.GetOrdinal("Vendedor"))
+        : null,
+            CorreoCliente = HasCol(r, "CorreoElectronico") && !r.IsDBNull(r.GetOrdinal("CorreoElectronico"))
+        ? r.GetString(r.GetOrdinal("CorreoElectronico"))
+        : null
+        };
+
+
         private static bool HasCol(IDataReader r, string col)
         {
             for (int i = 0; i < r.FieldCount; i++)
@@ -179,8 +208,9 @@ namespace JarasTech.Layers.DAL
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@FechaInicio", fechaInicio);
                     cmd.Parameters.AddWithValue("@FechaFin", fechaFin);
+
                     using (IDataReader r = db.ExecuteReader(cmd))
-                        while (r.Read()) lista.Add(MapFactura(r));
+                        while (r.Read()) lista.Add(MapFacturaReporte(r));
                 }
                 return lista;
             }
