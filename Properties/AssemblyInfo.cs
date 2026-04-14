@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("JarasTech")]
 [assembly: AssemblyDescription("Sistema de Venta de Dispositivos Electrónicos — ISW-411 UTN")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("UTN — Programación III")]
+[assembly: AssemblyCompany("UTN")]
 [assembly: AssemblyProduct("JarasTech")]
 [assembly: AssemblyCopyright("Copyright © 2026 JarasTech")]
 [assembly: AssemblyTrademark("")]
