@@ -161,5 +161,10 @@ namespace JarasTech
         {
             AbrirForm(new FrmReportes());
         }
+
+        private void acercaDeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new FrmAcercaDe().ShowDialog(this);
+        }
     }
 }

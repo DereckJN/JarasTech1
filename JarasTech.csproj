@@ -245,6 +245,12 @@
     <Compile Include="Layers\UI\Reportes\FrmReportes.Designer.cs">
       <DependentUpon>FrmReportes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Layers\UI\Seguridad\FrmAcercaDe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Layers\UI\Seguridad\FrmAcercaDe.Designer.cs">
+      <DependentUpon>FrmAcercaDe.cs</DependentUpon>
+    </Compile>
     <Compile Include="Layers\UI\Seguridad\FrmLogin.cs">
       <SubType>Form</SubType>
     </Compile>
