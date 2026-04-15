@@ -267,6 +267,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="util\Cryptography.cs" />
     <Compile Include="util\CustomException.cs" />
+    <Compile Include="util\PDFHelper.cs" />
     <Compile Include="util\QuickResponse.cs" />
     <Compile Include="util\UtilError.cs" />
     <Compile Include="util\Utils.cs" />

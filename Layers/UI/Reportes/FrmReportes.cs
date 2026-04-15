@@ -1,6 +1,7 @@
 ﻿using JarasTech.Layers.BLL;
 using JarasTech.Layers.Entities;
 using JarasTech.Layers.Interfaces.Ibll;
+using JarasTech.Layers.Util;
 using log4net;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -108,6 +109,7 @@ namespace JarasTech.Layers.UI.Reportes
         private string GenerarPDFProductos(List<Productos> lista)
         {
             QuestPDF.Settings.License = LicenseType.Community;
+            byte[] logoBytes = PDFHelper.ObtenerLogoBytes();
             string ruta = RutaReporte("Reporte_Productos");
 
             Document.Create(doc =>
@@ -122,6 +124,12 @@ namespace JarasTech.Layers.UI.Reportes
                     {
                         h.Item().Row(row =>
                         {
+                            // ── Logo ──────────────────────────────────────────────
+                            if (logoBytes != null)
+                                row.ConstantItem(70).Height(55).Image(logoBytes);
+                            else
+                                row.ConstantItem(70);
+
                             row.RelativeItem().Column(c =>
                             {
                                 c.Item().Text("JarasTech").Bold().FontSize(20)
@@ -229,7 +237,7 @@ namespace JarasTech.Layers.UI.Reportes
         {
             QuestPDF.Settings.License = LicenseType.Community;
             string ruta = RutaReporte("Reporte_Facturas");
-
+            byte[] logoBytes = PDFHelper.ObtenerLogoBytes();
             decimal totC = lista.Sum(f => f.TotalColones);
             decimal totD = lista.Sum(f => f.TotalDolares);
             decimal totIVA = lista.Sum(f => f.MontoIVA);
@@ -248,6 +256,11 @@ namespace JarasTech.Layers.UI.Reportes
                         {
                             row.RelativeItem().Column(c =>
                             {
+                                // ── Logo ──────────────────────────────────────────────
+                                if (logoBytes != null)
+                                    row.ConstantItem(70).Height(55).Image(logoBytes);
+                                else
+                                    row.ConstantItem(70);
                                 c.Item().Text("JarasTech").Bold().FontSize(20)
                                     .FontColor(Colors.Blue.Darken3);
                                 c.Item().Text("Reporte de Facturas").FontSize(11)
@@ -318,22 +331,23 @@ namespace JarasTech.Layers.UI.Reportes
                                     .Text("$ " + f.TotalDolares.ToString("N2"));
                                 alt = !alt;
                             }
+
                         });
 
-                        content.Item().PaddingTop(15).AlignRight().Width(300).Column(tot =>
+                        content.Item().PaddingTop(15).AlignRight().Width(320).Column(tot =>
                         {
                             tot.Item().LineHorizontal(1).LineColor(Colors.Blue.Darken2);
                             tot.Item().Row(r =>
                             {
                                 r.RelativeItem().Text("Total IVA:").FontSize(10);
-                                r.ConstantItem(130).AlignRight()
+                                r.ConstantItem(140).AlignRight()
                                     .Text("₡ " + totIVA.ToString("N2")).FontSize(10);
                             });
                             tot.Item().Row(r =>
                             {
                                 r.RelativeItem().Text("TOTAL ₡:").Bold().FontSize(12)
                                     .FontColor(Colors.Green.Darken2);
-                                r.ConstantItem(130).AlignRight()
+                                r.ConstantItem(140).AlignRight()
                                     .Text("₡ " + totC.ToString("N2")).Bold().FontSize(12)
                                     .FontColor(Colors.Green.Darken2);
                             });
@@ -341,12 +355,26 @@ namespace JarasTech.Layers.UI.Reportes
                             {
                                 r.RelativeItem().Text("TOTAL $:").Bold().FontSize(12)
                                     .FontColor(Colors.Blue.Darken2);
-                                r.ConstantItem(130).AlignRight()
+                                r.ConstantItem(140).AlignRight()
                                     .Text("$ " + totD.ToString("N2")).Bold().FontSize(12)
                                     .FontColor(Colors.Blue.Darken2);
                             });
                         });
+
+                        // ── Total en letras ────────────────────────────────────────────────
+                        content.Item().PaddingTop(10)
+                            .Background(Colors.Blue.Lighten5)
+                            .Padding(8)
+                            .Column(col =>
+                            {
+                                col.Item().Text("SON:").Bold().FontSize(8)
+            .FontColor(Colors.Grey.Darken2);
+                                col.Item().Text(PDFHelper.Capitalizar(PDFHelper.MontoALetras(totC)))
+            .FontSize(10).Bold().FontColor(Colors.Blue.Darken3);
+                            });
+
                     });
+                  
 
                     page.Footer().AlignCenter()
                         .Text("JarasTech — " + DateTime.Now.ToString("dd/MM/yyyy HH:mm"))
@@ -391,6 +419,7 @@ namespace JarasTech.Layers.UI.Reportes
         private string GenerarPDFClientes(List<Clientes> lista)
         {
             QuestPDF.Settings.License = LicenseType.Community;
+            byte[] logoBytes = PDFHelper.ObtenerLogoBytes();
             string ruta = RutaReporte("Reporte_Clientes");
 
             Document.Create(doc =>
@@ -405,6 +434,12 @@ namespace JarasTech.Layers.UI.Reportes
                     {
                         h.Item().Row(row =>
                         {
+                            // ── Logo ──────────────────────────────────────────────
+                            if (logoBytes != null)
+                                row.ConstantItem(70).Height(55).Image(logoBytes);
+                            else
+                                row.ConstantItem(70);
+
                             row.RelativeItem().Column(c =>
                             {
                                 c.Item().Text("JarasTech").Bold().FontSize(20)
@@ -640,6 +675,7 @@ namespace JarasTech.Layers.UI.Reportes
         {
             QuestPDF.Settings.License = LicenseType.Community;
             string ruta = RutaReporte("Reporte_Grafico_Ventas");
+            byte[] logoBytes = PDFHelper.ObtenerLogoBytes();
             byte[] imgBytes = File.ReadAllBytes(rutaImagen);
 
             Document.Create(doc =>
@@ -653,6 +689,11 @@ namespace JarasTech.Layers.UI.Reportes
                     {
                         h.Item().Row(row =>
                         {
+                            // ── Logo ──────────────────────────────────────────────
+                            if (logoBytes != null)
+                                row.ConstantItem(70).Height(55).Image(logoBytes);
+                            else
+                                row.ConstantItem(70);
                             row.RelativeItem().Column(c =>
                             {
                                 c.Item().Text("JarasTech").Bold().FontSize(20)

@@ -2,6 +2,7 @@
 using JarasTech.Layers.Entities;
 using JarasTech.Layers.Interfaces.Ibll;
 using JarasTech.Layers.Persistencia;
+using JarasTech.Layers.Util;
 using log4net;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
@@ -651,6 +652,7 @@ namespace JarasTech.Layers.UI.Procesos
         /// </summary>
         private string GenerarPDF(Facturas factura)
         {
+            byte[] logoBytes = PDFHelper.ObtenerLogoBytes();
             QuestPDF.Settings.License = LicenseType.Community;
 
             string dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Facturas");
@@ -691,7 +693,14 @@ namespace JarasTech.Layers.UI.Procesos
                     {
                         h.Item().Row(row =>
                         {
-                            row.RelativeItem().Column(col =>
+                            // ── Logo ──────────────────────────────────────────────
+                            if (logoBytes != null)
+                                row.ConstantItem(70).Height(55).Image(logoBytes);
+                            else
+                                row.ConstantItem(70);
+
+                            // ── Datos empresa ──────────────────────────────────────
+                            row.RelativeItem().PaddingLeft(8).Column(col =>
                             {
                                 col.Item().Text("JarasTech")
                                     .FontSize(22).Bold().FontColor(Colors.Blue.Darken3);
@@ -700,6 +709,8 @@ namespace JarasTech.Layers.UI.Procesos
                                 col.Item().Text("ventas@jarastech.com  |  San José, Costa Rica")
                                     .FontSize(9);
                             });
+
+                            // ── Datos factura ──────────────────────────────────────
                             row.RelativeItem().AlignRight().Column(col =>
                             {
                                 col.Item().Text("FACTURA ELECTRÓNICA")
@@ -709,16 +720,13 @@ namespace JarasTech.Layers.UI.Procesos
                                 col.Item().Text("Fecha: " +
                                     factura.FechaFactura.ToString("dd/MM/yyyy HH:mm"))
                                     .FontSize(9);
-                                // ── Vendedor en encabezado ──────────────────────
                                 if (UsuarioActivo != null)
                                     col.Item().PaddingTop(4)
-                                        .Text("Atendido por: " +
-                                              UsuarioActivo.NombreUsuario)
+                                        .Text("Atendido por: " + UsuarioActivo.NombreUsuario)
                                         .FontSize(9).FontColor(Colors.Grey.Darken1);
                             });
                         });
-                        h.Item().PaddingTop(6).LineHorizontal(2)
-                            .LineColor(Colors.Blue.Darken2);
+                        h.Item().PaddingTop(6).LineHorizontal(2).LineColor(Colors.Blue.Darken2);
                     });
 
                     // ── CONTENIDO ─────────────────────────────────────────
@@ -837,6 +845,18 @@ namespace JarasTech.Layers.UI.Procesos
                                     .Text("₡ " + totC.ToString("N2")).FontSize(13).Bold()
                                     .FontColor(Colors.Green.Darken2);
                             });
+                            // ── Total en letras ────────────────────────────────────────
+                            content.Item().PaddingTop(8)
+                                .Background(Colors.Blue.Lighten5)
+                                .Padding(8)
+                                .Column(col =>
+                                {
+                                    col.Item().Text("SON:").Bold().FontSize(8)
+            .FontColor(Colors.Grey.Darken2);
+                                    col.Item().Text(PDFHelper.Capitalizar(PDFHelper.MontoALetras(totC)))
+            .FontSize(10).Bold().FontColor(Colors.Blue.Darken3);
+                                });
+
                             tot.Item().Row(r =>
                             {
                                 r.RelativeItem().Text("TOTAL $:").FontSize(13).Bold()
