@@ -384,7 +384,7 @@ namespace JarasTech.Layers.UI.Procesos
             string filtro = txtBusqProd.Text.Trim().ToLower();
             if (string.IsNullOrEmpty(filtro))
             {
-                Error(tabProductos, txtBusqProd, "Ingrese un Producto.",
+                Error(tabProductos, txtBusqProd, "Ingrese un criterio.",
                     "Tab 2 — Productos: ingrese el nombre del producto."); return;
             }
             LimpiarError(txtBusqProd);
@@ -405,25 +405,139 @@ namespace JarasTech.Layers.UI.Procesos
 
             using (Form dlg = new Form())
             {
-                dlg.Text = "Seleccione el producto"; dlg.Size = new Size(820, 400);
+                dlg.Text = "Seleccione el producto";
+                dlg.Size = new Size(860, 440);
                 dlg.StartPosition = FormStartPosition.CenterParent;
-                dlg.FormBorderStyle = FormBorderStyle.FixedDialog; dlg.MaximizeBox = false;
-                DataGridView dgv = new DataGridView
+                dlg.FormBorderStyle = FormBorderStyle.FixedDialog;
+                dlg.MaximizeBox = false;
+                dlg.BackColor = Color.FromArgb(245, 246, 250);
+
+                // Header
+                var pnlHdr = new Panel
+                {
+                    Dock = DockStyle.Top,
+                    Height = 42,
+                    BackColor = Color.FromArgb(22, 22, 55)
+                };
+                var lblHdr = new Label
+                {
+                    Text = "  📦  Se encontraron " + lista.Count + " productos — doble clic para agregar",
+                    ForeColor = Color.White,
+                    Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+                };
+                pnlHdr.Controls.Add(lblHdr);
+                dlg.Controls.Add(pnlHdr);
+
+                // DataGridView con columnas controladas
+                var dgv = new DataGridView
                 {
                     Dock = DockStyle.Fill,
                     ReadOnly = true,
                     AllowUserToAddRows = false,
                     SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                    AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                    AutoGenerateColumns = false,
                     RowHeadersVisible = false,
-                    DataSource = lista
+                    BackgroundColor = Color.White,
+                    BorderStyle = BorderStyle.None,
+                    ColumnHeadersHeight = 32,
+                    EnableHeadersVisualStyles = false
                 };
+
+                // Estilo encabezado
+                dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(22, 56, 110);
+                dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+                dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
+                dgv.ColumnHeadersDefaultCellStyle.Padding = new Padding(6, 0, 0, 0);
+
+                // Estilo filas
+                dgv.DefaultCellStyle.Font = new Font("Segoe UI", 9.5f);
+                dgv.DefaultCellStyle.ForeColor = Color.FromArgb(22, 56, 110);
+                dgv.DefaultCellStyle.Padding = new Padding(4, 0, 0, 0);
+                dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(22, 56, 110);
+                dgv.DefaultCellStyle.SelectionForeColor = Color.White;
+                dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(243, 246, 251);
+                dgv.RowTemplate.Height = 28;
+
+                // Columnas — solo las relevantes
+                dgv.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "CodigoInterno",
+                    HeaderText = "Código",
+                    Width = 90,
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+                });
+                dgv.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "NombreMarca",
+                    HeaderText = "Marca",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                    FillWeight = 22
+                });
+                dgv.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "NombreModelo",
+                    HeaderText = "Modelo",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                    FillWeight = 22
+                });
+                dgv.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "NombreTipoDispositivo",
+                    HeaderText = "Tipo",
+                    Width = 120,
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+                });
+                dgv.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "Color",
+                    HeaderText = "Color",
+                    Width = 80,
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+                });
+                dgv.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "CantidadStock",
+                    HeaderText = "Stock",
+                    Width = 60,
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.None
+                });
+                dgv.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "PrecioColones",
+                    HeaderText = "Precio ₡",
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                    FillWeight = 34
+                });
+
+                dgv.DataSource = lista;
+
                 dgv.CellDoubleClick += (s, ev) =>
                 {
                     if (ev.RowIndex >= 0 && dgv.Rows[ev.RowIndex].DataBoundItem is Productos p)
                     { AgregarProducto(p); txtBusqProd.Clear(); dlg.Close(); }
                 };
+
+                // Pie
+                var pnlFoot = new Panel
+                {
+                    Dock = DockStyle.Bottom,
+                    Height = 36,
+                    BackColor = Color.FromArgb(235, 237, 245)
+                };
+                var lblTip = new Label
+                {
+                    Text = "  Doble clic sobre una fila para agregar el producto a la factura",
+                    ForeColor = Color.FromArgb(100, 110, 130),
+                    Font = new Font("Segoe UI", 8.5f, FontStyle.Italic),
+                    Dock = DockStyle.Fill,
+                    TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+                };
+                pnlFoot.Controls.Add(lblTip);
+                dlg.Controls.Add(pnlFoot);
                 dlg.Controls.Add(dgv);
+
                 dlg.ShowDialog(this);
             }
         }
