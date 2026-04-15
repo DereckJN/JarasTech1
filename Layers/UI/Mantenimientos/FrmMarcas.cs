@@ -131,7 +131,7 @@ namespace JarasTech.Layers.UI.Mantenimientos
                 CargarGrilla(string.Empty);
             }
             catch (System.Data.SqlClient.SqlException ex)
-                when (ex.Number == 547) // 547 = violación de FK en SQL Server
+                when (ex.Number == 547) 
             {
                 MessageBox.Show(
                     "No se puede eliminar esta marca porque tiene productos asociados.\n\n" +

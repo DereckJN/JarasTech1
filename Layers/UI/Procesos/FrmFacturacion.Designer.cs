@@ -780,7 +780,7 @@ namespace JarasTech.Layers.UI.Procesos
             this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTop.Location = new System.Drawing.Point(0, 0);
             this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(1100, 55);
+            this.pnlTop.Size = new System.Drawing.Size(1171, 55);
             this.pnlTop.TabIndex = 0;
             // 
             // lblTitulo
@@ -870,9 +870,9 @@ namespace JarasTech.Layers.UI.Procesos
             this.lblIndicarError.ForeColor = System.Drawing.Color.Red;
             this.lblIndicarError.Location = new System.Drawing.Point(14, 701);
             this.lblIndicarError.Name = "lblIndicarError";
-            this.lblIndicarError.Size = new System.Drawing.Size(382, 20);
+            this.lblIndicarError.Size = new System.Drawing.Size(81, 20);
             this.lblIndicarError.TabIndex = 4;
-            this.lblIndicarError.Text = "Hacerlo interactivo para los errores con el error provider";
+            this.lblIndicarError.Text = "Errores Erp";
             // 
             // btnCancelar
             // 
@@ -893,7 +893,7 @@ namespace JarasTech.Layers.UI.Procesos
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(1100, 795);
+            this.ClientSize = new System.Drawing.Size(1171, 824);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.lblIndicarError);
             this.Controls.Add(this.pnlTop);

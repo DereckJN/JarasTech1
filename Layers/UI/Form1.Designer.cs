@@ -15,251 +15,462 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.archivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cerrarSesionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cerrarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.acercaDeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mantenimientosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mantenimientoClientesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.iVAToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.marcasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.modelosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.productosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tipoDeDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.procesosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.facturacionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.seguridadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.usuariosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.reportesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.formularioReportesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.lblUsuarioLogueado = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblSeparador = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblPerfil = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblSpring = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblFecha = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pnlHeader = new System.Windows.Forms.Panel();
+            this.lblHeaderTitulo = new System.Windows.Forms.Label();
+            this.lblHeaderSubtitulo = new System.Windows.Forms.Label();
+            this.lblHeaderUsuario = new System.Windows.Forms.Label();
+            this.lblHeaderPerfil = new System.Windows.Forms.Label();
+            this.lblFecha = new System.Windows.Forms.Label();
+            this.pnlSidebar = new System.Windows.Forms.Panel();
+            this.picSideLogo = new System.Windows.Forms.PictureBox();
+            this.lblSideSep = new System.Windows.Forms.Label();
+            this.pnlSecMantenimientos = new System.Windows.Forms.Panel();
+            this.lblSecMant = new System.Windows.Forms.Label();
+            this.btnSideClientes = new System.Windows.Forms.Button();
+            this.btnSideIVA = new System.Windows.Forms.Button();
+            this.btnSideMarcas = new System.Windows.Forms.Button();
+            this.btnSideModelos = new System.Windows.Forms.Button();
+            this.btnSideProductos = new System.Windows.Forms.Button();
+            this.btnSideTipos = new System.Windows.Forms.Button();
+            this.btnSideStock = new System.Windows.Forms.Button();
+            this.pnlSecProcesos = new System.Windows.Forms.Panel();
+            this.lblSecProc = new System.Windows.Forms.Label();
+            this.btnSideFacturacion = new System.Windows.Forms.Button();
+            this.pnlSecReportes = new System.Windows.Forms.Panel();
+            this.lblSecRep = new System.Windows.Forms.Label();
+            this.btnSideReportes = new System.Windows.Forms.Button();
+            this.pnlSecSeguridad = new System.Windows.Forms.Panel();
+            this.lblSecSeg = new System.Windows.Forms.Label();
+            this.btnSideUsuarios = new System.Windows.Forms.Button();
+            this.lblSideSep2 = new System.Windows.Forms.Label();
+            this.btnSideAcercaDe = new System.Windows.Forms.Button();
+            this.btnSideSalir = new System.Windows.Forms.Button();
             this.timerReloj = new System.Windows.Forms.Timer(this.components);
-            this.menuStrip1.SuspendLayout();
-            this.statusStrip.SuspendLayout();
+            this.pnlHeader.SuspendLayout();
+            this.pnlSidebar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picSideLogo)).BeginInit();
+            this.pnlSecMantenimientos.SuspendLayout();
+            this.pnlSecProcesos.SuspendLayout();
+            this.pnlSecReportes.SuspendLayout();
+            this.pnlSecSeguridad.SuspendLayout();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // pnlHeader
             // 
-            this.menuStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(60)))));
-            this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.menuStrip1.ForeColor = System.Drawing.Color.White;
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.archivoToolStripMenuItem,
-            this.mantenimientosToolStripMenuItem,
-            this.procesosToolStripMenuItem,
-            this.seguridadToolStripMenuItem,
-            this.reportesToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 4, 0, 4);
-            this.menuStrip1.Size = new System.Drawing.Size(1100, 33);
-            this.menuStrip1.TabIndex = 0;
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(15)))), ((int)(((byte)(40)))));
+            this.pnlHeader.Controls.Add(this.lblHeaderTitulo);
+            this.pnlHeader.Controls.Add(this.lblHeaderSubtitulo);
+            this.pnlHeader.Controls.Add(this.lblHeaderUsuario);
+            this.pnlHeader.Controls.Add(this.lblHeaderPerfil);
+            this.pnlHeader.Controls.Add(this.lblFecha);
+            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlHeader.Location = new System.Drawing.Point(215, 0);
+            this.pnlHeader.Name = "pnlHeader";
+            this.pnlHeader.Size = new System.Drawing.Size(1163, 62);
+            this.pnlHeader.TabIndex = 0;
             // 
-            // archivoToolStripMenuItem
+            // lblHeaderTitulo
             // 
-            this.archivoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.acercaDeToolStripMenuItem,
-            this.cerrarSesionToolStripMenuItem,
-            this.cerrarToolStripMenuItem});
-            this.archivoToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.archivoToolStripMenuItem.Name = "archivoToolStripMenuItem";
-            this.archivoToolStripMenuItem.Size = new System.Drawing.Size(83, 25);
-            this.archivoToolStripMenuItem.Text = "Archivo";
+            this.lblHeaderTitulo.AutoSize = true;
+            this.lblHeaderTitulo.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold);
+            this.lblHeaderTitulo.ForeColor = System.Drawing.Color.White;
+            this.lblHeaderTitulo.Location = new System.Drawing.Point(6, 7);
+            this.lblHeaderTitulo.Name = "lblHeaderTitulo";
+            this.lblHeaderTitulo.Size = new System.Drawing.Size(127, 35);
+            this.lblHeaderTitulo.TabIndex = 1;
+            this.lblHeaderTitulo.Text = "JarasTech";
             // 
-            // cerrarSesionToolStripMenuItem
+            // lblHeaderSubtitulo
             // 
-            this.cerrarSesionToolStripMenuItem.Name = "cerrarSesionToolStripMenuItem";
-            this.cerrarSesionToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
-            this.cerrarSesionToolStripMenuItem.Text = "🔓  Cerrar Sesión";
-            this.cerrarSesionToolStripMenuItem.Click += new System.EventHandler(this.cerrarSesionToolStripMenuItem_Click);
+            this.lblHeaderSubtitulo.AutoSize = true;
+            this.lblHeaderSubtitulo.Font = new System.Drawing.Font("Segoe UI", 8.5F, System.Drawing.FontStyle.Italic);
+            this.lblHeaderSubtitulo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(160)))), ((int)(((byte)(200)))));
+            this.lblHeaderSubtitulo.Location = new System.Drawing.Point(8, 39);
+            this.lblHeaderSubtitulo.Name = "lblHeaderSubtitulo";
+            this.lblHeaderSubtitulo.Size = new System.Drawing.Size(299, 20);
+            this.lblHeaderSubtitulo.TabIndex = 2;
+            this.lblHeaderSubtitulo.Text = "Sistema de Venta de Dispositivos Electrónicos";
             // 
-            // cerrarToolStripMenuItem
+            // lblHeaderUsuario
             // 
-            this.cerrarToolStripMenuItem.Name = "cerrarToolStripMenuItem";
-            this.cerrarToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
-            this.cerrarToolStripMenuItem.Text = "✖  Salir";
-            this.cerrarToolStripMenuItem.Click += new System.EventHandler(this.cerrarToolStripMenuItem_Click);
+            this.lblHeaderUsuario.AutoSize = true;
+            this.lblHeaderUsuario.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.lblHeaderUsuario.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(200)))), ((int)(((byte)(255)))));
+            this.lblHeaderUsuario.Location = new System.Drawing.Point(870, 14);
+            this.lblHeaderUsuario.Name = "lblHeaderUsuario";
+            this.lblHeaderUsuario.Size = new System.Drawing.Size(57, 20);
+            this.lblHeaderUsuario.TabIndex = 3;
+            this.lblHeaderUsuario.Text = "👤  ---";
             // 
-            // acercaDeToolStripMenuItem
+            // lblHeaderPerfil
             // 
-            this.acercaDeToolStripMenuItem.Name = "acercaDeToolStripMenuItem";
-            this.acercaDeToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
-            this.acercaDeToolStripMenuItem.Text = "ℹ  Acerca de...";
-            this.acercaDeToolStripMenuItem.Click += new System.EventHandler(this.acercaDeToolStripMenuItem_Click);
-            // 
-            // mantenimientosToolStripMenuItem
-            // 
-            this.mantenimientosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mantenimientoClientesToolStripMenuItem,
-            this.iVAToolStripMenuItem,
-            this.marcasToolStripMenuItem,
-            this.modelosToolStripMenuItem,
-            this.productosToolStripMenuItem,
-            this.tipoDeDToolStripMenuItem,
-            this.stockToolStripMenuItem});
-            this.mantenimientosToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.mantenimientosToolStripMenuItem.Name = "mantenimientosToolStripMenuItem";
-            this.mantenimientosToolStripMenuItem.Size = new System.Drawing.Size(150, 25);
-            this.mantenimientosToolStripMenuItem.Text = "Mantenimientos";
-            // 
-            // mantenimientoClientesToolStripMenuItem
-            // 
-            this.mantenimientoClientesToolStripMenuItem.Name = "mantenimientoClientesToolStripMenuItem";
-            this.mantenimientoClientesToolStripMenuItem.Size = new System.Drawing.Size(272, 26);
-            this.mantenimientoClientesToolStripMenuItem.Text = "👥  Clientes";
-            this.mantenimientoClientesToolStripMenuItem.Click += new System.EventHandler(this.mantenimientoClientesToolStripMenuItem_Click);
-            // 
-            // iVAToolStripMenuItem
-            // 
-            this.iVAToolStripMenuItem.Name = "iVAToolStripMenuItem";
-            this.iVAToolStripMenuItem.Size = new System.Drawing.Size(272, 26);
-            this.iVAToolStripMenuItem.Text = "💲  IVA";
-            this.iVAToolStripMenuItem.Click += new System.EventHandler(this.iVAToolStripMenuItem_Click);
-            // 
-            // marcasToolStripMenuItem
-            // 
-            this.marcasToolStripMenuItem.Name = "marcasToolStripMenuItem";
-            this.marcasToolStripMenuItem.Size = new System.Drawing.Size(272, 26);
-            this.marcasToolStripMenuItem.Text = "🏷  Marcas";
-            this.marcasToolStripMenuItem.Click += new System.EventHandler(this.marcasToolStripMenuItem_Click);
-            // 
-            // modelosToolStripMenuItem
-            // 
-            this.modelosToolStripMenuItem.Name = "modelosToolStripMenuItem";
-            this.modelosToolStripMenuItem.Size = new System.Drawing.Size(272, 26);
-            this.modelosToolStripMenuItem.Text = "📱  Modelos";
-            this.modelosToolStripMenuItem.Click += new System.EventHandler(this.modelosToolStripMenuItem_Click);
-            // 
-            // productosToolStripMenuItem
-            // 
-            this.productosToolStripMenuItem.Name = "productosToolStripMenuItem";
-            this.productosToolStripMenuItem.Size = new System.Drawing.Size(272, 26);
-            this.productosToolStripMenuItem.Text = "📦  Productos";
-            this.productosToolStripMenuItem.Click += new System.EventHandler(this.productosToolStripMenuItem_Click);
-            // 
-            // tipoDeDToolStripMenuItem
-            // 
-            this.tipoDeDToolStripMenuItem.Name = "tipoDeDToolStripMenuItem";
-            this.tipoDeDToolStripMenuItem.Size = new System.Drawing.Size(272, 26);
-            this.tipoDeDToolStripMenuItem.Text = "🗂  Tipo de Dispositivo";
-            this.tipoDeDToolStripMenuItem.Click += new System.EventHandler(this.tipoDeDToolStripMenuItem_Click);
-            // 
-            // stockToolStripMenuItem
-            // 
-            this.stockToolStripMenuItem.Name = "stockToolStripMenuItem";
-            this.stockToolStripMenuItem.Size = new System.Drawing.Size(272, 26);
-            this.stockToolStripMenuItem.Text = "📊  Stock / Inventario";
-            this.stockToolStripMenuItem.Click += new System.EventHandler(this.stockToolStripMenuItem_Click);
-            // 
-            // procesosToolStripMenuItem
-            // 
-            this.procesosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.facturacionToolStripMenuItem});
-            this.procesosToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.procesosToolStripMenuItem.Name = "procesosToolStripMenuItem";
-            this.procesosToolStripMenuItem.Size = new System.Drawing.Size(91, 25);
-            this.procesosToolStripMenuItem.Text = "Procesos";
-            // 
-            // facturacionToolStripMenuItem
-            // 
-            this.facturacionToolStripMenuItem.Name = "facturacionToolStripMenuItem";
-            this.facturacionToolStripMenuItem.Size = new System.Drawing.Size(214, 26);
-            this.facturacionToolStripMenuItem.Text = "🧾  Facturación";
-            this.facturacionToolStripMenuItem.Click += new System.EventHandler(this.facturacionToolStripMenuItem_Click);
-            // 
-            // seguridadToolStripMenuItem
-            // 
-            this.seguridadToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.usuariosToolStripMenuItem});
-            this.seguridadToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.seguridadToolStripMenuItem.Name = "seguridadToolStripMenuItem";
-            this.seguridadToolStripMenuItem.Size = new System.Drawing.Size(102, 25);
-            this.seguridadToolStripMenuItem.Text = "Seguridad";
-            // 
-            // usuariosToolStripMenuItem
-            // 
-            this.usuariosToolStripMenuItem.Name = "usuariosToolStripMenuItem";
-            this.usuariosToolStripMenuItem.Size = new System.Drawing.Size(191, 26);
-            this.usuariosToolStripMenuItem.Text = "👤  Usuarios";
-            this.usuariosToolStripMenuItem.Click += new System.EventHandler(this.usuariosToolStripMenuItem_Click);
-            // 
-            // reportesToolStripMenuItem
-            // 
-            this.reportesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.formularioReportesToolStripMenuItem});
-            this.reportesToolStripMenuItem.Name = "reportesToolStripMenuItem";
-            this.reportesToolStripMenuItem.Size = new System.Drawing.Size(91, 25);
-            this.reportesToolStripMenuItem.Text = "Reportes";
-            // 
-            // formularioReportesToolStripMenuItem
-            // 
-            this.formularioReportesToolStripMenuItem.Name = "formularioReportesToolStripMenuItem";
-            this.formularioReportesToolStripMenuItem.Size = new System.Drawing.Size(249, 26);
-            this.formularioReportesToolStripMenuItem.Text = "Formulario Reportes";
-            this.formularioReportesToolStripMenuItem.Click += new System.EventHandler(this.formularioReportesToolStripMenuItem_Click);
-            // 
-            // statusStrip
-            // 
-            this.statusStrip.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(45)))));
-            this.statusStrip.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.statusStrip.ForeColor = System.Drawing.Color.White;
-            this.statusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblUsuarioLogueado,
-            this.lblSeparador,
-            this.lblPerfil,
-            this.lblSpring,
-            this.lblFecha});
-            this.statusStrip.Location = new System.Drawing.Point(0, 524);
-            this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 13, 0);
-            this.statusStrip.Size = new System.Drawing.Size(1100, 26);
-            this.statusStrip.SizingGrip = false;
-            this.statusStrip.TabIndex = 2;
-            // 
-            // lblUsuarioLogueado
-            // 
-            this.lblUsuarioLogueado.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.lblUsuarioLogueado.ForeColor = System.Drawing.Color.LightCyan;
-            this.lblUsuarioLogueado.Name = "lblUsuarioLogueado";
-            this.lblUsuarioLogueado.Size = new System.Drawing.Size(65, 20);
-            this.lblUsuarioLogueado.Text = "  👤  ---";
-            // 
-            // lblSeparador
-            // 
-            this.lblSeparador.ForeColor = System.Drawing.Color.Gray;
-            this.lblSeparador.Name = "lblSeparador";
-            this.lblSeparador.Size = new System.Drawing.Size(29, 20);
-            this.lblSeparador.Text = "  |  ";
-            // 
-            // lblPerfil
-            // 
-            this.lblPerfil.ForeColor = System.Drawing.Color.LightYellow;
-            this.lblPerfil.Name = "lblPerfil";
-            this.lblPerfil.Size = new System.Drawing.Size(64, 20);
-            this.lblPerfil.Text = "  🔑  ---";
-            // 
-            // lblSpring
-            // 
-            this.lblSpring.Name = "lblSpring";
-            this.lblSpring.Size = new System.Drawing.Size(763, 20);
-            this.lblSpring.Spring = true;
+            this.lblHeaderPerfil.AutoSize = true;
+            this.lblHeaderPerfil.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
+            this.lblHeaderPerfil.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(180)))), ((int)(((byte)(190)))), ((int)(((byte)(200)))));
+            this.lblHeaderPerfil.Location = new System.Drawing.Point(870, 38);
+            this.lblHeaderPerfil.Name = "lblHeaderPerfil";
+            this.lblHeaderPerfil.Size = new System.Drawing.Size(27, 19);
+            this.lblHeaderPerfil.TabIndex = 4;
+            this.lblHeaderPerfil.Text = "---";
             // 
             // lblFecha
             // 
-            this.lblFecha.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.lblFecha.ForeColor = System.Drawing.Color.LightGray;
+            this.lblFecha.AutoSize = true;
+            this.lblFecha.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this.lblFecha.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(170)))), ((int)(((byte)(185)))));
+            this.lblFecha.Location = new System.Drawing.Point(1010, 22);
             this.lblFecha.Name = "lblFecha";
-            this.lblFecha.Size = new System.Drawing.Size(165, 20);
-            this.lblFecha.Text = "  🕐  13/04/2026  11:25";
+            this.lblFecha.Size = new System.Drawing.Size(133, 20);
+            this.lblFecha.TabIndex = 5;
+            this.lblFecha.Text = "🕐  --/--/----  --:--";
+            // 
+            // pnlSidebar
+            // 
+            this.pnlSidebar.AutoScroll = true;
+            this.pnlSidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(22)))), ((int)(((byte)(52)))));
+            this.pnlSidebar.Controls.Add(this.picSideLogo);
+            this.pnlSidebar.Controls.Add(this.lblSideSep);
+            this.pnlSidebar.Controls.Add(this.pnlSecMantenimientos);
+            this.pnlSidebar.Controls.Add(this.pnlSecProcesos);
+            this.pnlSidebar.Controls.Add(this.pnlSecReportes);
+            this.pnlSidebar.Controls.Add(this.pnlSecSeguridad);
+            this.pnlSidebar.Controls.Add(this.lblSideSep2);
+            this.pnlSidebar.Controls.Add(this.btnSideAcercaDe);
+            this.pnlSidebar.Controls.Add(this.btnSideSalir);
+            this.pnlSidebar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlSidebar.Location = new System.Drawing.Point(0, 0);
+            this.pnlSidebar.Name = "pnlSidebar";
+            this.pnlSidebar.Size = new System.Drawing.Size(215, 686);
+            this.pnlSidebar.TabIndex = 1;
+            // 
+            // picSideLogo
+            // 
+            this.picSideLogo.BackColor = System.Drawing.Color.Transparent;
+            this.picSideLogo.Image = global::JarasTech.Properties.Resources.Logo_JarasTech;
+            this.picSideLogo.Location = new System.Drawing.Point(19, 14);
+            this.picSideLogo.Name = "picSideLogo";
+            this.picSideLogo.Size = new System.Drawing.Size(160, 99);
+            this.picSideLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picSideLogo.TabIndex = 0;
+            this.picSideLogo.TabStop = false;
+            // 
+            // lblSideSep
+            // 
+            this.lblSideSep.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
+            this.lblSideSep.Location = new System.Drawing.Point(15, 127);
+            this.lblSideSep.Name = "lblSideSep";
+            this.lblSideSep.Size = new System.Drawing.Size(185, 2);
+            this.lblSideSep.TabIndex = 98;
+            // 
+            // pnlSecMantenimientos
+            // 
+            this.pnlSecMantenimientos.BackColor = System.Drawing.Color.Transparent;
+            this.pnlSecMantenimientos.Controls.Add(this.lblSecMant);
+            this.pnlSecMantenimientos.Controls.Add(this.btnSideClientes);
+            this.pnlSecMantenimientos.Controls.Add(this.btnSideIVA);
+            this.pnlSecMantenimientos.Controls.Add(this.btnSideMarcas);
+            this.pnlSecMantenimientos.Controls.Add(this.btnSideModelos);
+            this.pnlSecMantenimientos.Controls.Add(this.btnSideProductos);
+            this.pnlSecMantenimientos.Controls.Add(this.btnSideTipos);
+            this.pnlSecMantenimientos.Controls.Add(this.btnSideStock);
+            this.pnlSecMantenimientos.Location = new System.Drawing.Point(0, 134);
+            this.pnlSecMantenimientos.Name = "pnlSecMantenimientos";
+            this.pnlSecMantenimientos.Size = new System.Drawing.Size(215, 254);
+            this.pnlSecMantenimientos.TabIndex = 10;
+            // 
+            // lblSecMant
+            // 
+            this.lblSecMant.Font = new System.Drawing.Font("Segoe UI", 7.5F, System.Drawing.FontStyle.Bold);
+            this.lblSecMant.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(130)))), ((int)(((byte)(180)))));
+            this.lblSecMant.Location = new System.Drawing.Point(12, 6);
+            this.lblSecMant.Name = "lblSecMant";
+            this.lblSecMant.Size = new System.Drawing.Size(191, 16);
+            this.lblSecMant.TabIndex = 0;
+            this.lblSecMant.Text = "MANTENIMIENTOS";
+            // 
+            // btnSideClientes
+            // 
+            this.btnSideClientes.BackColor = System.Drawing.Color.Transparent;
+            this.btnSideClientes.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSideClientes.FlatAppearance.BorderSize = 0;
+            this.btnSideClientes.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(100)))), ((int)(((byte)(185)))));
+            this.btnSideClientes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSideClientes.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.btnSideClientes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(215)))), ((int)(((byte)(230)))));
+            this.btnSideClientes.Location = new System.Drawing.Point(0, 26);
+            this.btnSideClientes.Name = "btnSideClientes";
+            this.btnSideClientes.Size = new System.Drawing.Size(215, 32);
+            this.btnSideClientes.TabIndex = 1;
+            this.btnSideClientes.Text = "  👥  Clientes";
+            this.btnSideClientes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSideClientes.UseVisualStyleBackColor = false;
+            this.btnSideClientes.Click += new System.EventHandler(this.btnSideClientes_Click);
+            // 
+            // btnSideIVA
+            // 
+            this.btnSideIVA.BackColor = System.Drawing.Color.Transparent;
+            this.btnSideIVA.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSideIVA.FlatAppearance.BorderSize = 0;
+            this.btnSideIVA.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(100)))), ((int)(((byte)(185)))));
+            this.btnSideIVA.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSideIVA.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.btnSideIVA.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(215)))), ((int)(((byte)(230)))));
+            this.btnSideIVA.Location = new System.Drawing.Point(0, 58);
+            this.btnSideIVA.Name = "btnSideIVA";
+            this.btnSideIVA.Size = new System.Drawing.Size(215, 32);
+            this.btnSideIVA.TabIndex = 2;
+            this.btnSideIVA.Text = "  💲  IVA";
+            this.btnSideIVA.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSideIVA.UseVisualStyleBackColor = false;
+            this.btnSideIVA.Click += new System.EventHandler(this.btnSideIVA_Click);
+            // 
+            // btnSideMarcas
+            // 
+            this.btnSideMarcas.BackColor = System.Drawing.Color.Transparent;
+            this.btnSideMarcas.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSideMarcas.FlatAppearance.BorderSize = 0;
+            this.btnSideMarcas.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(100)))), ((int)(((byte)(185)))));
+            this.btnSideMarcas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSideMarcas.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.btnSideMarcas.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(215)))), ((int)(((byte)(230)))));
+            this.btnSideMarcas.Location = new System.Drawing.Point(0, 90);
+            this.btnSideMarcas.Name = "btnSideMarcas";
+            this.btnSideMarcas.Size = new System.Drawing.Size(215, 32);
+            this.btnSideMarcas.TabIndex = 3;
+            this.btnSideMarcas.Text = "  🏷  Marcas";
+            this.btnSideMarcas.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSideMarcas.UseVisualStyleBackColor = false;
+            this.btnSideMarcas.Click += new System.EventHandler(this.btnSideMarcas_Click);
+            // 
+            // btnSideModelos
+            // 
+            this.btnSideModelos.BackColor = System.Drawing.Color.Transparent;
+            this.btnSideModelos.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSideModelos.FlatAppearance.BorderSize = 0;
+            this.btnSideModelos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(100)))), ((int)(((byte)(185)))));
+            this.btnSideModelos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSideModelos.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.btnSideModelos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(215)))), ((int)(((byte)(230)))));
+            this.btnSideModelos.Location = new System.Drawing.Point(0, 122);
+            this.btnSideModelos.Name = "btnSideModelos";
+            this.btnSideModelos.Size = new System.Drawing.Size(215, 32);
+            this.btnSideModelos.TabIndex = 4;
+            this.btnSideModelos.Text = "  📱  Modelos";
+            this.btnSideModelos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSideModelos.UseVisualStyleBackColor = false;
+            this.btnSideModelos.Click += new System.EventHandler(this.btnSideModelos_Click);
+            // 
+            // btnSideProductos
+            // 
+            this.btnSideProductos.BackColor = System.Drawing.Color.Transparent;
+            this.btnSideProductos.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSideProductos.FlatAppearance.BorderSize = 0;
+            this.btnSideProductos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(100)))), ((int)(((byte)(185)))));
+            this.btnSideProductos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSideProductos.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.btnSideProductos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(215)))), ((int)(((byte)(230)))));
+            this.btnSideProductos.Location = new System.Drawing.Point(0, 154);
+            this.btnSideProductos.Name = "btnSideProductos";
+            this.btnSideProductos.Size = new System.Drawing.Size(215, 32);
+            this.btnSideProductos.TabIndex = 5;
+            this.btnSideProductos.Text = "  📦  Productos";
+            this.btnSideProductos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSideProductos.UseVisualStyleBackColor = false;
+            this.btnSideProductos.Click += new System.EventHandler(this.btnSideProductos_Click);
+            // 
+            // btnSideTipos
+            // 
+            this.btnSideTipos.BackColor = System.Drawing.Color.Transparent;
+            this.btnSideTipos.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSideTipos.FlatAppearance.BorderSize = 0;
+            this.btnSideTipos.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(100)))), ((int)(((byte)(185)))));
+            this.btnSideTipos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSideTipos.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.btnSideTipos.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(215)))), ((int)(((byte)(230)))));
+            this.btnSideTipos.Location = new System.Drawing.Point(0, 186);
+            this.btnSideTipos.Name = "btnSideTipos";
+            this.btnSideTipos.Size = new System.Drawing.Size(215, 32);
+            this.btnSideTipos.TabIndex = 6;
+            this.btnSideTipos.Text = "  🗂  Tipo Dispositivo";
+            this.btnSideTipos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSideTipos.UseVisualStyleBackColor = false;
+            this.btnSideTipos.Click += new System.EventHandler(this.btnSideTipos_Click);
+            // 
+            // btnSideStock
+            // 
+            this.btnSideStock.BackColor = System.Drawing.Color.Transparent;
+            this.btnSideStock.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSideStock.FlatAppearance.BorderSize = 0;
+            this.btnSideStock.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(100)))), ((int)(((byte)(185)))));
+            this.btnSideStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSideStock.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.btnSideStock.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(215)))), ((int)(((byte)(230)))));
+            this.btnSideStock.Location = new System.Drawing.Point(0, 218);
+            this.btnSideStock.Name = "btnSideStock";
+            this.btnSideStock.Size = new System.Drawing.Size(215, 32);
+            this.btnSideStock.TabIndex = 7;
+            this.btnSideStock.Text = "  📊  Stock / Inventario";
+            this.btnSideStock.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSideStock.UseVisualStyleBackColor = false;
+            this.btnSideStock.Click += new System.EventHandler(this.btnSideStock_Click);
+            // 
+            // pnlSecProcesos
+            // 
+            this.pnlSecProcesos.BackColor = System.Drawing.Color.Transparent;
+            this.pnlSecProcesos.Controls.Add(this.lblSecProc);
+            this.pnlSecProcesos.Controls.Add(this.btnSideFacturacion);
+            this.pnlSecProcesos.Location = new System.Drawing.Point(0, 394);
+            this.pnlSecProcesos.Name = "pnlSecProcesos";
+            this.pnlSecProcesos.Size = new System.Drawing.Size(215, 60);
+            this.pnlSecProcesos.TabIndex = 11;
+            // 
+            // lblSecProc
+            // 
+            this.lblSecProc.Font = new System.Drawing.Font("Segoe UI", 7.5F, System.Drawing.FontStyle.Bold);
+            this.lblSecProc.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(130)))), ((int)(((byte)(180)))));
+            this.lblSecProc.Location = new System.Drawing.Point(12, 6);
+            this.lblSecProc.Name = "lblSecProc";
+            this.lblSecProc.Size = new System.Drawing.Size(191, 16);
+            this.lblSecProc.TabIndex = 0;
+            this.lblSecProc.Text = "PROCESOS";
+            // 
+            // btnSideFacturacion
+            // 
+            this.btnSideFacturacion.BackColor = System.Drawing.Color.Transparent;
+            this.btnSideFacturacion.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSideFacturacion.FlatAppearance.BorderSize = 0;
+            this.btnSideFacturacion.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(100)))), ((int)(((byte)(185)))));
+            this.btnSideFacturacion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSideFacturacion.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.btnSideFacturacion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(215)))), ((int)(((byte)(230)))));
+            this.btnSideFacturacion.Location = new System.Drawing.Point(0, 26);
+            this.btnSideFacturacion.Name = "btnSideFacturacion";
+            this.btnSideFacturacion.Size = new System.Drawing.Size(215, 32);
+            this.btnSideFacturacion.TabIndex = 1;
+            this.btnSideFacturacion.Text = "  🧾  Facturación";
+            this.btnSideFacturacion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSideFacturacion.UseVisualStyleBackColor = false;
+            this.btnSideFacturacion.Click += new System.EventHandler(this.btnSideFacturacion_Click);
+            // 
+            // pnlSecReportes
+            // 
+            this.pnlSecReportes.BackColor = System.Drawing.Color.Transparent;
+            this.pnlSecReportes.Controls.Add(this.lblSecRep);
+            this.pnlSecReportes.Controls.Add(this.btnSideReportes);
+            this.pnlSecReportes.Location = new System.Drawing.Point(0, 458);
+            this.pnlSecReportes.Name = "pnlSecReportes";
+            this.pnlSecReportes.Size = new System.Drawing.Size(215, 60);
+            this.pnlSecReportes.TabIndex = 12;
+            // 
+            // lblSecRep
+            // 
+            this.lblSecRep.Font = new System.Drawing.Font("Segoe UI", 7.5F, System.Drawing.FontStyle.Bold);
+            this.lblSecRep.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(130)))), ((int)(((byte)(180)))));
+            this.lblSecRep.Location = new System.Drawing.Point(12, 6);
+            this.lblSecRep.Name = "lblSecRep";
+            this.lblSecRep.Size = new System.Drawing.Size(191, 16);
+            this.lblSecRep.TabIndex = 0;
+            this.lblSecRep.Text = "REPORTES";
+            // 
+            // btnSideReportes
+            // 
+            this.btnSideReportes.BackColor = System.Drawing.Color.Transparent;
+            this.btnSideReportes.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSideReportes.FlatAppearance.BorderSize = 0;
+            this.btnSideReportes.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(100)))), ((int)(((byte)(185)))));
+            this.btnSideReportes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSideReportes.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.btnSideReportes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(215)))), ((int)(((byte)(230)))));
+            this.btnSideReportes.Location = new System.Drawing.Point(0, 26);
+            this.btnSideReportes.Name = "btnSideReportes";
+            this.btnSideReportes.Size = new System.Drawing.Size(215, 32);
+            this.btnSideReportes.TabIndex = 1;
+            this.btnSideReportes.Text = "  📈  Ver Reportes";
+            this.btnSideReportes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSideReportes.UseVisualStyleBackColor = false;
+            this.btnSideReportes.Click += new System.EventHandler(this.btnSideReportes_Click);
+            // 
+            // pnlSecSeguridad
+            // 
+            this.pnlSecSeguridad.BackColor = System.Drawing.Color.Transparent;
+            this.pnlSecSeguridad.Controls.Add(this.lblSecSeg);
+            this.pnlSecSeguridad.Controls.Add(this.btnSideUsuarios);
+            this.pnlSecSeguridad.Location = new System.Drawing.Point(0, 522);
+            this.pnlSecSeguridad.Name = "pnlSecSeguridad";
+            this.pnlSecSeguridad.Size = new System.Drawing.Size(215, 60);
+            this.pnlSecSeguridad.TabIndex = 13;
+            // 
+            // lblSecSeg
+            // 
+            this.lblSecSeg.Font = new System.Drawing.Font("Segoe UI", 7.5F, System.Drawing.FontStyle.Bold);
+            this.lblSecSeg.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(130)))), ((int)(((byte)(180)))));
+            this.lblSecSeg.Location = new System.Drawing.Point(12, 6);
+            this.lblSecSeg.Name = "lblSecSeg";
+            this.lblSecSeg.Size = new System.Drawing.Size(191, 16);
+            this.lblSecSeg.TabIndex = 0;
+            this.lblSecSeg.Text = "SEGURIDAD";
+            // 
+            // btnSideUsuarios
+            // 
+            this.btnSideUsuarios.BackColor = System.Drawing.Color.Transparent;
+            this.btnSideUsuarios.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSideUsuarios.FlatAppearance.BorderSize = 0;
+            this.btnSideUsuarios.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(100)))), ((int)(((byte)(185)))));
+            this.btnSideUsuarios.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSideUsuarios.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.btnSideUsuarios.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(215)))), ((int)(((byte)(230)))));
+            this.btnSideUsuarios.Location = new System.Drawing.Point(0, 26);
+            this.btnSideUsuarios.Name = "btnSideUsuarios";
+            this.btnSideUsuarios.Size = new System.Drawing.Size(215, 32);
+            this.btnSideUsuarios.TabIndex = 1;
+            this.btnSideUsuarios.Text = "  👤  Usuarios";
+            this.btnSideUsuarios.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSideUsuarios.UseVisualStyleBackColor = false;
+            this.btnSideUsuarios.Click += new System.EventHandler(this.btnSideUsuarios_Click);
+            // 
+            // lblSideSep2
+            // 
+            this.lblSideSep2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(70)))));
+            this.lblSideSep2.Location = new System.Drawing.Point(0, 590);
+            this.lblSideSep2.Name = "lblSideSep2";
+            this.lblSideSep2.Size = new System.Drawing.Size(215, 2);
+            this.lblSideSep2.TabIndex = 97;
+            // 
+            // btnSideAcercaDe
+            // 
+            this.btnSideAcercaDe.BackColor = System.Drawing.Color.Transparent;
+            this.btnSideAcercaDe.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSideAcercaDe.FlatAppearance.BorderSize = 0;
+            this.btnSideAcercaDe.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(35)))), ((int)(((byte)(70)))));
+            this.btnSideAcercaDe.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSideAcercaDe.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnSideAcercaDe.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(165)))), ((int)(((byte)(185)))));
+            this.btnSideAcercaDe.Location = new System.Drawing.Point(0, 596);
+            this.btnSideAcercaDe.Name = "btnSideAcercaDe";
+            this.btnSideAcercaDe.Size = new System.Drawing.Size(215, 32);
+            this.btnSideAcercaDe.TabIndex = 19;
+            this.btnSideAcercaDe.Text = "  ℹ  Acerca de...";
+            this.btnSideAcercaDe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSideAcercaDe.UseVisualStyleBackColor = false;
+            this.btnSideAcercaDe.Click += new System.EventHandler(this.btnSideAcercaDe_Click);
+            // 
+            // btnSideSalir
+            // 
+            this.btnSideSalir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.btnSideSalir.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSideSalir.FlatAppearance.BorderSize = 0;
+            this.btnSideSalir.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.btnSideSalir.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSideSalir.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSideSalir.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.btnSideSalir.Location = new System.Drawing.Point(0, 628);
+            this.btnSideSalir.Name = "btnSideSalir";
+            this.btnSideSalir.Size = new System.Drawing.Size(215, 36);
+            this.btnSideSalir.TabIndex = 20;
+            this.btnSideSalir.Text = "  🔓  Cerrar Sesión";
+            this.btnSideSalir.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSideSalir.UseVisualStyleBackColor = false;
+            this.btnSideSalir.Click += new System.EventHandler(this.btnSideSalir_Click);
             // 
             // timerReloj
             // 
@@ -269,94 +480,64 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(30)))), ((int)(((byte)(55)))));
             this.BackgroundImage = global::JarasTech.Properties.Resources.Logo_JarasTech;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1100, 550);
-            this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.statusStrip);
-            this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(899, 499);
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.ClientSize = new System.Drawing.Size(1378, 686);
+            this.Controls.Add(this.pnlHeader);
+            this.Controls.Add(this.pnlSidebar);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.MinimumSize = new System.Drawing.Size(900, 520);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "JarasTech — Sistema de Venta de Dispositivos Electrónicos";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.statusStrip.ResumeLayout(false);
-            this.statusStrip.PerformLayout();
+            this.pnlHeader.ResumeLayout(false);
+            this.pnlHeader.PerformLayout();
+            this.pnlSidebar.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picSideLogo)).EndInit();
+            this.pnlSecMantenimientos.ResumeLayout(false);
+            this.pnlSecProcesos.ResumeLayout(false);
+            this.pnlSecReportes.ResumeLayout(false);
+            this.pnlSecSeguridad.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        // ── Renderer personalizado para menú oscuro ──────────────────────
-        private class DarkMenuRenderer : System.Windows.Forms.ToolStripProfessionalRenderer
-        {
-            public DarkMenuRenderer()
-                : base(new DarkColorTable()) { }
-        }
-
-        private class DarkColorTable : System.Windows.Forms.ProfessionalColorTable
-        {
-            public override System.Drawing.Color MenuItemSelected =>
-                System.Drawing.Color.FromArgb(0, 120, 215);
-            public override System.Drawing.Color MenuItemBorder =>
-                System.Drawing.Color.FromArgb(0, 120, 215);
-            public override System.Drawing.Color MenuBorder =>
-                System.Drawing.Color.FromArgb(30, 30, 60);
-            public override System.Drawing.Color ToolStripDropDownBackground =>
-                System.Drawing.Color.FromArgb(40, 40, 75);
-            public override System.Drawing.Color ImageMarginGradientBegin =>
-                System.Drawing.Color.FromArgb(30, 30, 60);
-            public override System.Drawing.Color ImageMarginGradientMiddle =>
-                System.Drawing.Color.FromArgb(30, 30, 60);
-            public override System.Drawing.Color ImageMarginGradientEnd =>
-                System.Drawing.Color.FromArgb(30, 30, 60);
-            public override System.Drawing.Color MenuItemSelectedGradientBegin =>
-                System.Drawing.Color.FromArgb(0, 120, 215);
-            public override System.Drawing.Color MenuItemSelectedGradientEnd =>
-                System.Drawing.Color.FromArgb(0, 100, 190);
-            public override System.Drawing.Color MenuItemPressedGradientBegin =>
-                System.Drawing.Color.FromArgb(0, 100, 190);
-            public override System.Drawing.Color MenuItemPressedGradientEnd =>
-                System.Drawing.Color.FromArgb(0, 80, 160);
-        }
-
-        private void timerReloj_Tick(object sender, System.EventArgs e)
-        {
-            lblFecha.Text = "  🕐  " + System.DateTime.Now.ToString("dd/MM/yyyy  HH:mm");
-        }
-
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem archivoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cerrarSesionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cerrarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem mantenimientosToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem mantenimientoClientesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem iVAToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem marcasToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem modelosToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem productosToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tipoDeDToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem stockToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem procesosToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem facturacionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem seguridadToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem usuariosToolStripMenuItem;
-        private System.Windows.Forms.StatusStrip statusStrip;
-        private System.Windows.Forms.ToolStripStatusLabel lblUsuarioLogueado;
-        private System.Windows.Forms.ToolStripStatusLabel lblSeparador;
-        private System.Windows.Forms.ToolStripStatusLabel lblPerfil;
-        private System.Windows.Forms.ToolStripStatusLabel lblSpring;
-        private System.Windows.Forms.ToolStripStatusLabel lblFecha;
+        private System.Windows.Forms.Panel pnlHeader;
+        private System.Windows.Forms.Label lblHeaderTitulo;
+        private System.Windows.Forms.Label lblHeaderSubtitulo;
+        private System.Windows.Forms.Label lblHeaderUsuario;
+        private System.Windows.Forms.Label lblHeaderPerfil;
+        private System.Windows.Forms.Label lblFecha;
+        private System.Windows.Forms.Panel pnlSidebar;
+        private System.Windows.Forms.PictureBox picSideLogo;
+        private System.Windows.Forms.Label lblSideSep;
+        private System.Windows.Forms.Panel pnlSecMantenimientos;
+        private System.Windows.Forms.Label lblSecMant;
+        private System.Windows.Forms.Button btnSideClientes;
+        private System.Windows.Forms.Button btnSideIVA;
+        private System.Windows.Forms.Button btnSideMarcas;
+        private System.Windows.Forms.Button btnSideModelos;
+        private System.Windows.Forms.Button btnSideProductos;
+        private System.Windows.Forms.Button btnSideTipos;
+        private System.Windows.Forms.Button btnSideStock;
+        private System.Windows.Forms.Panel pnlSecProcesos;
+        private System.Windows.Forms.Label lblSecProc;
+        private System.Windows.Forms.Button btnSideFacturacion;
+        private System.Windows.Forms.Panel pnlSecReportes;
+        private System.Windows.Forms.Label lblSecRep;
+        private System.Windows.Forms.Button btnSideReportes;
+        private System.Windows.Forms.Panel pnlSecSeguridad;
+        private System.Windows.Forms.Label lblSecSeg;
+        private System.Windows.Forms.Button btnSideUsuarios;
+        private System.Windows.Forms.Label lblSideSep2;
+        private System.Windows.Forms.Button btnSideAcercaDe;
+        private System.Windows.Forms.Button btnSideSalir;
         private System.Windows.Forms.Timer timerReloj;
-        private System.Windows.Forms.ToolStripMenuItem reportesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem formularioReportesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem acercaDeToolStripMenuItem;
     }
 }

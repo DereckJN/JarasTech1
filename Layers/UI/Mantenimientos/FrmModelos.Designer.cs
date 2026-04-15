@@ -40,7 +40,7 @@
             this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTop.Location = new System.Drawing.Point(0, 0);
             this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(1029, 64);
+            this.pnlTop.Size = new System.Drawing.Size(1040, 64);
             this.pnlTop.TabIndex = 0;
             // 
             // lblTitulo
@@ -254,7 +254,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(1029, 688);
+            this.ClientSize = new System.Drawing.Size(1040, 698);
             this.Controls.Add(this.pnlTop);
             this.Controls.Add(this.grpFiltro);
             this.Controls.Add(this.dgvModelos);

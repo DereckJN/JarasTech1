@@ -46,7 +46,7 @@
             this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTop.Location = new System.Drawing.Point(0, 0);
             this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(900, 60);
+            this.pnlTop.Size = new System.Drawing.Size(920, 60);
             this.pnlTop.TabIndex = 0;
             // 
             // lblTitulo
@@ -56,7 +56,7 @@
             this.lblTitulo.ForeColor = System.Drawing.Color.White;
             this.lblTitulo.Location = new System.Drawing.Point(16, 12);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(328, 30);
+            this.lblTitulo.Size = new System.Drawing.Size(406, 37);
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "⚙  Mantenimiento de Marcas";
             // 
@@ -79,7 +79,7 @@
             this.lblFiltro.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblFiltro.Location = new System.Drawing.Point(10, 26);
             this.lblFiltro.Name = "lblFiltro";
-            this.lblFiltro.Size = new System.Drawing.Size(122, 15);
+            this.lblFiltro.Size = new System.Drawing.Size(153, 20);
             this.lblFiltro.TabIndex = 0;
             this.lblFiltro.Text = "Código / Descripción:";
             // 
@@ -88,7 +88,7 @@
             this.txtFiltro.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtFiltro.Location = new System.Drawing.Point(155, 22);
             this.txtFiltro.Name = "txtFiltro";
-            this.txtFiltro.Size = new System.Drawing.Size(540, 25);
+            this.txtFiltro.Size = new System.Drawing.Size(540, 30);
             this.txtFiltro.TabIndex = 1;
             this.txtFiltro.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtFiltro_KeyDown);
             // 
@@ -129,6 +129,7 @@
             this.dgvMarcas.Name = "dgvMarcas";
             this.dgvMarcas.ReadOnly = true;
             this.dgvMarcas.RowHeadersVisible = false;
+            this.dgvMarcas.RowHeadersWidth = 51;
             this.dgvMarcas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMarcas.Size = new System.Drawing.Size(876, 320);
             this.dgvMarcas.TabIndex = 2;
@@ -154,7 +155,7 @@
             this.lblCodigo.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblCodigo.Location = new System.Drawing.Point(15, 40);
             this.lblCodigo.Name = "lblCodigo";
-            this.lblCodigo.Size = new System.Drawing.Size(49, 15);
+            this.lblCodigo.Size = new System.Drawing.Size(61, 20);
             this.lblCodigo.TabIndex = 0;
             this.lblCodigo.Text = "Código:";
             // 
@@ -165,7 +166,7 @@
             this.txtCodigo.Location = new System.Drawing.Point(100, 36);
             this.txtCodigo.MaxLength = 20;
             this.txtCodigo.Name = "txtCodigo";
-            this.txtCodigo.Size = new System.Drawing.Size(150, 25);
+            this.txtCodigo.Size = new System.Drawing.Size(150, 30);
             this.txtCodigo.TabIndex = 1;
             // 
             // lblDescripcion
@@ -174,7 +175,7 @@
             this.lblDescripcion.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblDescripcion.Location = new System.Drawing.Point(275, 40);
             this.lblDescripcion.Name = "lblDescripcion";
-            this.lblDescripcion.Size = new System.Drawing.Size(72, 15);
+            this.lblDescripcion.Size = new System.Drawing.Size(90, 20);
             this.lblDescripcion.TabIndex = 2;
             this.lblDescripcion.Text = "Descripción:";
             // 
@@ -184,7 +185,7 @@
             this.txtDescripcion.Location = new System.Drawing.Point(375, 36);
             this.txtDescripcion.MaxLength = 100;
             this.txtDescripcion.Name = "txtDescripcion";
-            this.txtDescripcion.Size = new System.Drawing.Size(480, 25);
+            this.txtDescripcion.Size = new System.Drawing.Size(480, 30);
             this.txtDescripcion.TabIndex = 3;
             // 
             // pnlBotones
@@ -256,10 +257,10 @@
             // 
             // FrmMarcas
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(900, 645);
+            this.ClientSize = new System.Drawing.Size(920, 655);
             this.Controls.Add(this.pnlTop);
             this.Controls.Add(this.grpFiltro);
             this.Controls.Add(this.dgvMarcas);
