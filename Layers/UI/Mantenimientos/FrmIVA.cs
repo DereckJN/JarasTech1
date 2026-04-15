@@ -24,23 +24,10 @@ namespace JarasTech.Layers.UI.Mantenimientos
 
         private void FrmIVA_Load(object sender, EventArgs e)
         {
-            try
-            {
-                var lista = _bll.GetAllIVA().ToList();
-                dgvIVA.DataSource = lista;
-                if (dgvIVA.Columns["IVAID"] != null) dgvIVA.Columns["IVAID"].Visible = false;
-                if (dgvIVA.Columns["Porcentaje"] != null) dgvIVA.Columns["Porcentaje"].HeaderText = "Porcentaje (%)";
-
-                // Cargar el registro activo (solo 1 normalmente)
-                var iva = lista.FirstOrDefault();
-                if (iva != null) { _ivaID = iva.IVAID; numPorcentaje.Value = iva.Porcentaje; }
-            }
-            catch (Exception ex) 
-            {
-                _log.ErrorFormat("Error Load IVA: {0}", ex.Message);
-            }
+            try { CargarGrilla(string.Empty); }
+            catch (Exception ex) { _log.ErrorFormat("Error Load: {0}", ex.Message); }
         }
-      
+
 
         private void dgvIVA_SelectionChanged(object sender, EventArgs e)
         {
@@ -59,10 +46,10 @@ namespace JarasTech.Layers.UI.Mantenimientos
             catch (Exception ex) { MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
-   
+
         private void btnNuevo_Click(object sender, EventArgs e)
-        { 
-            _ivaID = 0; numPorcentaje.Value = 13; 
+        {
+            _ivaID = 0; numPorcentaje.Value = 13;
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -72,7 +59,24 @@ namespace JarasTech.Layers.UI.Mantenimientos
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
+            if (_ivaID == 0) { MessageBox.Show("Seleccione un modelo.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
+            if (MessageBox.Show("¿Eliminar el modelo seleccionado?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                try { _bll.DeleteIVA(_ivaID); CargarGrilla(string.Empty);  }
+                catch (Exception ex) { MessageBox.Show($"No se puede eliminar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+            }
+        }
 
+        private void CargarGrilla(string filtro)
+        {
+            var lista = _bll.GetAllIVA().ToList();
+            dgvIVA.DataSource = lista;
+            if (dgvIVA.Columns["IVAID"] != null) dgvIVA.Columns["IVAID"].Visible = false;
+            if (dgvIVA.Columns["Porcentaje"] != null) dgvIVA.Columns["Porcentaje"].HeaderText = "Porcentaje (%)";
+
+            // Cargar el registro activo (solo 1 normalmente)
+            var iva = lista.FirstOrDefault();
+            if (iva != null) { _ivaID = iva.IVAID; numPorcentaje.Value = iva.Porcentaje; }
         }
     }
 }
