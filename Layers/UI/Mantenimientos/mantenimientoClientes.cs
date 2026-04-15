@@ -66,22 +66,70 @@ namespace JarasTech.Layers.UI
             dgvClientes.AutoGenerateColumns = false;
             dgvClientes.Columns.Clear();
 
-            dgvClientes.Columns.Add(new DataGridViewTextBoxColumn
-            { DataPropertyName = "ClienteID", HeaderText = "ID", Width = 45 });
-            dgvClientes.Columns.Add(new DataGridViewTextBoxColumn
-            { DataPropertyName = "NumeroIdentificacion", HeaderText = "Identificación", FillWeight = 15 });
-            dgvClientes.Columns.Add(new DataGridViewTextBoxColumn
-            { DataPropertyName = "Nombre", HeaderText = "Nombre", FillWeight = 18 });
-            dgvClientes.Columns.Add(new DataGridViewTextBoxColumn
-            { DataPropertyName = "Apellidos", HeaderText = "Apellidos", FillWeight = 18 });
-            dgvClientes.Columns.Add(new DataGridViewTextBoxColumn
-            { DataPropertyName = "Telefono", HeaderText = "Teléfono", FillWeight = 12 });
-            dgvClientes.Columns.Add(new DataGridViewTextBoxColumn
-            { DataPropertyName = "CorreoElectronico", HeaderText = "Correo", FillWeight = 20 });
-            dgvClientes.Columns.Add(new DataGridViewTextBoxColumn
-            { DataPropertyName = "Provincia", HeaderText = "Provincia", FillWeight = 12 });
+            // Columna ID — ancho fijo pequeño
+            var colID = new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "ClienteID",
+                HeaderText = "ID",
+                Width = 45,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                Resizable = DataGridViewTriState.False
+            };
 
-            dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            // Columnas con ancho proporcional — FillWeight controla el reparto
+            var colCedula = new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "NumeroIdentificacion",
+                HeaderText = "Identificación",
+                FillWeight = 16,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            };
+
+            var colNombre = new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Nombre",
+                HeaderText = "Nombre",
+                FillWeight = 18,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            };
+
+            var colApellidos = new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Apellidos",
+                HeaderText = "Apellidos",
+                FillWeight = 18,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            };
+
+            var colTelefono = new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Telefono",
+                HeaderText = "Teléfono",
+                FillWeight = 12,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            };
+
+            var colCorreo = new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "CorreoElectronico",
+                HeaderText = "Correo",
+                FillWeight = 22,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            };
+
+            var colProvincia = new DataGridViewTextBoxColumn
+            {
+                DataPropertyName = "Provincia",
+                HeaderText = "Provincia",
+                FillWeight = 14,
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
+            };
+
+            dgvClientes.Columns.AddRange(colID, colCedula, colNombre,
+                colApellidos, colTelefono, colCorreo, colProvincia);
+
+            // Con columnas mixtas (fija + fill) se usa None en el modo global
+            dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
         }
 
         // ════════════════════════════════════════════════════════════════

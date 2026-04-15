@@ -78,11 +78,38 @@ namespace JarasTech.Layers.UI.Mantenimientos
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            if (_tipoIDSeleccionado == 0) { MessageBox.Show("Seleccione un tipo.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
-            if (MessageBox.Show("¿Eliminar el tipo seleccionado?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (_tipoIDSeleccionado == 0)
             {
-                try { _bll.DeleteTipoDispositivo(_tipoIDSeleccionado); LimpiarFormulario(); CargarGrilla(string.Empty); }
-                catch (Exception ex) { MessageBox.Show($"No se puede eliminar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                MessageBox.Show("Seleccione un tipo.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning); return; 
+            }
+            if (MessageBox.Show("¿Eliminar el tipo seleccionado?", "Confirmar",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                try { 
+                    _bll.DeleteTipoDispositivo(_tipoIDSeleccionado);
+                    MessageBox.Show("Tipo dispositivo eliminado.", "Éxito",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LimpiarFormulario();
+                    CargarGrilla(string.Empty); 
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+               when (ex.Number == 547)
+                {
+                    MessageBox.Show(
+                        "No se puede eliminar este dispositivo porque tiene productos asociados.\n\n" +
+                        "Primero elimine o reasigne los productos que usan este dispositivo.",
+                        "Operación no permitida",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    _log.ErrorFormat("FK violation al eliminar dispositivo {0}: {1}",
+                        _tipoIDSeleccionado, ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    _log.ErrorFormat("Error btnEliminar dispositivos: {0}", ex.Message);
+                    MessageBox.Show("Error al eliminar: " + ex.Message, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
         private void LimpiarFormulario()

@@ -80,11 +80,39 @@ namespace JarasTech.Layers.UI.Mantenimientos
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            if (_modeloIDSeleccionado == 0) { MessageBox.Show("Seleccione un modelo.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
-            if (MessageBox.Show("¿Eliminar el modelo seleccionado?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (_modeloIDSeleccionado == 0) 
+            { 
+                MessageBox.Show("Seleccione un modelo.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning); return; 
+            }
+            if (MessageBox.Show("¿Eliminar el modelo seleccionado?", "Confirmar",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                try { _bll.DeleteModelo(_modeloIDSeleccionado); LimpiarFormulario(); CargarGrilla(string.Empty); }
-                catch (Exception ex) { MessageBox.Show($"No se puede eliminar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                try
+                {
+                    _bll.DeleteModelo(_modeloIDSeleccionado);
+                    MessageBox.Show("Modelo eliminado.", "Éxito",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LimpiarFormulario(); 
+                    CargarGrilla(string.Empty);
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                when (ex.Number == 547)
+                {
+                    MessageBox.Show(
+                        "No se puede eliminar este modelo porque tiene productos asociados.\n\n" +
+                        "Primero elimine o reasigne los productos que usan este modelo.",
+                        "Operación no permitida",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    _log.ErrorFormat("FK violation al eliminar modelo {0}: {1}",
+                        _modeloIDSeleccionado, ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    _log.ErrorFormat("Error btnEliminar Modelos: {0}", ex.Message);
+                    MessageBox.Show("Error al eliminar: " + ex.Message, "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
         private void LimpiarFormulario()
