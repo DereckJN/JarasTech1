@@ -247,7 +247,7 @@ namespace JarasTech.Layers.UI.Mantenimientos
 
             btnGuardar.Text = "Actualizar";
             _cargandoProducto = false;
-            tabProducto.SelectedIndex = 1;
+           
         }
 
         /// <summary>
@@ -474,6 +474,12 @@ namespace JarasTech.Layers.UI.Mantenimientos
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void dgvProductos_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+                tabProducto.SelectedIndex = 1;
         }
     }
 }

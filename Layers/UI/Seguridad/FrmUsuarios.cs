@@ -23,6 +23,16 @@ namespace JarasTech.Layers.UI.Seguridad
             InitializeComponent();
         }
 
+        // Agregá este método privado
+        private static string HashSHA256(string texto)
+        {
+            using (var sha = System.Security.Cryptography.SHA256.Create())
+            {
+                byte[] bytes = sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(texto));
+                return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+            }
+        }
+
         private void FrmUsuarios_Load(object sender, EventArgs e)
         {
             try
@@ -104,8 +114,14 @@ namespace JarasTech.Layers.UI.Seguridad
             txtUsuario.Focus();
         }
 
-        private void btnNuevo_Click(object sender, EventArgs e) { LimpiarFormulario(); }
-        private void btnCancelar_Click(object sender, EventArgs e) { this.Close(); }
+        private void btnNuevo_Click(object sender, EventArgs e) 
+        {
+            LimpiarFormulario(); 
+        }
+        private void btnCancelar_Click(object sender, EventArgs e) 
+        { 
+            this.Close(); 
+        }
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
@@ -117,7 +133,7 @@ namespace JarasTech.Layers.UI.Seguridad
                     UsuarioID = _usuarioID,
                     NombreUsuario = txtUsuario.Text.Trim(),
                     Contrasena = string.IsNullOrWhiteSpace(txtContrasena.Text)
-                                    ? null : txtContrasena.Text.Trim(),
+                ? null : HashSHA256(txtContrasena.Text.Trim()),
                     PerfilID = (int)cboPerfil.SelectedValue,
                     Estado = chkEstado.Checked
                 };

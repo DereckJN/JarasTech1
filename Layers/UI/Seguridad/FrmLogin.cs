@@ -18,6 +18,15 @@ namespace JarasTech.Layers.UI.Seguridad
             this.AcceptButton = btnAceptar;
             this.CancelButton = btnCancelar;
         }
+        private static string HashSHA256(string texto)
+        {
+            using (var sha = System.Security.Cryptography.SHA256.Create())
+            {
+                byte[] bytes = sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(texto));
+                return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+            }
+        }
+
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
@@ -33,7 +42,9 @@ namespace JarasTech.Layers.UI.Seguridad
 
             try
             {
-                Usuarios user = _bllUsuarios.Login(usuario, pass);
+                string passHash = HashSHA256(pass);
+                Usuarios user = _bllUsuarios.Login(usuario, passHash);
+
                 if (user != null && user.Estado)
                 {
                     // Guardar sesión
