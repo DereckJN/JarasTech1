@@ -82,7 +82,7 @@ namespace JarasTech.Layers.UI.Mantenimientos
                 if (ultimo != null && ultimo.Monto > 0)
                 {
                     _tipoCambioVenta = ultimo.Monto;
-                    lblTCInfo.Text = "TC venta BCCR: ₡ "
+                    lblTCInfo.Text = "TC BCCR: ₡ "
                                           + _tipoCambioVenta.ToString("N2")
                                           + "  (" + ultimo.Fecha.ToString("dd/MM/yyyy") + ")";
                     lblTCInfo.ForeColor = Color.DarkGreen;
