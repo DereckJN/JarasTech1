@@ -1071,7 +1071,7 @@ namespace JarasTech.Layers.UI.Procesos
                                 .Padding(8)
                                 .Column(col =>
                                 {
-                                    col.Item().Text("SON:").Bold().FontSize(8)
+                                    col.Item().Text("Monto en letras:").Bold().FontSize(8)
             .FontColor(Colors.Grey.Darken2);
                                     col.Item().Text(PDFHelper.Capitalizar(PDFHelper.MontoALetras(totC)))
             .FontSize(10).Bold().FontColor(Colors.Blue.Darken3);
