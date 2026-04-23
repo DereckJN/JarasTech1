@@ -326,7 +326,7 @@
             this.grpFiltrosC.Size = new System.Drawing.Size(1060, 70);
             this.grpFiltrosC.TabIndex = 0;
             this.grpFiltrosC.TabStop = false;
-            this.grpFiltrosC.Text = "Filtro (opcional — vacío = todos los clientes)";
+            this.grpFiltrosC.Text = "Filtro ( vacío = todos los clientes)";
             // 
             // lblFiltroC
             // 
@@ -413,7 +413,7 @@
             // 
             this.dtpDesde3.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.dtpDesde3.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpDesde3.Location = new System.Drawing.Point(56, 24);
+            this.dtpDesde3.Location = new System.Drawing.Point(70, 24);
             this.dtpDesde3.Name = "dtpDesde3";
             this.dtpDesde3.Size = new System.Drawing.Size(130, 29);
             this.dtpDesde3.TabIndex = 1;
@@ -422,7 +422,7 @@
             // 
             this.lblHastaD.AutoSize = true;
             this.lblHastaD.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblHastaD.Location = new System.Drawing.Point(202, 28);
+            this.lblHastaD.Location = new System.Drawing.Point(218, 28);
             this.lblHastaD.Name = "lblHastaD";
             this.lblHastaD.Size = new System.Drawing.Size(50, 20);
             this.lblHastaD.TabIndex = 2;
@@ -432,7 +432,7 @@
             // 
             this.dtpHasta3.Font = new System.Drawing.Font("Segoe UI", 9.5F);
             this.dtpHasta3.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpHasta3.Location = new System.Drawing.Point(249, 24);
+            this.dtpHasta3.Location = new System.Drawing.Point(274, 24);
             this.dtpHasta3.Name = "dtpHasta3";
             this.dtpHasta3.Size = new System.Drawing.Size(130, 29);
             this.dtpHasta3.TabIndex = 3;

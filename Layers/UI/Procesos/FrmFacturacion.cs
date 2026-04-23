@@ -196,7 +196,10 @@ namespace JarasTech.Layers.UI.Procesos
         // ════════════════════════════════════════════════════════════════════
         #region Cliente
 
-        private void btnBusqCli_Click(object sender, EventArgs e) { BuscarCliente(); }
+        private void btnBusqCli_Click(object sender, EventArgs e) 
+        { 
+            BuscarCliente(); 
+        }
 
         private void txtBusqCli_KeyDown(object sender, KeyEventArgs e)
         {
@@ -249,7 +252,7 @@ namespace JarasTech.Layers.UI.Procesos
                 pnlHdr.Controls.Add(lblHdr);
                 dlg.Controls.Add(pnlHdr);
 
-                // DataGridView solo con columnas útiles
+                // DataGridView 
                 var dgv = new DataGridView
                 {
                     Dock = DockStyle.Fill,
@@ -282,7 +285,7 @@ namespace JarasTech.Layers.UI.Procesos
                 dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(243, 246, 251);
                 dgv.RowTemplate.Height = 28;
 
-                // Columnas — solo lo esencial
+                // Columnas 
                 dgv.Columns.Add(new DataGridViewTextBoxColumn
                 {
                     DataPropertyName = "NumeroIdentificacion",
@@ -329,7 +332,7 @@ namespace JarasTech.Layers.UI.Procesos
                     { SeleccionarCliente(c); dlg.Close(); }
                 };
 
-                // Instrucción al pie
+                
                 var pnlFoot = new Panel
                 {
                     Dock = DockStyle.Bottom,
@@ -372,7 +375,10 @@ namespace JarasTech.Layers.UI.Procesos
         // ════════════════════════════════════════════════════════════════════
         #region Productos
 
-        private void btnBusqProd_Click(object sender, EventArgs e) { BuscarProducto(); }
+        private void btnBusqProd_Click(object sender, EventArgs e) 
+        {
+            BuscarProducto();
+        }
 
         private void txtBusqProd_KeyDown(object sender, KeyEventArgs e)
         {
@@ -430,7 +436,7 @@ namespace JarasTech.Layers.UI.Procesos
                 pnlHdr.Controls.Add(lblHdr);
                 dlg.Controls.Add(pnlHdr);
 
-                // DataGridView con columnas controladas
+                // DataGridView
                 var dgv = new DataGridView
                 {
                     Dock = DockStyle.Fill,
@@ -460,7 +466,7 @@ namespace JarasTech.Layers.UI.Procesos
                 dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(243, 246, 251);
                 dgv.RowTemplate.Height = 28;
 
-                // Columnas — solo las relevantes
+                // Columnas
                 dgv.Columns.Add(new DataGridViewTextBoxColumn
                 {
                     DataPropertyName = "CodigoInterno",

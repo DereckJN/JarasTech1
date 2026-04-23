@@ -175,7 +175,6 @@
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(308, 25);
             this.txtUsuario.TabIndex = 0;
-            this.txtUsuario.Text = "admin";
             // 
             // lblContrasena
             // 
@@ -208,7 +207,6 @@
             this.txtContrasena.Name = "txtContrasena";
             this.txtContrasena.Size = new System.Drawing.Size(308, 25);
             this.txtContrasena.TabIndex = 1;
-            this.txtContrasena.Text = "admin123";
             this.txtContrasena.UseSystemPasswordChar = true;
             // 
             // btnAceptar
